@@ -1,6 +1,6 @@
 import 'package:scholarship_app/constants/app_colors.dart';
 import 'package:scholarship_app/models/application_data.dart';
-import 'package:scholarship_app/screens/languages_screen.dart';
+import 'package:scholarship_app/screens/fill_information/languages_screen.dart';
 import 'package:scholarship_app/widgets/button.dart';
 import 'package:scholarship_app/widgets/custom_app_bar.dart';
 import 'package:scholarship_app/widgets/form_field.dart';
