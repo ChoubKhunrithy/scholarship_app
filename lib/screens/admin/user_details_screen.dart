@@ -99,7 +99,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
             _ActionButton(
               icon: Icons.chat_bubble_outline,
               label: 'Send Message',
-              color: const Color(0xFF1A60FF),
+              color: AppColors.primary,
               textColor: Colors.white,
               onTap: () {},
             ),

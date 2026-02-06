@@ -161,7 +161,7 @@ class _StatisticAnalyticsScreenState extends State<StatisticAnalyticsScreen> {
                           ),
                           child: Column(
                             children: [
-                              // Icon()
+                              Icon(Icons.person, color: Colors.green),
                             ],
                           ),
                         )
