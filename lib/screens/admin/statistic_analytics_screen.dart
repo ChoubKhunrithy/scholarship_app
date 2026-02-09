@@ -10,8 +10,6 @@ class StatisticAnalyticsScreen extends StatefulWidget {
 }
 
 class _StatisticAnalyticsScreenState extends State<StatisticAnalyticsScreen> {
-  final List<double> values = [0.4, 0.6, 0.3, 0.8, 0.5, 0.2, 0.4];
-  final List<String> days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +29,7 @@ class _StatisticAnalyticsScreenState extends State<StatisticAnalyticsScreen> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -42,6 +40,7 @@ class _StatisticAnalyticsScreenState extends State<StatisticAnalyticsScreen> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   childAspectRatio: 1.5, //cal. height
+                  padding: EdgeInsets.zero,
                   children: [
                     _buildStatCard(
                         icon: Icons.visibility,
@@ -60,113 +59,141 @@ class _StatisticAnalyticsScreenState extends State<StatisticAnalyticsScreen> {
                   ],
                 ),
                 const SizedBox(height: 24),
-                Column(),
-                Text(
-                  'Most Viewed Scholarships',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 20,
-                        offset: const Offset(0, 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Most Viewed Scholarships',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textDark),
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
+                      child: Column(
+                        children: [
+                          _buildScholarshipViewRow(
+                              'MIT CS Scholarship', '1234 views'),
+                          const Divider(height: 24),
+                          _buildScholarshipViewRow(
+                              'Stanford Engineering', '915 views'),
+                          const Divider(height: 24),
+                          _buildScholarshipViewRow(
+                              'Oxford Business', '809 views'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              'MIT CS Scholarship',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            Spacer(),
-                            Text('1234 views'),
-                          ],
+                        Text(
+                          'User Activity',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textDark),
                         ),
-                        SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Text(
-                              'Stanford Engineering',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            Spacer(),
-                            Text('915 views'),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Text(
-                              'Oxford Business',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            Spacer(),
-                            Text('809 views'),
-                          ],
+                        const SizedBox(width: 8),
+                        Text(
+                          '(Last 7 days)',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppColors.textDark,
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'User Activity (Last 7 Days)',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 20,
-                        offset: const Offset(0, 10),
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: List.generate(values.length, (index) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              width: 40,
-                              height:
-                                  values[index] * 100, // Scale for visibility
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            Text(days[index]),
-                          ],
-                        );
-                      }),
+                    const SizedBox(
+                      height: 16,
                     ),
-                  ),
-                ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 16),
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          _buildChart('S', 0.6),
+                          _buildChart('M', 0.6),
+                          _buildChart('T', 0.5),
+                          _buildChart('W', 0.75),
+                          _buildChart('T', 0.85),
+                          _buildChart('F', 0.8),
+                          _buildChart('S', 0.75),
+                        ],
+                      ),
+                    )
+                  ],
+                )
+
+                // Container(
+                //   width: double.infinity,
+                //   height: 150,
+                //   decoration: BoxDecoration(
+                //     color: AppColors.white,
+                //     borderRadius: BorderRadius.circular(20),
+                //     boxShadow: [
+                //       BoxShadow(
+                //         color: Colors.black.withOpacity(0.05),
+                //         blurRadius: 20,
+                //         offset: const Offset(0, 10),
+                //       ),
+                //     ],
+                //   ),
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(20.0),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                //       children: List.generate(values.length, (index) {
+                //         return Column(
+                //           mainAxisAlignment: MainAxisAlignment.end,
+                //           children: [
+                //             Container(
+                //               width: 40,
+                //               height:
+                //                   values[index] * 100, // Scale for visibility
+                //               decoration: BoxDecoration(
+                //                 color: Colors.blue,
+                //                 borderRadius: BorderRadius.circular(6),
+                //               ),
+                //             ),
+                //             SizedBox(height: 8),
+                //             Text(days[index]),
+                //           ],
+                //         );
+                //       }),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -234,7 +261,7 @@ class _StatisticAnalyticsScreenState extends State<StatisticAnalyticsScreen> {
           child: Text(
             name,
             style: const TextStyle(
-              fontSize: 15,
+              fontSize: 14,
               color: AppColors.textDark,
               fontWeight: FontWeight.w500,
             ),
@@ -244,11 +271,50 @@ class _StatisticAnalyticsScreenState extends State<StatisticAnalyticsScreen> {
           views,
           style: const TextStyle(
             fontSize: 14,
-            color: AppColors.textLight,
-            fontWeight: FontWeight.w500,
+            color: AppColors.textDark,
+            // fontWeight: FontWeight.w500,
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildChart(String day, double heightFactor) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              width: double.infinity,
+              height: 200 * heightFactor, // 160 is max height
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    AppColors.primaryDark,
+                    AppColors.primaryDark.withOpacity(0.6),
+                  ],
+                ),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(8),
+                ),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              day,
+              style: const TextStyle(
+                fontSize: 12,
+                color: AppColors.primaryDark,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
