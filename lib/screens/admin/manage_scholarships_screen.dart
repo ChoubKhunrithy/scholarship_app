@@ -25,10 +25,10 @@ class _ManageScholarshipsScreenState extends State<ManageScholarshipsScreen> {
       appBar: AppBar(
         actionsPadding: const EdgeInsets.only(right: 8),
         backgroundColor: AppColors.white,
-        elevation: 0,
+        elevation: 0, 
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.textDark),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {},
         ),
         title: const Text(
           'Manage Scholarships',
@@ -284,7 +284,7 @@ class _ManageScholarshipsScreenState extends State<ManageScholarshipsScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {},
             child: const Text('Cancel'),
           ),
           ElevatedButton(
