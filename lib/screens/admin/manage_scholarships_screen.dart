@@ -23,6 +23,7 @@ class _ManageScholarshipsScreenState extends State<ManageScholarshipsScreen> {
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
+        centerTitle: true,
         actionsPadding: const EdgeInsets.only(right: 8),
         backgroundColor: AppColors.white,
         elevation: 0, 

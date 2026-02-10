@@ -15,6 +15,7 @@ class _StatisticAnalyticsScreenState extends State<StatisticAnalyticsScreen> {
     return Scaffold(
         backgroundColor: AppColors.lightGrey,
         appBar: AppBar(
+        centerTitle: true,
           backgroundColor: AppColors.white,
           elevation: 0,
           leading: IconButton(

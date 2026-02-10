@@ -22,6 +22,7 @@ class _ManageUsersScreenState extends State<ManageUsersScreen> {
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
+        centerTitle: true,
         actionsPadding: const EdgeInsets.only(right: 8),
         backgroundColor: AppColors.white,
         scrolledUnderElevation: 0, //use for scrolled under effect
