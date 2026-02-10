@@ -10,332 +10,312 @@ class StatisticAnalyticsScreen extends StatefulWidget {
 }
 
 class _StatisticAnalyticsScreenState extends State<StatisticAnalyticsScreen> {
-  final List<double> values = [0.4, 0.6, 0.3, 0.8, 0.5, 0.2, 0.4];
-  final List<String> days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: AppColors.lightGrey,
         appBar: AppBar(
+        centerTitle: true,
+          backgroundColor: AppColors.white,
+          elevation: 0,
           leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: AppColors.textDark),
             onPressed: () {},
-            icon: Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.black,
-            ),
           ),
           title: Text('Statistics & Analytics',
               style: TextStyle(
-                  color: AppColors.black,
-                  fontSize: 25,
-                  fontWeight: FontWeight.normal)),
+                  color: AppColors.textDark,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold)),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  // First Card
-                  Expanded(
-                    child: Container(
-                      height: 150, // Set a fixed height
-                      padding: const EdgeInsets.all(16),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GridView.count(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 15,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  childAspectRatio: 1.5, //cal. height
+                  padding: EdgeInsets.zero,
+                  children: [
+                    _buildStatCard(
+                        icon: Icons.visibility,
+                        value: '12.5K',
+                        label: 'Total Views'),
+                    _buildStatCard(
+                        icon: Icons.description,
+                        value: '1,234',
+                        label: 'Applications'),
+                    _buildStatCard(
+                        icon: Icons.group, value: '856', label: 'Active Users'),
+                    _buildStatCard(
+                        icon: Icons.trending_up,
+                        value: '+23%',
+                        label: 'Growth'),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Most Viewed Scholarships',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textDark),
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.05),
-                            blurRadius: 20,
-                            offset: const Offset(0, 10),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
                           ),
                         ],
                       ),
                       child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start, // Align text to left
                         children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(Icons.visibility,
-                                color: Colors.blue),
-                          ),
-                          const Spacer(),
-                          const Text(
-                            '12.5K',
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
-                          ),
-                          const Text(
-                            'Total Views',
-                            style: TextStyle(color: Colors.grey, fontSize: 14),
-                          ),
+                          _buildScholarshipViewRow(
+                              'MIT CS Scholarship', '1234 views'),
+                          const Divider(height: 24),
+                          _buildScholarshipViewRow(
+                              'Stanford Engineering', '915 views'),
+                          const Divider(height: 24),
+                          _buildScholarshipViewRow(
+                              'Oxford Business', '809 views'),
                         ],
                       ),
-                    ),
-                  ),
-
-                  const SizedBox(width: 15), // Gap between cards
-
-                  // Second Card
-                  Expanded(
-                    child: Container(
-                      height: 150,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 20,
-                            offset: const Offset(0, 10),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.purple.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(Icons.description,
-                                color: Colors.purple),
-                          ),
-                          const Spacer(),
-                          const Text(
-                            '1,234',
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
-                          ),
-                          const Text(
-                            'Applications',
-                            style: TextStyle(color: Colors.grey, fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  // Third Card
-                  Expanded(
-                    child: Container(
-                      height: 150, // Set a fixed height
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 20,
-                            offset: const Offset(0, 10),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start, // Align text to left
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(Icons.group, color: Colors.blue),
-                          ),
-                          const Spacer(),
-                          const Text(
-                            '856',
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
-                          ),
-                          const Text(
-                            'Active Users',
-                            style: TextStyle(color: Colors.grey, fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(width: 15), // Gap between cards
-
-                  // Fourth Card
-                  Expanded(
-                    child: Container(
-                      height: 150,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 20,
-                            offset: const Offset(0, 10),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.purple.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Icons.trending_up,
-                              color: Colors.purple,
-                            ),
-                          ),
-                          const Spacer(),
-                          const Text(
-                            '+23%',
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
-                          ),
-                          const Text(
-                            'Growth',
-                            style: TextStyle(color: Colors.grey, fontSize: 14),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Text(
-                'Most Viewed Scholarships',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Container(
-                width: double.infinity,
-                height: 150,
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
                     ),
                   ],
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            'MIT CS Scholarship',
-                            style: TextStyle(fontSize: 16),
+                const SizedBox(height: 24),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'User Activity',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textDark),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          '(Last 7 days)',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppColors.textDark,
                           ),
-                          Spacer(),
-                          Text('1234 views'),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Text(
-                            'Stanford Engineering',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          Spacer(),
-                          Text('915 views'),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Text(
-                            'Oxford Business',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          Spacer(),
-                          Text('809 views'),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'User Activity (Last 7 Days)',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                height: 150,
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: List.generate(values.length, (index) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            width: 40,
-                            height: values[index] * 100, // Scale for visibility
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 16),
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
                           ),
-                          SizedBox(height: 8),
-                          Text(days[index]),
                         ],
-                      );
-                    }),
-                  ),
-                ),
-              ),
-            ],
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          _buildChart('S', 0.6),
+                          _buildChart('M', 0.6),
+                          _buildChart('T', 0.5),
+                          _buildChart('W', 0.75),
+                          _buildChart('T', 0.85),
+                          _buildChart('F', 0.8),
+                          _buildChart('S', 0.75),
+                        ],
+                      ),
+                    )
+                  ],
+                )
+
+                // Container(
+                //   width: double.infinity,
+                //   height: 150,
+                //   decoration: BoxDecoration(
+                //     color: AppColors.white,
+                //     borderRadius: BorderRadius.circular(20),
+                //     boxShadow: [
+                //       BoxShadow(
+                //         color: Colors.black.withOpacity(0.05),
+                //         blurRadius: 20,
+                //         offset: const Offset(0, 10),
+                //       ),
+                //     ],
+                //   ),
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(20.0),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                //       children: List.generate(values.length, (index) {
+                //         return Column(
+                //           mainAxisAlignment: MainAxisAlignment.end,
+                //           children: [
+                //             Container(
+                //               width: 40,
+                //               height:
+                //                   values[index] * 100, // Scale for visibility
+                //               decoration: BoxDecoration(
+                //                 color: Colors.blue,
+                //                 borderRadius: BorderRadius.circular(6),
+                //               ),
+                //             ),
+                //             SizedBox(height: 8),
+                //             Text(days[index]),
+                //           ],
+                //         );
+                //       }),
+                //     ),
+                //   ),
+                // ),
+              ],
+            ),
           ),
         ));
+  }
+
+  Widget _buildStatCard({
+    required IconData icon,
+    required String value,
+    required String label,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              icon,
+              color: AppColors.primaryDark,
+              size: 36,
+            ),
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              color: AppColors.textDark,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 14,
+              color: AppColors.textDark,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildScholarshipViewRow(String name, String views) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Text(
+            name,
+            style: const TextStyle(
+              fontSize: 14,
+              color: AppColors.textDark,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Text(
+          views,
+          style: const TextStyle(
+            fontSize: 14,
+            color: AppColors.textDark,
+            // fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildChart(String day, double heightFactor) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              width: double.infinity,
+              height: 200 * heightFactor, // 160 is max height
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    AppColors.primaryDark,
+                    AppColors.primaryDark.withOpacity(0.6),
+                  ],
+                ),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(8),
+                ),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              day,
+              style: const TextStyle(
+                fontSize: 12,
+                color: AppColors.primaryDark,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

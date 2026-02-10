@@ -8,6 +8,7 @@ class AdminDashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         toolbarHeight: 0,
         backgroundColor: AppColors.primary,
         elevation: 0,
