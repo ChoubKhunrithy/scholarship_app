@@ -90,7 +90,7 @@ class AdminDashboardScreen extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
                   // Statistics Cards Grid
                   Padding(
@@ -127,7 +127,7 @@ class AdminDashboardScreen extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
 
                   // Quick Actions
                   Padding(
@@ -171,7 +171,7 @@ class AdminDashboardScreen extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
                   // Recent Activity
                   Padding(
