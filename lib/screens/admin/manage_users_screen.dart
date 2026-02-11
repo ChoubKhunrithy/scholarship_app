@@ -35,8 +35,8 @@ class _ManageUsersScreenState extends State<ManageUsersScreen> {
           'Manage Users',
           style: TextStyle(
             color: AppColors.textDark,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
           ),
         ),
         actions: [
@@ -300,7 +300,7 @@ class _ManageUsersScreenState extends State<ManageUsersScreen> {
                       name,
                       style: const TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w500,
                         color: AppColors.textDark,
                       ),
                     ),

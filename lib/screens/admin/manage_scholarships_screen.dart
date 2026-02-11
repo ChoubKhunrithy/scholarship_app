@@ -35,8 +35,8 @@ class _ManageScholarshipsScreenState extends State<ManageScholarshipsScreen> {
           'Manage Scholarships',
           style: TextStyle(
             color: AppColors.textDark,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
           ),
         ),
         actions: [
@@ -181,8 +181,8 @@ class _ManageScholarshipsScreenState extends State<ManageScholarshipsScreen> {
                     Text(
                       title,
                       style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
                         color: AppColors.textDark,
                       ),
                     ),

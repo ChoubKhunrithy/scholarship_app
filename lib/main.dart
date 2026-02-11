@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:scholarship_app/screens/admin/statistic_analytics_screen.dart';
 import 'package:scholarship_app/screens/admin/user_details_screen.dart';
 
 void main() {
@@ -39,5 +40,6 @@ class ScholarshipApp extends StatelessWidget {
           );
         },
         home: UserDetailScreen());
+    // home: AdminDashboardScreen());
   }
 }

@@ -69,8 +69,8 @@ class AdminDashboardScreen extends StatelessWidget {
                               Text(
                                 'Choub Khunrithy',
                                 style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w500,
                                   color: AppColors.white,
                                 ),
                               ),
@@ -78,7 +78,7 @@ class AdminDashboardScreen extends StatelessWidget {
                               Text(
                                 'Manage your scholarships',
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 14,
                                   color: AppColors.white,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -90,7 +90,7 @@ class AdminDashboardScreen extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
                   // Statistics Cards Grid
                   Padding(
@@ -127,7 +127,7 @@ class AdminDashboardScreen extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
 
                   // Quick Actions
                   Padding(
@@ -171,7 +171,7 @@ class AdminDashboardScreen extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
                   // Recent Activity
                   Padding(
@@ -327,7 +327,7 @@ class AdminDashboardScreen extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        height: 50,
+        // height: 60,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: AppColors.white,
@@ -366,7 +366,7 @@ class AdminDashboardScreen extends StatelessWidget {
                   Text(
                     subtitle,
                     style: const TextStyle(
-                      fontSize: 10,
+                      fontSize: 12,
                       color: AppColors.textLight,
                     ),
                   ),
