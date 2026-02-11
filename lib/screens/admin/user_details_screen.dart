@@ -20,8 +20,8 @@ class UserDetailScreen extends StatelessWidget {
           'User Detail',
           style: TextStyle(
             color: AppColors.textDark,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),
@@ -135,7 +135,7 @@ class UserDetailScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: AppColors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -167,7 +167,7 @@ class UserDetailScreen extends StatelessWidget {
                       color: Color(0xFFFF9800),
                       width: 1.5,
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -198,7 +198,7 @@ class UserDetailScreen extends StatelessWidget {
                       color: AppColors.red,
                       width: 1.5,
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

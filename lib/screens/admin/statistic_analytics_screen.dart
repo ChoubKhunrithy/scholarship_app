@@ -25,8 +25,8 @@ class _StatisticAnalyticsScreenState extends State<StatisticAnalyticsScreen> {
           title: Text('Statistics & Analytics',
               style: TextStyle(
                   color: AppColors.textDark,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold)),
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600)),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -67,7 +67,7 @@ class _StatisticAnalyticsScreenState extends State<StatisticAnalyticsScreen> {
                       'Most Viewed Scholarships',
                       style: TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w500,
                           color: AppColors.textDark),
                     ),
                     const SizedBox(height: 16),
@@ -110,7 +110,7 @@ class _StatisticAnalyticsScreenState extends State<StatisticAnalyticsScreen> {
                           'User Activity',
                           style: TextStyle(
                               fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w500,
                               color: AppColors.textDark),
                         ),
                         const SizedBox(width: 8),
