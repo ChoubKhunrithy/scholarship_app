@@ -25,6 +25,7 @@ class FieldLabel extends StatelessWidget {
         style: const TextStyle(
           color: AppColors.textDark,
           fontSize: labelFontSize,
+          fontWeight: FontWeight.normal,
         ),
         children: isRequired
             ? const [
