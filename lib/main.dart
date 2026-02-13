@@ -8,7 +8,6 @@ import 'package:scholarship_app/screens/authentication/onboarding_screen.dart';
 import 'package:scholarship_app/screens/authentication/register_screen.dart';
 import 'package:scholarship_app/screens/authentication/splash_screen.dart';
 import 'package:scholarship_app/screens/authentication/verify_email_screen.dart';
-import 'package:scholarship_app/screens/fill_information/personal_info_screen.dart';
 import 'package:scholarship_app/screens/main_app/discover_screen.dart';
 import 'package:scholarship_app/screens/main_app/homescreens.dart';
 import 'package:scholarship_app/screens/main_app/notification_screen.dart';
@@ -26,59 +25,55 @@ class ScholarshipApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Scholarship Application',
-      debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.splashScreen,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-        textTheme: GoogleFonts.kantumruyProTextTheme(
-          Theme.of(context).textTheme,
-        ),
-      ),
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en', 'GB'), // British uses dd/mm/yyyy
-        Locale('en', 'US'), // American uses mm/dd/yyyy
-      ],
-      locale: const Locale('en', 'GB'),
-      // Disable device text size and bold text
-      builder: (context, child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(
-            boldText: false,
-            textScaler: TextScaler.linear(1.0),
+        title: 'Scholarship Application',
+        debugShowCheckedModeBanner: false,
+        initialRoute: AppRoutes.splashScreen,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          scaffoldBackgroundColor: Colors.white,
+          textTheme: GoogleFonts.kantumruyProTextTheme(
+            Theme.of(context).textTheme,
           ),
-          child: child!,
-        );
-      },
-      routes: {
-        AppRoutes.splashScreen: (context) => const SplashScreen(),
-        AppRoutes.onboardingScreen: (context) => const OnboardingScreen(),
-        AppRoutes.loginScreen: (context) => const LoginScreen(),
-        AppRoutes.registerScreen: (context) => const RegisterScreen(),
-        AppRoutes.verifyEmailScreen: (context) {
-          final args = ModalRoute.of(context)?.settings.arguments as String?;
-          return VerifyEmailScreen(emailOrPhone: args ?? '');
+        ),
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', 'GB'), // British uses dd/mm/yyyy
+          Locale('en', 'US'), // American uses mm/dd/yyyy
+        ],
+        locale: const Locale('en', 'GB'),
+        // Disable device text size and bold text
+        builder: (context, child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              boldText: false,
+              textScaler: TextScaler.linear(1.0),
+            ),
+            child: child!,
+          );
         },
-        AppRoutes.forgetPasswordScreen: (context) =>
-            const ForgetPasswordScreen(),
-        AppRoutes.homeScreen: (context) => const HomeScreen(),
-        AppRoutes.discoverScreen: (context) => const DiscoverScreen(),
-        AppRoutes.profileScreen: (context) =>
-            const ProfileScreen(), // Assuming ProfileScreen exists in profile_screen.dart
-        AppRoutes.notificationScreen: (context) => const NotificationsScreen(),
-        AppRoutes.savedScholarshipScreen: (context) =>
-            const SavedScholarshipScreen(),
-        AppRoutes.scholarshipDetailScreen: (context) =>
-            const ScholarshipDetailScreen(),
-        AppRoutes.personalInfoScreen: (context) => const PersonalInfoScreen(),
-      },
-      // home: PersonalInfoScreen(), // Removed home as initialRoute is used
-    );
+        routes: {
+          AppRoutes.discoverScreen: (context) => DiscoverScreen(),
+          AppRoutes.splashScreen: (context) => SplashScreen(),
+          AppRoutes.onboardingScreen: (context) => OnboardingScreen(),
+          AppRoutes.registerScreen: (context) => RegisterScreen(),
+          AppRoutes.loginScreen: (context) => LoginScreen(),
+          AppRoutes.verifyEmailScreen: (context) {
+            final args = ModalRoute.of(context)?.settings.arguments as String?;
+            return VerifyEmailScreen(emailOrPhone: args ?? 'your email');
+          },
+          AppRoutes.forgetPasswordScreen: (context) => ForgetPasswordScreen(),
+          AppRoutes.scholarshipDetailScreen: (context) =>
+              ScholarshipDetailScreen(),
+          AppRoutes.savedScholarshipScreen: (context) =>
+              SavedScholarshipScreen(),
+          AppRoutes.homeScreen: (context) => HomeScreen(),
+          AppRoutes.profileScreen: (context) => ProfileScreen(),
+          AppRoutes.notificationScreen: (context) => NotificationsScreen(),
+        
+        });
   }
 }
