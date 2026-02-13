@@ -1,8 +1,12 @@
+// File: android/app/build.gradle.kts
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+    // Google Services plugin សម្រាប់ Firebase
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -21,10 +25,10 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.scholarship_app"
+        applicationId = "com.example.scholarship_app"   // នេះហើយជា package name
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = flutter.minSdkVersion  // ត្រូវការសម្រាប់ Google Sign-In
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -37,6 +41,19 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+}
+
+dependencies {
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    
+    // Firebase BoM (Bill of Materials) - manages Firebase versions
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    
+    // Firebase Analytics (optional but recommended)
+    implementation("com.google.firebase:firebase-analytics")
+    
+    // Firebase Authentication (optional - if you want to use Firebase Auth)
+    implementation("com.google.firebase:firebase-auth")
 }
 
 flutter {
