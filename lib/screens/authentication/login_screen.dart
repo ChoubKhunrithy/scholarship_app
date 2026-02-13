@@ -31,9 +31,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   late Animation<Offset> _slideAnimation;
 
   // ============ GOOGLE SIGN-IN ============
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['email', 'profile'],
-  );
+  final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
   // ============ LIFECYCLE ============
   
@@ -41,6 +39,15 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   void initState() {
     super.initState();
     _setupAnimations();
+    _initializeGoogleSignIn();
+  }
+
+  Future<void> _initializeGoogleSignIn() async {
+    try {
+      await _googleSignIn.initialize();
+    } catch (error) {
+      debugPrint('Google Sign-In init error: $error');
+    }
   }
 
   void _setupAnimations() {
@@ -221,36 +228,43 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     setState(() => _isGoogleLoading = true);
 
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      await _googleSignIn.initialize();
+      final GoogleSignInAccount googleUser = await _googleSignIn.authenticate(
+        scopeHint: ['email', 'profile'],
+      );
 
       if (!mounted) return;
 
-      if (googleUser != null) {
-        final String userName = googleUser.displayName ?? 'User';
-        final String userEmail = googleUser.email;
+      final String userName = googleUser.displayName ?? 'User';
+      final String userEmail = googleUser.email;
 
-        debugPrint('✅ Google Sign-In Success!');
-        debugPrint('Name: $userName');
-        debugPrint('Email: $userEmail');
-        debugPrint('Photo: ${googleUser.photoUrl}');
+      debugPrint('Google Sign-In success');
+      debugPrint('Name: $userName');
+      debugPrint('Email: $userEmail');
+      debugPrint('Photo: ${googleUser.photoUrl}');
 
-        setState(() => _isGoogleLoading = false);
-        _showSuccessMessage('Google Sign-In successful!', userName);
+      setState(() => _isGoogleLoading = false);
+      _showSuccessMessage('Google Sign-In successful!', userName);
 
-        // Navigate to home screen (uncomment when ready)
-        // await Future.delayed(const Duration(milliseconds: 500));
-        // if (mounted) {
-        //   Navigator.pushReplacementNamed(context, AppRoutes.homeScreen);
-        // }
-      } else {
-        setState(() => _isGoogleLoading = false);
-        _showErrorMessage('Sign-in was cancelled');
-      }
-    } catch (error) {
-      debugPrint('❌ Google Sign-In Error: $error');
+      // Navigate to home screen (uncomment when ready)
+      // await Future.delayed(const Duration(milliseconds: 500));
+      // if (mounted) {
+      //   Navigator.pushReplacementNamed(context, AppRoutes.homeScreen);
+      // }
+    } on GoogleSignInException catch (error) {
+      debugPrint('Google Sign-In exception: ${error.code} ${error.description}');
       if (!mounted) return;
       setState(() => _isGoogleLoading = false);
-      _showErrorMessage('Failed to sign in with Googlml/,e');
+      if (error.code == GoogleSignInExceptionCode.canceled) {
+        _showErrorMessage('Sign-in was cancelled');
+      } else {
+        _showErrorMessage('Failed to sign in with Google');
+      }
+    } catch (error) {
+      debugPrint('Google Sign-In error: $error');
+      if (!mounted) return;
+      setState(() => _isGoogleLoading = false);
+      _showErrorMessage('Failed to sign in with Google');
     }
   }
 
