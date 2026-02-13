@@ -1,4 +1,10 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.scholarship_app">  <!-- 👈 បន្ថែមបន្ទាត់នេះ! -->
+
+    <!-- Internet Permission សម្រាប់ Google Sign-In -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:label="scholarship_app"
         android:name="${applicationName}"
@@ -8,7 +14,7 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:taskAffinity=""
-            android:theme="@style/LaunchTheme"
+            android:theme="@style/Theme.App.Transparent"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
