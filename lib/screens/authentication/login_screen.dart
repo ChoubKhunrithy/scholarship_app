@@ -339,7 +339,7 @@ class _LoginScreenState extends State<LoginScreen>
     return Column(
       children: [
         Text(
-          'Welcome Back!',
+          'Welcome!',
           style: TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
@@ -601,27 +601,27 @@ class _LoginScreenState extends State<LoginScreen>
   }) {
     return Material(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(12),
+      shape: const CircleBorder(),
       child: InkWell(
         onTap: onPressed,
-        borderRadius: BorderRadius.circular(12),
+        customBorder: const CircleBorder(),
         child: Container(
-          width: 60,
-          height: 60,
+          width: 40,
+          height: 40,
           decoration: BoxDecoration(
+            shape: BoxShape.circle,
             border: Border.all(
-              color: Color(0xffE5E7EB),
-              width: 1.5,
+              color: const Color(0xFFE5E7EB),
+              width: 1,
             ),
-            borderRadius: BorderRadius.circular(12),
           ),
           child: Center(
             child: isLoading
                 ? SizedBox(
-                    height: 22,
-                    width: 22,
+                    height: 20,
+                    width: 20,
                     child: CircularProgressIndicator(
-                      strokeWidth: 2.5,
+                      strokeWidth: 2,
                       valueColor:
                           AlwaysStoppedAnimation<Color>(Color(0xff2196F3)),
                     ),
@@ -643,7 +643,7 @@ class _LoginScreenState extends State<LoginScreen>
           child: Icon(
             Icons.email_outlined,
             color: Color(0xff757575),
-            size: 26,
+            size: 22,
           ),
         ),
         const SizedBox(width: 16),
@@ -652,8 +652,8 @@ class _LoginScreenState extends State<LoginScreen>
               (_isLoading || _isGoogleLoading) ? null : _handleFacebookSignIn,
           child: Image.asset(
             "assets/icons/facebook_icon.png",
-            width: 26,
-            height: 26,
+            width: 22,
+            height: 22,
             fit: BoxFit.contain,
           ),
         ),
@@ -664,8 +664,8 @@ class _LoginScreenState extends State<LoginScreen>
           isLoading: _isGoogleLoading,
           child: Image.asset(
             "assets/icons/google_icon.png",
-            width: 26,
-            height: 26,
+            width: 22,
+            height: 22,
             fit: BoxFit.contain,
           ),
         ),
@@ -760,11 +760,11 @@ class _LoginScreenState extends State<LoginScreen>
 
                       // Social Buttons
                       _buildSocialButtons(),
-                      const SizedBox(height: 28),
+                      const SizedBox(height: 20),
 
                       // Register Link
                       _buildRegisterLink(),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 14),
                     ],
                   ),
                 ),
