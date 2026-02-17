@@ -1,11 +1,9 @@
-
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scholarship_app/routes/app_routes.dart';
 import 'package:scholarship_app/screens/authentication/otp_service.dart';
-
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({super.key});
@@ -22,7 +20,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
 
   bool _isLoading = false;
   String? _error;
-  String? _verificationId;
   String _selectedCountryCode = '+855';
 
   late AnimationController _animationController;
@@ -64,11 +61,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
     );
     _slideAnimation =
         Tween<Offset>(begin: const Offset(0, 0.1), end: Offset.zero).animate(
-          CurvedAnimation(
-            parent: _animationController,
-            curve: Curves.easeOutCubic,
-          ),
-        );
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeOutCubic,
+      ),
+    );
     _animationController.forward();
   }
 
@@ -235,7 +232,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
         if (!mounted) return;
         setState(() {
           _isLoading = false;
-          _verificationId = verificationId;
         });
         _showSuccessMessage('OTP sent via SMS to $fullPhoneNumber');
         Future.delayed(const Duration(milliseconds: 1000), () {
@@ -504,8 +500,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
                                     color: _error != null
                                         ? const Color(0xffEF4444)
                                         : _focusNode.hasFocus
-                                        ? const Color(0xff2196F3)
-                                        : const Color(0xFFE2E8F0),
+                                            ? const Color(0xff2196F3)
+                                            : const Color(0xFFE2E8F0),
                                     width: _focusNode.hasFocus ? 2 : 1.5,
                                   ),
                                 ),
@@ -518,8 +514,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
                                         onTap: _showCountryPicker,
                                         borderRadius:
                                             const BorderRadius.horizontal(
-                                              left: Radius.circular(14),
-                                            ),
+                                          left: Radius.circular(14),
+                                        ),
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 12,

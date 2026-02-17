@@ -38,7 +38,7 @@ class ScholarshipApp extends StatelessWidget {
     return MaterialApp(
         title: 'Scholarship Application',
         debugShowCheckedModeBanner: false,
-        initialRoute: AppRoutes.homeScreen, //Initial route First
+        initialRoute: AppRoutes.splashScreen, //Initial route First
 
         theme: ThemeData(
           primarySwatch: Colors.blue,

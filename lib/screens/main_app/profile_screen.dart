@@ -36,19 +36,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: Column(
               children: [
+                // Back button row
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      tooltip: 'Back',
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6.0),
+
                 Row(
                   children: [
                     const CircleAvatar(
                       radius: 40,
                       backgroundColor: Colors.white24,
-                      child: Icon(Icons.person_outline, size: 40, color: Colors.white),
+                      child: Icon(Icons.person_outline,
+                          size: 40, color: Colors.white),
                     ),
                     const SizedBox(width: 16.0),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(userName, style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
-                        Text(userSubtitle, style: const TextStyle(color: Colors.white70, fontSize: 14)),
+                        Text(userName,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold)),
+                        Text(userSubtitle,
+                            style: const TextStyle(
+                                color: Colors.white70, fontSize: 14)),
                       ],
                     ),
                   ],
@@ -60,16 +79,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const EditProfileScreen())
-                      );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const EditProfileScreen()));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white.withOpacity(0.2),
                       elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
                     ),
-                    child: const Text('Edit Profile', style: TextStyle(color: Colors.white, fontSize: 16)),
+                    child: const Text('Edit Profile',
+                        style: TextStyle(color: Colors.white, fontSize: 16)),
                   ),
                 ),
               ],
@@ -97,7 +118,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 // 1. Computer Science
                 ListTile(
-                  leading: const Icon(Icons.person_outline, color: Colors.black87),
+                  leading:
+                      const Icon(Icons.person_outline, color: Colors.black87),
                   title: const Text('Computer Science'),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
@@ -108,14 +130,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 // 2. Notifications (NAVIGATION ADDED HERE)
                 ListTile(
-                  leading: const Icon(Icons.notifications_none, color: Colors.black87),
+                  leading: const Icon(Icons.notifications_none,
+                      color: Colors.black87),
                   title: const Text('Notifications'),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
                     // This is the line that pushes to the new screen
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const NotificationsScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const NotificationsScreen()),
                     );
                   },
                 ),
@@ -128,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
                     // Navigator.push(
-                    //   context, 
+                    //   context,
                     //   MaterialPageRoute(builder: (context)=> const MyApplicationsScreen())
                     // );
                   },
@@ -157,9 +181,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 55),
                 side: const BorderSide(color: Colors.red),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
               ),
-              child: const Text('Logout', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+              child: const Text('Logout',
+                  style: TextStyle(
+                      color: Colors.red, fontWeight: FontWeight.bold)),
             ),
           ),
         ],
@@ -173,11 +200,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          decoration: BoxDecoration(color: const Color(0xFFF5F5F5), borderRadius: BorderRadius.circular(8)),
-          child: Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          decoration: BoxDecoration(
+              color: const Color(0xFFF5F5F5),
+              borderRadius: BorderRadius.circular(8)),
+          child: Text(value,
+              style:
+                  const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         ),
         const SizedBox(height: 4.0),
-        Text(label, style: const TextStyle(color: Colors.black54, fontSize: 12)),
+        Text(label,
+            style: const TextStyle(color: Colors.black54, fontSize: 12)),
       ],
     );
   }
