@@ -10,9 +10,13 @@ import 'package:scholarship_app/screens/authentication/register_screen.dart';
 import 'package:scholarship_app/screens/authentication/splash_screen.dart';
 import 'package:scholarship_app/screens/authentication/verify_email_screen.dart';
 import 'package:scholarship_app/screens/main_app/discover_screen.dart';
+import 'package:scholarship_app/screens/main_app/editProfile.dart';
+import 'package:scholarship_app/screens/main_app/filter_result_screen.dart';
 import 'package:scholarship_app/screens/main_app/homescreens.dart';
 import 'package:scholarship_app/screens/main_app/notification_screen.dart';
 import 'package:scholarship_app/screens/main_app/profile_screen.dart';
+import 'package:scholarship_app/screens/main_app/search_filter_screen.dart';
+import 'package:scholarship_app/screens/main_app/settings_screen.dart';
 import 'package:scholarship_app/screens/scholarship/saved_scholarship_screen.dart';
 import 'package:scholarship_app/screens/scholarship/scholarship_detail_screen.dart';
 
@@ -34,7 +38,8 @@ class ScholarshipApp extends StatelessWidget {
     return MaterialApp(
         title: 'Scholarship Application',
         debugShowCheckedModeBanner: false,
-        initialRoute: AppRoutes.splashScreen,
+        initialRoute: AppRoutes.homeScreen, //Initial route First
+
         theme: ThemeData(
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: Colors.white,
@@ -80,6 +85,11 @@ class ScholarshipApp extends StatelessWidget {
           AppRoutes.homeScreen: (context) => HomeScreen(),
           AppRoutes.profileScreen: (context) => ProfileScreen(),
           AppRoutes.notificationScreen: (context) => NotificationsScreen(),
+          AppRoutes.searchFilterScreen: (context) => SearchFilterScreen(),
+          AppRoutes.filterResultScreen: (context) => FilterResultScreen(),
+          AppRoutes.settingsScreen: (context) => SettingsScreen(),
+          AppRoutes.settingScreen: (context) => SettingsScreen(),
+          AppRoutes.editProfileScreen: (context) => EditProfileScreen(),
         });
   }
 }
