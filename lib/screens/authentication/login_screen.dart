@@ -1,9 +1,7 @@
-
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:scholarship_app/routes/app_routes.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,42 +10,31 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   // ============ CONTROLLERS & FORM ============
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
-  
+
   // ============ STATE ============
   bool _obscurePassword = true;
   bool _isLoading = false;
   bool _isGoogleLoading = false;
-  
+
   // ============ ANIMATIONS ============
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
 
-  // ============ GOOGLE SIGN-IN ============
-  final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
-
   // ============ LIFECYCLE ============
-  
+
   @override
   void initState() {
     super.initState();
     _setupAnimations();
-    _initializeGoogleSignIn();
-  }
-
-  Future<void> _initializeGoogleSignIn() async {
-    try {
-      await _googleSignIn.initialize();
-    } catch (error) {
-      debugPrint('Google Sign-In init error: $error');
-    }
   }
 
   void _setupAnimations() {
@@ -86,9 +73,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     super.dispose();
   }
 
-
   // ============ VALIDATION ============
-  
+
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'Email is required';
@@ -111,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   }
 
   // ============ MESSAGES ============
-  
+
   void _showMessage({
     required String message,
     String? subtitle,
@@ -119,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     required IconData icon,
   }) {
     if (!mounted) return;
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -193,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   Future<void> _handleLogin() async {
     // Dismiss keyboard
     FocusScope.of(context).unfocus();
-    
+
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
@@ -209,11 +195,11 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       final userName = _emailController.text.split('@')[0];
       _showSuccessMessage('Login successful!', userName);
 
-      // Navigate to home screen (uncomment when ready)
-      // await Future.delayed(const Duration(milliseconds: 500));
-      // if (mounted) {
-      //   Navigator.pushReplacementNamed(context, AppRoutes.homeScreen);
-      // }
+      // Navigate to home screen
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, AppRoutes.homeScreen);
+      }
     } catch (e) {
       if (!mounted) return;
       setState(() => _isLoading = false);
@@ -222,50 +208,108 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   }
 
   Future<void> _handleGoogleSignIn() async {
-    // Dismiss keyboard
     FocusScope.of(context).unfocus();
-    
     setState(() => _isGoogleLoading = true);
 
     try {
-      await _googleSignIn.initialize();
-      final GoogleSignInAccount googleUser = await _googleSignIn.authenticate(
-        scopeHint: ['email', 'profile'],
+      // Show loading indicator
+      _showLoadingDialog('Signing in with Google...');
+
+      // Step 1: Trigger Google Sign-In flow
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        clientId: null, // Let plugin handle client ID
+        scopes: <String>[
+          'email',
+          'profile',
+        ],
       );
 
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
       if (!mounted) return;
+      Navigator.pop(context); // Close loading dialog
 
-      final String userName = googleUser.displayName ?? 'User';
-      final String userEmail = googleUser.email;
-
-      debugPrint('Google Sign-In success');
-      debugPrint('Name: $userName');
-      debugPrint('Email: $userEmail');
-      debugPrint('Photo: ${googleUser.photoUrl}');
-
-      setState(() => _isGoogleLoading = false);
-      _showSuccessMessage('Google Sign-In successful!', userName);
-
-      // Navigate to home screen (uncomment when ready)
-      // await Future.delayed(const Duration(milliseconds: 500));
-      // if (mounted) {
-      //   Navigator.pushReplacementNamed(context, AppRoutes.homeScreen);
-      // }
-    } on GoogleSignInException catch (error) {
-      debugPrint('Google Sign-In exception: ${error.code} ${error.description}');
-      if (!mounted) return;
-      setState(() => _isGoogleLoading = false);
-      if (error.code == GoogleSignInExceptionCode.canceled) {
-        _showErrorMessage('Sign-in was cancelled');
-      } else {
-        _showErrorMessage('Failed to sign in with Google');
+      if (googleUser == null) {
+        setState(() => _isGoogleLoading = false);
+        _showErrorMessage('Google Sign-In was cancelled');
+        return;
       }
-    } catch (error) {
-      debugPrint('Google Sign-In error: $error');
+
+      // Step 2: Get authentication credentials
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // Step 3: Create Firebase credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Step 4: Sign in to Firebase
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
       if (!mounted) return;
+
+      final User? user = userCredential.user;
+      final String userName = user?.displayName ?? 'User';
+      final String userEmail = user?.email ?? '';
+
+      debugPrint('✓ Google Sign-In Success');
+      debugPrint('Name: $userName | Email: $userEmail');
+
       setState(() => _isGoogleLoading = false);
-      _showErrorMessage('Failed to sign in with Google');
+      _showSuccessMessage('Welcome $userName!', 'Successfully signed in');
+
+      // Navigate to home screen
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, AppRoutes.homeScreen);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      Navigator.pop(context); // Close loading dialog
+      setState(() => _isGoogleLoading = false);
+
+      String errorMessage = 'Authentication failed';
+      if (e.code == 'account-exists-with-different-credential') {
+        errorMessage = 'Email already exists with different sign-in method';
+      } else if (e.code == 'invalid-credential') {
+        errorMessage = 'Invalid credentials';
+      }
+
+      debugPrint('Firebase Auth Error: ${e.code} - ${e.message}');
+      _showErrorMessage(errorMessage);
+    } catch (e) {
+      if (!mounted) return;
+      Navigator.pop(context); // Close loading dialog
+      setState(() => _isGoogleLoading = false);
+
+      debugPrint('Google Sign-In Error: $e');
+      _showErrorMessage('Failed to sign in with Google. Please try again.');
     }
+  }
+
+  void _showLoadingDialog(String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const CircularProgressIndicator(),
+                const SizedBox(height: 16),
+                Text(message),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   void _handleFacebookSignIn() {
@@ -276,7 +320,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     // Scroll to top and focus email field
     _emailFocusNode.requestFocus();
   }
-
 
   // ============ UI BUILDERS ============
 
@@ -419,13 +462,14 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
             ),
             suffixIcon: IconButton(
               icon: Icon(
-                _obscurePassword 
-                    ? Icons.visibility_outlined 
+                _obscurePassword
+                    ? Icons.visibility_outlined
                     : Icons.visibility_off_outlined,
                 color: Color(0xff757575),
                 size: 22,
               ),
-              onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+              onPressed: () =>
+                  setState(() => _obscurePassword = !_obscurePassword),
               tooltip: _obscurePassword ? 'Show password' : 'Hide password',
             ),
             border: OutlineInputBorder(
@@ -462,7 +506,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     return Align(
       alignment: Alignment.centerRight,
       child: TextButton(
-        onPressed: () => Navigator.pushNamed(context, AppRoutes.forgetPasswordScreen),
+        onPressed: () =>
+            Navigator.pushNamed(context, AppRoutes.forgetPasswordScreen),
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
           minimumSize: Size(0, 0),
@@ -577,7 +622,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                     width: 22,
                     child: CircularProgressIndicator(
                       strokeWidth: 2.5,
-                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xff2196F3)),
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Color(0xff2196F3)),
                     ),
                   )
                 : child,
@@ -592,7 +638,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _buildSocialButton(
-          onPressed: (_isLoading || _isGoogleLoading) ? null : _handleEmailSignIn,
+          onPressed:
+              (_isLoading || _isGoogleLoading) ? null : _handleEmailSignIn,
           child: Icon(
             Icons.email_outlined,
             color: Color(0xff757575),
@@ -601,7 +648,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         ),
         const SizedBox(width: 16),
         _buildSocialButton(
-          onPressed: (_isLoading || _isGoogleLoading) ? null : _handleFacebookSignIn,
+          onPressed:
+              (_isLoading || _isGoogleLoading) ? null : _handleFacebookSignIn,
           child: Image.asset(
             "assets/icons/facebook_icon.png",
             width: 26,
@@ -611,7 +659,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         ),
         const SizedBox(width: 16),
         _buildSocialButton(
-          onPressed: (_isLoading || _isGoogleLoading) ? null : _handleGoogleSignIn,
+          onPressed:
+              (_isLoading || _isGoogleLoading) ? null : _handleGoogleSignIn,
           isLoading: _isGoogleLoading,
           child: Image.asset(
             "assets/icons/google_icon.png",
@@ -637,7 +686,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
             ),
           ),
           TextButton(
-            onPressed: () => Navigator.pushNamed(context, AppRoutes.registerScreen),
+            onPressed: () =>
+                Navigator.pushNamed(context, AppRoutes.registerScreen),
             style: TextButton.styleFrom(
               padding: EdgeInsets.zero,
               minimumSize: Size(0, 0),
@@ -659,7 +709,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     );
   }
 
-
   // ============ BUILD ============
 
   @override
@@ -680,39 +729,39 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const SizedBox(height: 20),
-                      
+
                       // Logo
                       _buildLogo(),
                       const SizedBox(height: 24),
-                      
+
                       // Header
                       _buildHeader(),
                       const SizedBox(height: 40),
-                      
+
                       // Email Field
                       _buildEmailField(),
                       const SizedBox(height: 20),
-                      
+
                       // Password Field
                       _buildPasswordField(),
                       const SizedBox(height: 12),
-                      
+
                       // Forgot Password
                       _buildForgotPassword(),
                       const SizedBox(height: 28),
-                      
+
                       // Login Button
                       _buildLoginButton(),
                       const SizedBox(height: 24),
-                      
+
                       // Divider
                       _buildDivider(),
                       const SizedBox(height: 24),
-                      
+
                       // Social Buttons
                       _buildSocialButtons(),
                       const SizedBox(height: 28),
-                      
+
                       // Register Link
                       _buildRegisterLink(),
                       const SizedBox(height: 20),
@@ -727,6 +776,3 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     );
   }
 }
-
-
-

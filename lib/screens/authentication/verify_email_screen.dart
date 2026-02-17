@@ -1,10 +1,7 @@
-
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:scholarship_app/screens/authentication/otp_service.dart';
-
 
 class VerifyEmailScreen extends StatefulWidget {
   final String emailOrPhone;
@@ -19,9 +16,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
     with SingleTickerProviderStateMixin {
   final List<TextEditingController> _codeControllers =
       List.generate(6, (_) => TextEditingController());
-  final List<FocusNode> _focusNodes =
-      List.generate(6, (_) => FocusNode());
-  final OTPService _otpService = OTPService();
+  final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
 
   bool _isLoading = false;
   String? _error;
@@ -72,9 +67,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
   // ✅ Fix: _startResendTimer() reset once only, _tick() handles countdown
 
   void _startResendTimer() {
-    _remainingSeconds = 60;  // Reset once here only
+    _remainingSeconds = 60; // Reset once here only
     _canResend = false;
-    _tick();                  // Start ticking
+    _tick(); // Start ticking
   }
 
   void _tick() {
@@ -83,9 +78,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
       setState(() {
         _remainingSeconds--;
         if (_remainingSeconds <= 0) {
-          _canResend = true;   // Enable resend button
+          _canResend = true; // Enable resend button
         } else {
-          _tick();             // Continue countdown (no reset!)
+          _tick(); // Continue countdown (no reset!)
         }
       });
     });
@@ -266,7 +261,6 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-
                         // ── App Logo ──────────────────────────────────────────
                         Center(
                           child: Container(
@@ -317,7 +311,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                               height: 1.5,
                             ),
                             children: [
-                              const TextSpan(text: 'We sent a 6-digit code to\n'),
+                              const TextSpan(
+                                  text: 'We sent a 6-digit code to\n'),
                               TextSpan(
                                 text: _maskedDestination(),
                                 style: const TextStyle(
@@ -392,8 +387,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                                 child: _error != null
                                     ? Padding(
                                         key: const ValueKey('error'),
-                                        padding:
-                                            const EdgeInsets.only(top: 16),
+                                        padding: const EdgeInsets.only(top: 16),
                                         child: Row(
                                           children: [
                                             const Icon(
@@ -445,8 +439,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Icon(Icons.refresh_rounded,
-                                            size: 16,
-                                            color: Color(0xff2196F3)),
+                                            size: 16, color: Color(0xff2196F3)),
                                         SizedBox(width: 6),
                                         Text(
                                           'Resend Code',
@@ -487,8 +480,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                               backgroundColor: Colors.transparent,
                               shadowColor: Colors.transparent,
                               foregroundColor: Colors.white,
-                              disabledBackgroundColor:
-                                  const Color(0xffE2E8F0),
+                              disabledBackgroundColor: const Color(0xffE2E8F0),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
                               ),
@@ -500,9 +492,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                                     width: 24,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2.5,
-                                      valueColor:
-                                          AlwaysStoppedAnimation<Color>(
-                                              Colors.white),
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
                                     ),
                                   )
                                 : const Row(
@@ -609,9 +600,8 @@ class _OTPBox extends StatelessWidget {
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w700,
-              color: isError
-                  ? const Color(0xffEF4444)
-                  : const Color(0xff212121),
+              color:
+                  isError ? const Color(0xffEF4444) : const Color(0xff212121),
             ),
           ),
         ),
@@ -619,7 +609,6 @@ class _OTPBox extends StatelessWidget {
     );
   }
 }
-
 
 // ── Timer Badge Widget ────────────────────────────────────────────────────────
 
