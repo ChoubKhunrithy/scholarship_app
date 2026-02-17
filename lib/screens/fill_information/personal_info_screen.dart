@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import 'dart:io';
 
 // import 'package:scholarship_app/constants/app_colors.dart';
@@ -597,6 +598,9 @@
 
 
 
+=======
+// ignore_for_file: use_build_context_synchronously
+>>>>>>> 1d41ae5163a7c9a6922cf9bf392ef81d4aa5162e
 
 import 'dart:io';
 

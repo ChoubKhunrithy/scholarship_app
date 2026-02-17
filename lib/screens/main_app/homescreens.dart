@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿// import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:scholarship_app/routes/app_routes.dart';
@@ -4435,6 +4436,10 @@
 // }
 
 import 'package:carousel_slider/carousel_slider.dart';
+=======
+// ignore_for_file: deprecated_member_use
+
+>>>>>>> 1d41ae5163a7c9a6922cf9bf392ef81d4aa5162e
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scholarship_app/constants/app_colors.dart';

@@ -1,4 +1,6 @@
 
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scholarship_app/screens/authentication/otp_service.dart';
@@ -56,8 +58,12 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
 
   @override
   void dispose() {
-    for (var c in _codeControllers) c.dispose();
-    for (var f in _focusNodes) f.dispose();
+    for (var c in _codeControllers) {
+      c.dispose();
+    }
+    for (var f in _focusNodes) {
+      f.dispose();
+    }
     _animationController.dispose();
     super.dispose();
   }

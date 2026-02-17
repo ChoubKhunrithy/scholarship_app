@@ -24,4 +24,5 @@ class AppColors {
   // Other Colors
   static const Color black = Color(0xFF000000);
   static const Color divider = Color(0xFFBDBDBD);
+  // static const Color other = Color.fromARGB(255, 150, 110, 110);
 }

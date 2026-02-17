@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:scholarship_app/screens/main_app/editProfile.dart';
 import 'package:scholarship_app/screens/main_app/notification_screen.dart';
