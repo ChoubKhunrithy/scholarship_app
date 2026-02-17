@@ -14,6 +14,11 @@ class AppRoutes {
   static const String editProfileScreen = '/edit_profile_screen';
   static const String notificationScreen = '/notification_screen';
   static const String settingScreen = '/setting_screen';
+
+  // ── NEW: Search & Filter Routes ──────────
+  static const String searchFilterScreen = '/search_filter_screen';
+  static const String filterResultScreen = '/filter_result_screen';
+  static const String settingsScreen     = '/settings_screen';
   
   // Scholarship Routes
   static const String scholarshipDetailScreen = '/scholarship_detail_screen';

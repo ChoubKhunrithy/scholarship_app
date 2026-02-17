@@ -1,6 +1,3599 @@
+// import 'package:flutter/material.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:scholarship_app/routes/app_routes.dart';
+
+// class Homescreens extends StatelessWidget {
+//   const Homescreens({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Scholarship App',
+//       theme: ThemeData(
+//         // កំណត់ Font ទាំងមូលទៅជា Kantumruy Pro ឬ Font ខ្មែរផ្សេងទៀត
+//         textTheme: GoogleFonts.kantumruyProTextTheme(
+//           Theme.of(context).textTheme.apply(
+//             bodyColor: Colors.white,
+//             displayColor: Colors.white,
+//           ),
+//         ),
+//         scaffoldBackgroundColor: const Color(0xFF0F1C36), // ពណ៌ផ្ទៃខាងក្រោយ (Dark Navy)
+//         iconTheme: const IconThemeData(color: Colors.white),
+//       ),
+//       home: const HomeScreen(),
+//     );
+//   }
+// }
+
+// class HomeScreen extends StatefulWidget {
+//   const HomeScreen({super.key});
+
+//   @override
+//   State<HomeScreen> createState() => _HomeScreenState();
+// }
+
+// class _HomeScreenState extends State<HomeScreen> {
+//   int _selectedIndex = 0;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+      
+//       body: SafeArea(
+//         child: Padding(
+//           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+//           child: Column(
+//             children: [
+//               // 1. Header (Title & Bell)
+//               const _HeaderSection(),
+//               const SizedBox(height: 20),
+
+//               // 2. Profile Section
+//               const _ProfileSection(),
+//               const SizedBox(height: 20),
+
+//               // 3. Search Bar
+//               const _SearchBarSection(),
+//               const SizedBox(height: 20),
+
+//               // 4. Scrollable Content (Banner, Grid, News)
+//               Expanded(
+//                 child: SingleChildScrollView(
+//                   physics: const BouncingScrollPhysics(),
+//                   child: Column(
+//                     children: [
+//                       // Banner Slider
+//                       const _BannerSection(),
+//                       const SizedBox(height: 20),
+
+//                       // Grid Menu Buttons
+//                       const _MenuGridSection(),
+//                       const SizedBox(height: 20),
+
+//                       // Bottom Info Card
+//                       const _BottomInfoCard(),
+//                       const SizedBox(height: 20),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//       bottomNavigationBar: _buildBottomNavBar(),
+//     );
+//   }
+
+//   Widget _buildBottomNavBar() {
+//     return Container(
+//       decoration: const BoxDecoration(
+//         color: Color(0xFF0F1C36),
+//         border: Border(top: BorderSide(color: Colors.white10, width: 0.5)),
+//       ),
+//       child: BottomNavigationBar(
+//         currentIndex: _selectedIndex,
+//         onTap: (index) => setState(() => _selectedIndex = index),
+//         backgroundColor: const Color(0xFF0F1C36),
+//         selectedItemColor: Colors.white,
+//         unselectedItemColor: Colors.white60,
+//         showUnselectedLabels: true,
+//         type: BottomNavigationBarType.fixed,
+//         items: const [
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.home_filled),
+//             label: 'Home',
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.chat_bubble_outline),
+//             label: 'chat',
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.menu),
+//             label: 'Menu',
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// // ================== Sub-Widgets ==================
+
+// class _HeaderSection extends StatelessWidget {
+//   const _HeaderSection();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//       children: [
+//         Row(
+//           children: [
+//             const Text(
+//               "Scholarship",
+//               style: TextStyle(
+//                 fontSize: 24,
+//                 fontWeight: FontWeight.bold,
+//                 color: Colors.white,
+//               ),
+//             ),
+//             const SizedBox(width: 8),
+//             // Logo Icon (Graduation Cap)
+//             Icon(Icons.school, size: 32, color: Colors.blue.shade400),
+//           ],
+//         ),
+//         IconButton(
+//           onPressed: () => Navigator.pushNamed(context, AppRoutes.notificationScreen),
+//           icon: const Icon(Icons.notifications_outlined, size: 28),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+// class _ProfileSection extends StatelessWidget {
+//   const _ProfileSection();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: () => Navigator.pushNamed(context, AppRoutes.profileScreen),
+//       child: Row(
+//         children: [
+//           // Profile Image
+//           Container(
+//             width: 50,
+//             height: 50,
+//             decoration: BoxDecoration(
+//               shape: BoxShape.circle,
+//               border: Border.all(color: Colors.white, width: 1.5),
+//               image: const DecorationImage(
+//                 image: NetworkImage("https://i.pravatar.cc/150?img=11"), // Mock Image
+//                 fit: BoxFit.cover,
+//               ),
+//             ),
+//           ),
+//           const SizedBox(width: 12),
+//           // Name Text
+//           Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               const Text(
+//                 "សួស្តី, Khunrithy",
+//                 style: TextStyle(
+//                   fontSize: 16,
+//                   fontWeight: FontWeight.bold,
+//                   color: Colors.black,
+//                 ),
+//               ),
+//               Text(
+//                 "ព័ត៌មានផ្ទាល់ខ្លួន >",
+//                 style: TextStyle(
+//                   fontSize: 12,
+//                   color: Colors.grey.shade400,
+//                 ),
+//               ),
+//             ],
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// class _SearchBarSection extends StatelessWidget {
+//   const _SearchBarSection();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       children: [
+//         Expanded(
+//           child: Container(
+//             height: 50,
+//             decoration: BoxDecoration(
+//               color: const Color(0xFFD9D9D9), // Light Grey background
+//               borderRadius: BorderRadius.circular(12),
+//             ),
+//             child: const TextField(
+//               decoration: InputDecoration(
+//                 prefixIcon: Icon(Icons.search, color: Colors.black54),
+//                 hintText: "Search scholarships",
+//                 hintStyle: TextStyle(color: Colors.black54),
+//                 border: InputBorder.none,
+//                 contentPadding: EdgeInsets.symmetric(vertical: 15),
+//               ),
+//             ),
+//           ),
+//         ),
+//         const SizedBox(width: 12),
+//         // Filter Button
+//         Container(
+//           height: 50,
+//           width: 50,
+//           decoration: BoxDecoration(
+//             color: const Color(0xFFD9D9D9),
+//             borderRadius: BorderRadius.circular(12),
+//           ),
+//           child: IconButton(
+//             onPressed: () {},
+//             icon: const Icon(Icons.tune, color: Colors.black87),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+// class _BannerSection extends StatelessWidget {
+//   const _BannerSection();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         Container(
+//           width: double.infinity,
+//           height: 140,
+//           decoration: BoxDecoration(
+//             color: const Color(0xFFD9D9D9), // Placeholder color
+//             borderRadius: BorderRadius.circular(16),
+//           ),
+//         ),
+//         const SizedBox(height: 10),
+//         // Dots Indicator
+//         Row(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             _buildDot(isActive: true),
+//             _buildDot(isActive: false),
+//             _buildDot(isActive: false),
+//           ],
+//         )
+//       ],
+//     );
+//   }
+
+//   Widget _buildDot({required bool isActive}) {
+//     return Container(
+//       margin: const EdgeInsets.symmetric(horizontal: 4),
+//       width: 10,
+//       height: 10,
+//       decoration: BoxDecoration(
+//         color: isActive ? const Color(0xFF335C81) : Colors.grey.shade600,
+//         shape: BoxShape.circle,
+//       ),
+//     );
+//   }
+// }
+
+// class _MenuGridSection extends StatelessWidget {
+//   const _MenuGridSection();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return GridView.count(
+//       shrinkWrap: true,
+//       physics: const NeverScrollableScrollPhysics(),
+//       crossAxisCount: 2,
+//       crossAxisSpacing: 15,
+//       mainAxisSpacing: 15,
+//       childAspectRatio: 1.4, // Adjust width/height ratio
+//       children: [
+//         _MenuButton(
+//           icon: Icons.lightbulb_outline,
+//           label: "Discover",
+//           onTap: () => Navigator.pushNamed(context, AppRoutes.discoverScreen),
+//         ),
+//         const _MenuButton(
+//           icon: Icons.stars_outlined, // Or VerifiedUserOutlined
+//           label: "Match",
+//         ),
+//         _MenuButton(
+//           icon: Icons.folder_open,
+//           label: "Save",
+//           onTap: () => Navigator.pushNamed(context, AppRoutes.savedScholarshipScreen),
+//         ),
+//         const _MenuButton(
+//           icon: Icons.edit_outlined,
+//           label: "Fill personal Info",
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+// class _MenuButton extends StatelessWidget {
+//   final IconData icon;
+//   final String label;
+//   final VoidCallback? onTap;
+
+//   const _MenuButton({required this.icon, required this.label, this.onTap});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: onTap,
+//       child: Container(
+//         decoration: BoxDecoration(
+//           color: const Color(0xFF335C81), // Blue-Greyish color from design
+//           borderRadius: BorderRadius.circular(12),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.black.withOpacity(0.2),
+//               blurRadius: 4,
+//               offset: const Offset(0, 2),
+//             ),
+//           ],
+//         ),
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Icon(icon, size: 40, color: Colors.white),
+//             const SizedBox(height: 8),
+//             Text(
+//               label,
+//               style: const TextStyle(
+//                 fontSize: 16,
+//                 fontWeight: FontWeight.bold,
+//                 color: Colors.white,
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class _BottomInfoCard extends StatelessWidget {
+//   const _BottomInfoCard();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: double.infinity,
+//       height: 180,
+//       padding: const EdgeInsets.all(20),
+//       decoration: BoxDecoration(
+//         color: const Color(0xFFE0E0E0), // Placeholder Grey
+//         borderRadius: BorderRadius.circular(8), // Less rounded than buttons
+//       ),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           // Mock lines representing text
+//           Container(height: 2, width: 200, color: Colors.grey.shade600),
+//           const SizedBox(height: 20),
+//           Container(height: 2, width: double.infinity, color: Colors.grey.shade600),
+//           const SizedBox(height: 20),
+//           Container(height: 2, width: double.infinity, color: Colors.grey.shade600),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+
+
+
+
+
+
+
+
+// import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:flutter/material.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:scholarship_app/routes/app_routes.dart';
+// import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+// class Homescreens extends StatelessWidget {
+//   const Homescreens({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Scholarship App',
+//       theme: ThemeData(
+//         textTheme: GoogleFonts.kantumruyProTextTheme(
+//           Theme.of(context).textTheme.apply(
+//                 bodyColor: Colors.white,
+//                 displayColor: Colors.white,
+//               ),
+//         ),
+//         scaffoldBackgroundColor: const Color(0xFF0F1C36),
+//         iconTheme: const IconThemeData(color: Colors.white),
+//       ),
+//       home: const HomeScreen(),
+//     );
+//   }
+// }
+
+// class HomeScreen extends StatefulWidget {
+//   const HomeScreen({super.key});
+
+//   @override
+//   State<HomeScreen> createState() => _HomeScreenState();
+// }
+
+// class _HomeScreenState extends State<HomeScreen> {
+//   int _selectedIndex = 0;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: SafeArea(
+//         child: Padding(
+//           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+//           child: Column(
+//             children: [
+//               // 1. Header
+//               const _HeaderSection(),
+//               const SizedBox(height: 20),
+
+//               // 2. Profile Section
+//               const _ProfileSection(),
+//               const SizedBox(height: 20),
+
+//               // 3. Search Bar
+//               const _SearchBarSection(),
+//               const SizedBox(height: 20),
+
+//               // 4. Scrollable Content
+//               const Expanded(
+//                 child: SingleChildScrollView(
+//                   physics: BouncingScrollPhysics(),
+//                   child: Column(
+//                     children: [
+//                       // Banner Slider (Carousel)
+//                       _BannerSection(),
+//                       SizedBox(height: 20),
+
+//                       // Grid Menu Buttons
+//                       _MenuGridSection(),
+//                       SizedBox(height: 20),
+
+//                       // Bottom Info Card
+//                       _BottomInfoCard(),
+//                       SizedBox(height: 20),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//       bottomNavigationBar: _buildBottomNavBar(),
+//     );
+//   }
+
+//   Widget _buildBottomNavBar() {
+//     return Container(
+//       decoration: const BoxDecoration(
+//         color: Color(0xFF0F1C36),
+//         border: Border(top: BorderSide(color: Colors.white10, width: 0.5)),
+//       ),
+//       child: BottomNavigationBar(
+//         currentIndex: _selectedIndex,
+//         onTap: (index) => setState(() => _selectedIndex = index),
+//         backgroundColor: const Color(0xFF0F1C36),
+//         selectedItemColor: Colors.white,
+//         unselectedItemColor: Colors.white60,
+//         showUnselectedLabels: true,
+//         type: BottomNavigationBarType.fixed,
+//         items: const [
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.home_filled),
+//             label: 'Home',
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.chat_bubble_outline),
+//             label: 'Chat',
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.menu),
+//             label: 'Menu',
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// // ── Header ────────────────────────────────────────────────────────────────────
+
+// class _HeaderSection extends StatelessWidget {
+//   const _HeaderSection();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//       children: [
+//         Row(
+//           children: [
+//             const Text(
+//               "Scholarship",
+//               style: TextStyle(
+//                 fontSize: 24,
+//                 fontWeight: FontWeight.bold,
+//                 color: Colors.white,
+//               ),
+//             ),
+//             const SizedBox(width: 8),
+//             Icon(Icons.school, size: 32, color: Colors.blue.shade400),
+//           ],
+//         ),
+//         IconButton(
+//           onPressed: () =>
+//               Navigator.pushNamed(context, AppRoutes.notificationScreen),
+//           icon: const Icon(Icons.notifications_outlined, size: 28),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+// // ── Profile ───────────────────────────────────────────────────────────────────
+
+// class _ProfileSection extends StatelessWidget {
+//   const _ProfileSection();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: () => Navigator.pushNamed(context, AppRoutes.profileScreen),
+//       child: Row(
+//         children: [
+//           Container(
+//             width: 50,
+//             height: 50,
+//             decoration: BoxDecoration(
+//               shape: BoxShape.circle,
+//               border: Border.all(color: Colors.white, width: 1.5),
+//               image: const DecorationImage(
+//                 image: NetworkImage("https://i.pravatar.cc/150?img=11"),
+//                 fit: BoxFit.cover,
+//               ),
+//             ),
+//           ),
+//           const SizedBox(width: 12),
+//           Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               const Text(
+//                 "សួស្តី, Khunrithy",
+//                 style: TextStyle(
+//                   fontSize: 16,
+//                   fontWeight: FontWeight.bold,
+//                   color: Colors.white,
+//                 ),
+//               ),
+//               Text(
+//                 "ព័ត៌មានផ្ទាល់ខ្លួន >",
+//                 style: TextStyle(
+//                   fontSize: 12,
+//                   color: Colors.grey.shade400,
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// // ── Search Bar ────────────────────────────────────────────────────────────────
+
+// class _SearchBarSection extends StatelessWidget {
+//   const _SearchBarSection();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       children: [
+//         Expanded(
+//           child: Container(
+//             height: 50,
+//             decoration: BoxDecoration(
+//               color: const Color(0xFFD9D9D9),
+//               borderRadius: BorderRadius.circular(12),
+//             ),
+//             child: const TextField(
+//               decoration: InputDecoration(
+//                 prefixIcon: Icon(Icons.search, color: Colors.black54),
+//                 hintText: "Search scholarships",
+//                 hintStyle: TextStyle(color: Colors.black54),
+//                 border: InputBorder.none,
+//                 contentPadding: EdgeInsets.symmetric(vertical: 15),
+//               ),
+//             ),
+//           ),
+//         ),
+//         const SizedBox(width: 12),
+//         Container(
+//           height: 50,
+//           width: 50,
+//           decoration: BoxDecoration(
+//             color: const Color(0xFFD9D9D9),
+//             borderRadius: BorderRadius.circular(12),
+//           ),
+//           child: IconButton(
+//             onPressed: () {},
+//             icon: const Icon(Icons.tune, color: Colors.black87),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+// // ── Banner Slider (Carousel) ───────────────────────────────────────────────────
+
+// class _BannerSection extends StatefulWidget {
+//   const _BannerSection();
+
+//   @override
+//   State<_BannerSection> createState() => _BannerSectionState();
+// }
+
+// class _BannerSectionState extends State<_BannerSection> {
+//   final List<Map<String, String>> _slides = [
+//     {
+//       //'https://images.unsplash.com/photo-xxx?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'
+//       // 'image': 'https://d39l2hkdp2esp1.cloudfront.net/img/photo/131086/131086_00_2x.jpg?20170904115552',
+//       'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRU0QzCrFe54Ne8qUBrLcJDwvW4PpMTvKPQQ&s',
+//       'label': '🎓 Apply for Scholarships',
+//     },
+//     {
+//       'image': 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=900&q=90',
+//       'label': '🏆 Achieve Your Dreams',
+//     },
+//     {
+//       'image': 'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=900&q=90',
+//       'label': '📚 Start Learning Today',
+//     },
+//   ];
+
+//   int _currentIndex = 0;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         // ── Carousel ─────────────────────────────────────────────────────────
+//         Stack(
+//           alignment: Alignment.bottomCenter,
+//           children: [
+//             CarouselSlider(
+//               options: CarouselOptions(
+//                 height: 160,
+//                 viewportFraction: 1.0,
+//                 autoPlay: true,
+//                 autoPlayInterval: const Duration(seconds: 3),
+//                 autoPlayCurve: Curves.easeInOut,
+//                 autoPlayAnimationDuration: const Duration(milliseconds: 500),
+//                 onPageChanged: (index, reason) {
+//                   setState(() => _currentIndex = index);
+//                 },
+//               ),
+//               items: _slides.map((slide) {
+//                 return Builder(
+//                   builder: (context) {
+//                     return Container(
+//                       width: double.infinity,
+//                       margin: const EdgeInsets.symmetric(horizontal: 4),
+//                       decoration: BoxDecoration(
+//                         color: const Color(0xFF335C81),
+//                         borderRadius: BorderRadius.circular(16),
+//                       ),
+//                       clipBehavior: Clip.hardEdge,
+//                       child: Stack(
+//                         fit: StackFit.expand,
+//                         children: [
+//                           // Background image
+//                           Image.network(
+//                             slide['image']!,
+//                             fit: BoxFit.cover,
+//                             loadingBuilder: (context, child, progress) {
+//                               if (progress == null) return child;
+//                               return const Center(
+//                                 child: CircularProgressIndicator(
+//                                   color: Colors.white54,
+//                                   strokeWidth: 2,
+//                                 ),
+//                               );
+//                             },
+//                             errorBuilder: (_, __, ___) => const Center(
+//                               child: Icon(Icons.image_not_supported,
+//                                   color: Colors.white54, size: 40),
+//                             ),
+//                           ),
+//                           // Dark gradient overlay
+//                           Container(
+//                             decoration: BoxDecoration(
+//                               gradient: LinearGradient(
+//                                 begin: Alignment.topCenter,
+//                                 end: Alignment.bottomCenter,
+//                                 colors: [
+//                                   Colors.transparent,
+//                                   Colors.black.withOpacity(0.65),
+//                                 ],
+//                               ),
+//                             ),
+//                           ),
+//                           // Label text
+//                           Positioned(
+//                             bottom: 28,
+//                             left: 16,
+//                             right: 16,
+//                             child: Text(
+//                               slide['label']!,
+//                               style: const TextStyle(
+//                                 color: Colors.white,
+//                                 fontSize: 16,
+//                                 fontWeight: FontWeight.w700,
+//                                 shadows: [
+//                                   Shadow(
+//                                     color: Colors.black45,
+//                                     blurRadius: 6,
+//                                   ),
+//                                 ],
+//                               ),
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     );
+//                   },
+//                 );
+//               }).toList(),
+//             ),
+
+//             // ── Dots Indicator ────────────────────────────────────────────────
+//             Positioned(
+//               bottom: 10,
+//               child: AnimatedSmoothIndicator(
+//                 activeIndex: _currentIndex,
+//                 count: _slides.length,
+//                 effect: const ExpandingDotsEffect(
+//                   dotWidth: 8,
+//                   dotHeight: 8,
+//                   expansionFactor: 2.5,
+//                   spacing: 5,
+//                   dotColor: Colors.white38,
+//                   activeDotColor: Colors.white,
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+// // ── Menu Grid ─────────────────────────────────────────────────────────────────
+
+// class _MenuGridSection extends StatelessWidget {
+//   const _MenuGridSection();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return GridView.count(
+//       shrinkWrap: true,
+//       physics: const NeverScrollableScrollPhysics(),
+//       crossAxisCount: 2,
+//       crossAxisSpacing: 15,
+//       mainAxisSpacing: 15,
+//       childAspectRatio: 1.4,
+//       children: [
+//         _MenuButton(
+//           icon: Icons.lightbulb_outline,
+//           label: "Discover",
+//           onTap: () => Navigator.pushNamed(context, AppRoutes.discoverScreen),
+//         ),
+//         const _MenuButton(
+//           icon: Icons.stars_outlined,
+//           label: "Match",
+//         ),
+//         _MenuButton(
+//           icon: Icons.folder_open,
+//           label: "Save",
+//           onTap: () =>
+//               Navigator.pushNamed(context, AppRoutes.savedScholarshipScreen),
+//         ),
+//         const _MenuButton(
+//           icon: Icons.edit_outlined,
+//           label: "Fill personal Info",
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+// class _MenuButton extends StatelessWidget {
+//   final IconData icon;
+//   final String label;
+//   final VoidCallback? onTap;
+
+//   const _MenuButton({required this.icon, required this.label, this.onTap});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: onTap,
+//       child: Container(
+//         decoration: BoxDecoration(
+//           color: const Color(0xFF335C81),
+//           borderRadius: BorderRadius.circular(12),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.black.withOpacity(0.2),
+//               blurRadius: 4,
+//               offset: const Offset(0, 2),
+//             ),
+//           ],
+//         ),
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Icon(icon, size: 40, color: Colors.white),
+//             const SizedBox(height: 8),
+//             Text(
+//               label,
+//               style: const TextStyle(
+//                 fontSize: 16,
+//                 fontWeight: FontWeight.bold,
+//                 color: Colors.white,
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// // ── Bottom Info Card ──────────────────────────────────────────────────────────
+
+// class _BottomInfoCard extends StatelessWidget {
+//   const _BottomInfoCard();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: double.infinity,
+//       height: 180,
+//       padding: const EdgeInsets.all(20),
+//       decoration: BoxDecoration(
+//         color: const Color(0xFFE0E0E0),
+//         borderRadius: BorderRadius.circular(8),
+//       ),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Container(height: 2, width: 200, color: Colors.grey.shade600),
+//           const SizedBox(height: 20),
+//           Container(
+//               height: 2, width: double.infinity, color: Colors.grey.shade600),
+//           const SizedBox(height: 20),
+//           Container(
+//               height: 2, width: double.infinity, color: Colors.grey.shade600),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+
+
+
+
+
+
+
+
+// import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:flutter/material.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:scholarship_app/routes/app_routes.dart';
+// import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+// class Homescreens extends StatelessWidget {
+//   const Homescreens({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Scholarship App',
+//       theme: ThemeData(
+//         textTheme: GoogleFonts.poppinsTextTheme(),
+//         scaffoldBackgroundColor: const Color(0xFFF8FAFB),
+//         useMaterial3: true,
+//       ),
+//       home: const HomeScreen(),
+//     );
+//   }
+// }
+
+// class HomeScreen extends StatefulWidget {
+//   const HomeScreen({super.key});
+
+//   @override
+//   State<HomeScreen> createState() => _HomeScreenState();
+// }
+
+// class _HomeScreenState extends State<HomeScreen> {
+//   int _selectedIndex = 0;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: const Color(0xFFF8FAFB),
+//       body: SafeArea(
+//         child: Column(
+//           children: [
+//             // ── Header ────────────────────────────────────────────────────
+//             _buildHeader(),
+
+//             // ── Body ──────────────────────────────────────────────────────
+//             Expanded(
+//               child: SingleChildScrollView(
+//                 physics: const BouncingScrollPhysics(),
+//                 child: Column(
+//                   children: [
+//                     const SizedBox(height: 16),
+
+//                     // Profile Card
+//                     _buildProfileCard(),
+
+//                     const SizedBox(height: 20),
+
+//                     // Search Bar
+//                     _buildSearchBar(),
+
+//                     const SizedBox(height: 24),
+
+//                     // Banner Slider
+//                     const _BannerSection(),
+
+//                     const SizedBox(height: 24),
+
+//                     // Quick Actions
+//                     _buildQuickActions(),
+
+//                     const SizedBox(height: 24),
+
+//                     // Latest Scholarships Header
+//                     _buildSectionHeader(),
+
+//                     const SizedBox(height: 16),
+
+//                     // Scholarship Cards
+//                     _buildScholarshipCards(),
+
+//                     const SizedBox(height: 24),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//       bottomNavigationBar: _buildBottomNavBar(),
+//     );
+//   }
+
+//   // ── Header ────────────────────────────────────────────────────────────────
+//   Widget _buildHeader() {
+//     return Container(
+//       padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         boxShadow: [
+//           BoxShadow(
+//             color: Colors.black.withOpacity(0.04),
+//             blurRadius: 8,
+//             offset: const Offset(0, 2),
+//           ),
+//         ],
+//       ),
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: [
+//           Row(
+//             children: [
+//               Container(
+//                 padding: const EdgeInsets.all(8),
+//                 decoration: BoxDecoration(
+//                   gradient: const LinearGradient(
+//                     colors: [Color(0xff2196F3), Color(0xff1976D2)],
+//                   ),
+//                   borderRadius: BorderRadius.circular(12),
+//                 ),
+//                 child: const Icon(Icons.school_rounded,
+//                     size: 24, color: Colors.white),
+//               ),
+//               const SizedBox(width: 12),
+//               const Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   Text(
+//                     'Scholarship',
+//                     style: TextStyle(
+//                       fontSize: 20,
+//                       fontWeight: FontWeight.w700,
+//                       color: Color(0xff212121),
+//                       letterSpacing: -0.5,
+//                     ),
+//                   ),
+//                   Text(
+//                     'Find Your Future',
+//                     style: TextStyle(
+//                       fontSize: 11,
+//                       color: Color(0xff9E9E9E),
+//                       fontWeight: FontWeight.w500,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ),
+//           Stack(
+//             children: [
+//               IconButton(
+//                 onPressed: () =>
+//                     Navigator.pushNamed(context, AppRoutes.notificationScreen),
+//                 icon: Container(
+//                   padding: const EdgeInsets.all(10),
+//                   decoration: BoxDecoration(
+//                     color: const Color(0xFFF5F5F5),
+//                     borderRadius: BorderRadius.circular(12),
+//                   ),
+//                   child: const Icon(
+//                     Icons.notifications_outlined,
+//                     color: Color(0xff424242),
+//                     size: 22,
+//                   ),
+//                 ),
+//               ),
+//               Positioned(
+//                 top: 8,
+//                 right: 8,
+//                 child: Container(
+//                   width: 8,
+//                   height: 8,
+//                   decoration: const BoxDecoration(
+//                     color: Color(0xffF44336),
+//                     shape: BoxShape.circle,
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   // ── Profile Card ──────────────────────────────────────────────────────────
+//   Widget _buildProfileCard() {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: GestureDetector(
+//         onTap: () => Navigator.pushNamed(context, AppRoutes.profileScreen),
+//         child: Container(
+//           padding: const EdgeInsets.all(16),
+//           decoration: BoxDecoration(
+//             gradient: const LinearGradient(
+//               begin: Alignment.topLeft,
+//               end: Alignment.bottomRight,
+//               colors: [Color(0xff2196F3), Color(0xff1976D2)],
+//             ),
+//             borderRadius: BorderRadius.circular(16),
+//             boxShadow: [
+//               BoxShadow(
+//                 color: const Color(0xff2196F3).withOpacity(0.3),
+//                 blurRadius: 12,
+//                 offset: const Offset(0, 4),
+//               ),
+//             ],
+//           ),
+//           child: Row(
+//             children: [
+//               Container(
+//                 width: 56,
+//                 height: 56,
+//                 decoration: BoxDecoration(
+//                   shape: BoxShape.circle,
+//                   border: Border.all(color: Colors.white, width: 3),
+//                   boxShadow: [
+//                     BoxShadow(
+//                       color: Colors.black.withOpacity(0.15),
+//                       blurRadius: 8,
+//                       offset: const Offset(0, 2),
+//                     ),
+//                   ],
+//                   image: const DecorationImage(
+//                     image: NetworkImage("https://i.pravatar.cc/150?img=11"),
+//                     fit: BoxFit.cover,
+//                   ),
+//                 ),
+//               ),
+//               const SizedBox(width: 14),
+//               Expanded(
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     const Text(
+//                       'សួស្តី, Khunrithy 👋',
+//                       style: TextStyle(
+//                         fontSize: 16,
+//                         fontWeight: FontWeight.w700,
+//                         color: Colors.white,
+//                         letterSpacing: -0.3,
+//                       ),
+//                     ),
+//                     const SizedBox(height: 2),
+//                     Row(
+//                       children: [
+//                         Container(
+//                           padding: const EdgeInsets.symmetric(
+//                               horizontal: 8, vertical: 3),
+//                           decoration: BoxDecoration(
+//                             color: Colors.white.withOpacity(0.25),
+//                             borderRadius: BorderRadius.circular(6),
+//                           ),
+//                           child: const Text(
+//                             'Student',
+//                             style: TextStyle(
+//                               fontSize: 11,
+//                               color: Colors.white,
+//                               fontWeight: FontWeight.w600,
+//                             ),
+//                           ),
+//                         ),
+//                         const SizedBox(width: 6),
+//                         Text(
+//                           'View Profile',
+//                           style: TextStyle(
+//                             fontSize: 12,
+//                             color: Colors.white.withOpacity(0.9),
+//                             fontWeight: FontWeight.w500,
+//                           ),
+//                         ),
+//                         const Icon(
+//                           Icons.arrow_forward_ios,
+//                           color: Colors.white,
+//                           size: 11,
+//                         ),
+//                       ],
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   // ── Search Bar ────────────────────────────────────────────────────────────
+//   Widget _buildSearchBar() {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Row(
+//         children: [
+//           Expanded(
+//             child: GestureDetector(
+//               onTap: () =>
+//                   Navigator.pushNamed(context, AppRoutes.searchFilterScreen),
+//               child: Container(
+//                 height: 52,
+//                 padding: const EdgeInsets.symmetric(horizontal: 16),
+//                 decoration: BoxDecoration(
+//                   color: Colors.white,
+//                   borderRadius: BorderRadius.circular(14),
+//                   border: Border.all(color: const Color(0xffE2E8F0)),
+//                   boxShadow: [
+//                     BoxShadow(
+//                       color: Colors.black.withOpacity(0.03),
+//                       blurRadius: 8,
+//                       offset: const Offset(0, 2),
+//                     ),
+//                   ],
+//                 ),
+//                 child: const Row(
+//                   children: [
+//                     Icon(Icons.search, color: Color(0xff9E9E9E), size: 22),
+//                     SizedBox(width: 12),
+//                     Text(
+//                       'Search scholarships...',
+//                       style: TextStyle(
+//                         color: Color(0xffBDBDBD),
+//                         fontSize: 14,
+//                         fontWeight: FontWeight.w400,
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//           const SizedBox(width: 10),
+//           Container(
+//             width: 52,
+//             height: 52,
+//             decoration: BoxDecoration(
+//               gradient: const LinearGradient(
+//                 colors: [Color(0xff2196F3), Color(0xff1976D2)],
+//               ),
+//               borderRadius: BorderRadius.circular(14),
+//               boxShadow: [
+//                 BoxShadow(
+//                   color: const Color(0xff2196F3).withOpacity(0.3),
+//                   blurRadius: 8,
+//                   offset: const Offset(0, 3),
+//                 ),
+//               ],
+//             ),
+//             child: IconButton(
+//               onPressed: () =>
+//                   Navigator.pushNamed(context, AppRoutes.searchFilterScreen),
+//               icon: const Icon(
+//                 Icons.tune_rounded,
+//                 color: Colors.white,
+//                 size: 22,
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   // ── Quick Actions ─────────────────────────────────────────────────────────
+//   Widget _buildQuickActions() {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           const Text(
+//             'Quick Actions',
+//             style: TextStyle(
+//               fontSize: 18,
+//               fontWeight: FontWeight.w700,
+//               color: Color(0xff212121),
+//               letterSpacing: -0.3,
+//             ),
+//           ),
+//           const SizedBox(height: 14),
+//           GridView.count(
+//             shrinkWrap: true,
+//             physics: const NeverScrollableScrollPhysics(),
+//             crossAxisCount: 2,
+//             crossAxisSpacing: 12,
+//             mainAxisSpacing: 12,
+//             childAspectRatio: 1.5,
+//             children: [
+//               _ActionCard(
+//                 icon: Icons.explore_outlined,
+//                 label: 'Discover',
+//                 color: const Color(0xff2196F3),
+//                 onTap: () =>
+//                     Navigator.pushNamed(context, AppRoutes.discoverScreen),
+//               ),
+//               _ActionCard(
+//                 icon: Icons.military_tech_outlined,
+//                 label: 'Match',
+//                 color: const Color(0xffFF9800),
+//                 onTap: () {},
+//               ),
+//               _ActionCard(
+//                 icon: Icons.bookmark_outline,
+//                 label: 'Saved',
+//                 color: const Color(0xff4CAF50),
+//                 onTap: () => Navigator.pushNamed(
+//                     context, AppRoutes.savedScholarshipScreen),
+//               ),
+//               _ActionCard(
+//                 icon: Icons.edit_document,
+//                 label: 'Fill Info',
+//                 color: const Color(0xff9C27B0),
+//                 onTap: () {},
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   // ── Section Header ────────────────────────────────────────────────────────
+//   Widget _buildSectionHeader() {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: [
+//           const Text(
+//             'Latest Scholarships',
+//             style: TextStyle(
+//               fontSize: 18,
+//               fontWeight: FontWeight.w700,
+//               color: Color(0xff212121),
+//               letterSpacing: -0.3,
+//             ),
+//           ),
+//           TextButton(
+//             onPressed: () {},
+//             style: TextButton.styleFrom(
+//               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+//             ),
+//             child: Row(
+//               children: const [
+//                 Text(
+//                   'See All',
+//                   style: TextStyle(
+//                     color: Color(0xff2196F3),
+//                     fontSize: 13,
+//                     fontWeight: FontWeight.w600,
+//                   ),
+//                 ),
+//                 SizedBox(width: 4),
+//                 Icon(Icons.arrow_forward_ios,
+//                     size: 12, color: Color(0xff2196F3)),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   // ── Scholarship Cards ─────────────────────────────────────────────────────
+//   Widget _buildScholarshipCards() {
+//     return Column(
+//       children: [
+//         _ScholarshipCard(
+//           title: 'Full Scholarship to MIT',
+//           university: 'MIT',
+//           location: 'United States',
+//           type: 'Full Scholarship',
+//           deadline: 'Mar 30, 2026',
+//           imageUrl: 'assets/images/mit.png', // Placeholder
+//         ),
+//         const SizedBox(height: 12),
+//         _ScholarshipCard(
+//           title: 'Engineering Excellence Award',
+//           university: 'Stanford',
+//           location: 'USA',
+//           type: 'Partial',
+//           deadline: 'Apr 15, 2026',
+//           imageUrl: 'assets/images/stanford.png',
+//         ),
+//       ],
+//     );
+//   }
+
+//   // ── Bottom Navigation ─────────────────────────────────────────────────────
+//   Widget _buildBottomNavBar() {
+//     return Container(
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         boxShadow: [
+//           BoxShadow(
+//             color: Colors.black.withOpacity(0.08),
+//             blurRadius: 12,
+//             offset: const Offset(0, -2),
+//           ),
+//         ],
+//       ),
+//       child: SafeArea(
+//         child: BottomNavigationBar(
+//           currentIndex: _selectedIndex,
+//           onTap: (index) => setState(() => _selectedIndex = index),
+//           backgroundColor: Colors.white,
+//           selectedItemColor: const Color(0xff2196F3),
+//           unselectedItemColor: const Color(0xff9E9E9E),
+//           selectedLabelStyle: const TextStyle(
+//             fontWeight: FontWeight.w600,
+//             fontSize: 12,
+//           ),
+//           unselectedLabelStyle: const TextStyle(
+//             fontWeight: FontWeight.w500,
+//             fontSize: 11,
+//           ),
+//           showUnselectedLabels: true,
+//           type: BottomNavigationBarType.fixed,
+//           elevation: 0,
+//           items: const [
+//             BottomNavigationBarItem(
+//               icon: Icon(Icons.home_outlined, size: 26),
+//               activeIcon: Icon(Icons.home_rounded, size: 26),
+//               label: 'Home',
+//             ),
+//             BottomNavigationBarItem(
+//               icon: Icon(Icons.chat_bubble_outline, size: 24),
+//               activeIcon: Icon(Icons.chat_bubble, size: 24),
+//               label: 'Chat',
+//             ),
+//             BottomNavigationBarItem(
+//               icon: Icon(Icons.menu_rounded, size: 26),
+//               label: 'Menu',
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// // ══════════════════════════════════════════════════════════════════════════════
+// // REUSABLE WIDGETS
+// // ══════════════════════════════════════════════════════════════════════════════
+
+// // ── Action Card ───────────────────────────────────────────────────────────────
+
+// class _ActionCard extends StatelessWidget {
+//   final IconData icon;
+//   final String label;
+//   final Color color;
+//   final VoidCallback onTap;
+
+//   const _ActionCard({
+//     required this.icon,
+//     required this.label,
+//     required this.color,
+//     required this.onTap,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: onTap,
+//       child: Container(
+//         decoration: BoxDecoration(
+//           color: Colors.white,
+//           borderRadius: BorderRadius.circular(14),
+//           border: Border.all(color: const Color(0xffF0F0F0)),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.black.withOpacity(0.04),
+//               blurRadius: 8,
+//               offset: const Offset(0, 2),
+//             ),
+//           ],
+//         ),
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Container(
+//               padding: const EdgeInsets.all(12),
+//               decoration: BoxDecoration(
+//                 color: color.withOpacity(0.12),
+//                 borderRadius: BorderRadius.circular(12),
+//               ),
+//               child: Icon(icon, size: 28, color: color),
+//             ),
+//             const SizedBox(height: 10),
+//             Text(
+//               label,
+//               style: TextStyle(
+//                 fontSize: 13,
+//                 fontWeight: FontWeight.w600,
+//                 color: const Color(0xff424242),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// // ── Banner Section ────────────────────────────────────────────────────────────
+
+// class _BannerSection extends StatefulWidget {
+//   const _BannerSection();
+
+//   @override
+//   State<_BannerSection> createState() => _BannerSectionState();
+// }
+
+// class _BannerSectionState extends State<_BannerSection> {
+//   final List<Map<String, String>> _slides = [
+//     {
+//       'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRU0QzCrFe54Ne8qUBrLcJDwvW4PpMTvKPQQ&s',
+//       'label': '🎓 Apply for Scholarships',
+//     },
+//     {
+//       'image': 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=900&q=90',
+//       'label': '🏆 Achieve Your Dreams',
+//     },
+//     {
+//       'image': 'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=900&q=90',
+//       'label': '📚 Start Learning Today',
+//     },
+//   ];
+
+//   int _currentIndex = 0;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Column(
+//         children: [
+//           // ── Carousel ─────────────────────────────────────────────────────────
+//           Stack(
+//             alignment: Alignment.bottomCenter,
+//             children: [
+//               CarouselSlider(
+//                 options: CarouselOptions(
+//                   height: 160,
+//                   viewportFraction: 1.0,
+//                   autoPlay: true,
+//                   autoPlayInterval: const Duration(seconds: 3),
+//                   autoPlayCurve: Curves.easeInOut,
+//                   autoPlayAnimationDuration: const Duration(milliseconds: 500),
+//                   onPageChanged: (index, reason) {
+//                     setState(() => _currentIndex = index);
+//                   },
+//                 ),
+//                 items: _slides.map((slide) {
+//                   return Builder(
+//                     builder: (context) {
+//                       return Container(
+//                         width: double.infinity,
+//                         margin: const EdgeInsets.symmetric(horizontal: 4),
+//                         decoration: BoxDecoration(
+//                           color: const Color(0xFF335C81),
+//                           borderRadius: BorderRadius.circular(16),
+//                         ),
+//                         clipBehavior: Clip.hardEdge,
+//                         child: Stack(
+//                           fit: StackFit.expand,
+//                           children: [
+//                             // Background image
+//                             Image.network(
+//                               slide['image']!,
+//                               fit: BoxFit.cover,
+//                               loadingBuilder: (context, child, progress) {
+//                                 if (progress == null) return child;
+//                                 return const Center(
+//                                   child: CircularProgressIndicator(
+//                                     color: Colors.white54,
+//                                     strokeWidth: 2,
+//                                   ),
+//                                 );
+//                               },
+//                               errorBuilder: (_, __, ___) => const Center(
+//                                 child: Icon(Icons.image_not_supported,
+//                                     color: Colors.white54, size: 40),
+//                               ),
+//                             ),
+//                             // Dark gradient overlay
+//                             Container(
+//                               decoration: BoxDecoration(
+//                                 gradient: LinearGradient(
+//                                   begin: Alignment.topCenter,
+//                                   end: Alignment.bottomCenter,
+//                                   colors: [
+//                                     Colors.transparent,
+//                                     Colors.black.withOpacity(0.65),
+//                                   ],
+//                                 ),
+//                               ),
+//                             ),
+//                             // Label text
+//                             Positioned(
+//                               bottom: 28,
+//                               left: 16,
+//                               right: 16,
+//                               child: Text(
+//                                 slide['label']!,
+//                                 style: const TextStyle(
+//                                   color: Colors.white,
+//                                   fontSize: 16,
+//                                   fontWeight: FontWeight.w700,
+//                                   shadows: [
+//                                     Shadow(
+//                                       color: Colors.black45,
+//                                       blurRadius: 6,
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       );
+//                     },
+//                   );
+//                 }).toList(),
+//               ),
+
+//               // ── Dots Indicator ────────────────────────────────────────────────
+//               Positioned(
+//                 bottom: 10,
+//                 child: AnimatedSmoothIndicator(
+//                   activeIndex: _currentIndex,
+//                   count: _slides.length,
+//                   effect: const ExpandingDotsEffect(
+//                     dotWidth: 8,
+//                     dotHeight: 8,
+//                     expansionFactor: 2.5,
+//                     spacing: 5,
+//                     dotColor: Colors.white38,
+//                     activeDotColor: Colors.white,
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// // ── Scholarship Card ──────────────────────────────────────────────────────────
+
+// class _ScholarshipCard extends StatelessWidget {
+//   final String title;
+//   final String university;
+//   final String location;
+//   final String type;
+//   final String deadline;
+//   final String imageUrl;
+
+//   const _ScholarshipCard({
+//     required this.title,
+//     required this.university,
+//     required this.location,
+//     required this.type,
+//     required this.deadline,
+//     required this.imageUrl,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Container(
+//         decoration: BoxDecoration(
+//           color: Colors.white,
+//           borderRadius: BorderRadius.circular(16),
+//           border: Border.all(color: const Color(0xffF0F0F0)),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.black.withOpacity(0.04),
+//               blurRadius: 10,
+//               offset: const Offset(0, 2),
+//             ),
+//           ],
+//         ),
+//         child: Padding(
+//           padding: const EdgeInsets.all(14),
+//           child: Row(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               // Image
+//               Container(
+//                 width: 70,
+//                 height: 70,
+//                 decoration: BoxDecoration(
+//                   color: const Color(0xffF5F5F5),
+//                   borderRadius: BorderRadius.circular(12),
+//                 ),
+//                 child: const Center(
+//                   child: Icon(Icons.school_rounded,
+//                       size: 32, color: Color(0xff2196F3)),
+//                 ),
+//               ),
+//               const SizedBox(width: 14),
+//               // Content
+//               Expanded(
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Text(
+//                       title,
+//                       maxLines: 2,
+//                       overflow: TextOverflow.ellipsis,
+//                       style: const TextStyle(
+//                         fontSize: 14,
+//                         fontWeight: FontWeight.w600,
+//                         color: Color(0xff212121),
+//                         height: 1.3,
+//                       ),
+//                     ),
+//                     const SizedBox(height: 6),
+//                     Row(
+//                       children: [
+//                         const Icon(Icons.location_on_outlined,
+//                             size: 13, color: Color(0xff9E9E9E)),
+//                         const SizedBox(width: 4),
+//                         Text(
+//                           '$university, $location',
+//                           style: const TextStyle(
+//                             fontSize: 11,
+//                             color: Color(0xff757575),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                     const SizedBox(height: 8),
+//                     Row(
+//                       children: [
+//                         Container(
+//                           padding: const EdgeInsets.symmetric(
+//                               horizontal: 8, vertical: 3),
+//                           decoration: BoxDecoration(
+//                             color: const Color(0xffE3F2FD),
+//                             borderRadius: BorderRadius.circular(6),
+//                           ),
+//                           child: Text(
+//                             type,
+//                             style: const TextStyle(
+//                               fontSize: 10,
+//                               fontWeight: FontWeight.w600,
+//                               color: Color(0xff1976D2),
+//                             ),
+//                           ),
+//                         ),
+//                         const Spacer(),
+//                         const Icon(Icons.access_time,
+//                             size: 12, color: Color(0xffFF9800)),
+//                         const SizedBox(width: 4),
+//                         Text(
+//                           deadline,
+//                           style: const TextStyle(
+//                             fontSize: 11,
+//                             fontWeight: FontWeight.w600,
+//                             color: Color(0xffFF9800),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
+
+
+
+
+
+
+
+
+
+// import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:flutter/material.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:scholarship_app/routes/app_routes.dart';
+// import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+// class Homescreens extends StatelessWidget {
+//   const Homescreens({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Scholarship App',
+//       theme: ThemeData(
+//         textTheme: GoogleFonts.poppinsTextTheme(),
+//         scaffoldBackgroundColor: const Color(0xFFF8FAFB),
+//         useMaterial3: true,
+//       ),
+//       home: const HomeScreen(),
+//     );
+//   }
+// }
+
+// class HomeScreen extends StatefulWidget {
+//   const HomeScreen({super.key});
+
+//   @override
+//   State<HomeScreen> createState() => _HomeScreenState();
+// }
+
+// class _HomeScreenState extends State<HomeScreen> {
+//   int _selectedIndex = 0;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: const Color(0xFFF8FAFB),
+//       body: SafeArea(
+//         child: Column(
+//           children: [
+//             // ── Header ────────────────────────────────────────────────────
+//             _buildHeader(),
+
+//             // ── Body ──────────────────────────────────────────────────────
+//             Expanded(
+//               child: SingleChildScrollView(
+//                 physics: const BouncingScrollPhysics(),
+//                 child: Column(
+//                   children: [
+//                     const SizedBox(height: 16),
+
+//                     // Profile Card
+//                     _buildProfileCard(),
+
+//                     const SizedBox(height: 20),
+
+//                     // Search Bar
+//                     _buildSearchBar(),
+
+//                     const SizedBox(height: 24),
+
+//                     // Banner Slider
+//                     const _BannerSection(),
+
+//                     const SizedBox(height: 24),
+
+//                     // Quick Actions
+//                     _buildQuickActions(),
+
+//                     const SizedBox(height: 24),
+
+//                     // Latest Scholarships Header
+//                     _buildSectionHeader(),
+
+//                     const SizedBox(height: 16),
+
+//                     // Scholarship Cards
+//                     _buildScholarshipCards(),
+
+//                     const SizedBox(height: 24),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//       bottomNavigationBar: _buildBottomNavBar(),
+//     );
+//   }
+
+//   // ── Header ────────────────────────────────────────────────────────────────
+//   Widget _buildHeader() {
+//     return Container(
+//       padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         boxShadow: [
+//           BoxShadow(
+//             color: Colors.black.withOpacity(0.04),
+//             blurRadius: 8,
+//             offset: const Offset(0, 2),
+//           ),
+//         ],
+//       ),
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: [
+//           Row(
+//             children: [
+//               Container(
+//                 padding: const EdgeInsets.all(8),
+//                 decoration: BoxDecoration(
+//                   gradient: const LinearGradient(
+//                     colors: [Color(0xff2196F3), Color(0xff1976D2)],
+//                   ),
+//                   borderRadius: BorderRadius.circular(12),
+//                 ),
+//                 child: const Icon(Icons.school_rounded,
+//                     size: 24, color: Colors.white),
+//               ),
+//               const SizedBox(width: 12),
+//               const Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   Text(
+//                     'Scholarship',
+//                     style: TextStyle(
+//                       fontSize: 20,
+//                       fontWeight: FontWeight.w700,
+//                       color: Color(0xff212121),
+//                       letterSpacing: -0.5,
+//                     ),
+//                   ),
+//                   Text(
+//                     'Find Your Future',
+//                     style: TextStyle(
+//                       fontSize: 11,
+//                       color: Color(0xff9E9E9E),
+//                       fontWeight: FontWeight.w500,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ),
+//           Stack(
+//             children: [
+//               IconButton(
+//                 onPressed: () =>
+//                     Navigator.pushNamed(context, AppRoutes.notificationScreen),
+//                 icon: Container(
+//                   padding: const EdgeInsets.all(10),
+//                   decoration: BoxDecoration(
+//                     color: const Color(0xFFF5F5F5),
+//                     borderRadius: BorderRadius.circular(12),
+//                   ),
+//                   child: const Icon(
+//                     Icons.notifications_outlined,
+//                     color: Color(0xff424242),
+//                     size: 22,
+//                   ),
+//                 ),
+//               ),
+//               Positioned(
+//                 top: 8,
+//                 right: 8,
+//                 child: Container(
+//                   width: 8,
+//                   height: 8,
+//                   decoration: const BoxDecoration(
+//                     color: Color(0xffF44336),
+//                     shape: BoxShape.circle,
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   // ── Profile Card ──────────────────────────────────────────────────────────
+//   Widget _buildProfileCard() {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: GestureDetector(
+//         onTap: () => Navigator.pushNamed(context, AppRoutes.profileScreen),
+//         child: Container(
+//           padding: const EdgeInsets.all(16),
+//           decoration: BoxDecoration(
+//             gradient: const LinearGradient(
+//               begin: Alignment.topLeft,
+//               end: Alignment.bottomRight,
+//               colors: [Color(0xff2196F3), Color(0xff1976D2)],
+//             ),
+//             borderRadius: BorderRadius.circular(16),
+//             boxShadow: [
+//               BoxShadow(
+//                 color: const Color(0xff2196F3).withOpacity(0.3),
+//                 blurRadius: 12,
+//                 offset: const Offset(0, 4),
+//               ),
+//             ],
+//           ),
+//           child: Row(
+//             children: [
+//               Container(
+//                 width: 56,
+//                 height: 56,
+//                 decoration: BoxDecoration(
+//                   shape: BoxShape.circle,
+//                   border: Border.all(color: Colors.white, width: 3),
+//                   boxShadow: [
+//                     BoxShadow(
+//                       color: Colors.black.withOpacity(0.15),
+//                       blurRadius: 8,
+//                       offset: const Offset(0, 2),
+//                     ),
+//                   ],
+//                   image: const DecorationImage(
+//                     image: NetworkImage("https://i.pravatar.cc/150?img=11"),
+//                     fit: BoxFit.cover,
+//                   ),
+//                 ),
+//               ),
+//               const SizedBox(width: 14),
+//               Expanded(
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     const Text(
+//                       'សួស្តី, Khunrithy 👋',
+//                       style: TextStyle(
+//                         fontSize: 16,
+//                         fontWeight: FontWeight.w700,
+//                         color: Colors.white,
+//                         letterSpacing: -0.3,
+//                       ),
+//                     ),
+//                     const SizedBox(height: 2),
+//                     Row(
+//                       children: [
+//                         Container(
+//                           padding: const EdgeInsets.symmetric(
+//                               horizontal: 8, vertical: 3),
+//                           decoration: BoxDecoration(
+//                             color: Colors.white.withOpacity(0.25),
+//                             borderRadius: BorderRadius.circular(6),
+//                           ),
+//                           child: const Text(
+//                             'Student',
+//                             style: TextStyle(
+//                               fontSize: 11,
+//                               color: Colors.white,
+//                               fontWeight: FontWeight.w600,
+//                             ),
+//                           ),
+//                         ),
+//                         const SizedBox(width: 6),
+//                         Text(
+//                           'View Profile',
+//                           style: TextStyle(
+//                             fontSize: 12,
+//                             color: Colors.white.withOpacity(0.9),
+//                             fontWeight: FontWeight.w500,
+//                           ),
+//                         ),
+//                         const Icon(
+//                           Icons.arrow_forward_ios,
+//                           color: Colors.white,
+//                           size: 11,
+//                         ),
+//                       ],
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   // ── Search Bar ────────────────────────────────────────────────────────────
+//   Widget _buildSearchBar() {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Row(
+//         children: [
+//           Expanded(
+//             child: GestureDetector(
+//               onTap: () =>
+//                   Navigator.pushNamed(context, AppRoutes.searchFilterScreen),
+//               child: Container(
+//                 height: 52,
+//                 padding: const EdgeInsets.symmetric(horizontal: 16),
+//                 decoration: BoxDecoration(
+//                   color: Colors.white,
+//                   borderRadius: BorderRadius.circular(14),
+//                   border: Border.all(color: const Color(0xffE2E8F0)),
+//                   boxShadow: [
+//                     BoxShadow(
+//                       color: Colors.black.withOpacity(0.03),
+//                       blurRadius: 8,
+//                       offset: const Offset(0, 2),
+//                     ),
+//                   ],
+//                 ),
+//                 child: const Row(
+//                   children: [
+//                     Icon(Icons.search, color: Color(0xff9E9E9E), size: 22),
+//                     SizedBox(width: 12),
+//                     Text(
+//                       'Search scholarships...',
+//                       style: TextStyle(
+//                         color: Color(0xffBDBDBD),
+//                         fontSize: 14,
+//                         fontWeight: FontWeight.w400,
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//           const SizedBox(width: 10),
+//           Container(
+//             width: 52,
+//             height: 52,
+//             decoration: BoxDecoration(
+//               gradient: const LinearGradient(
+//                 colors: [Color(0xff2196F3), Color(0xff1976D2)],
+//               ),
+//               borderRadius: BorderRadius.circular(14),
+//               boxShadow: [
+//                 BoxShadow(
+//                   color: const Color(0xff2196F3).withOpacity(0.3),
+//                   blurRadius: 8,
+//                   offset: const Offset(0, 3),
+//                 ),
+//               ],
+//             ),
+//             child: IconButton(
+//               onPressed: () =>
+//                   Navigator.pushNamed(context, AppRoutes.searchFilterScreen),
+//               icon: const Icon(
+//                 Icons.tune_rounded,
+//                 color: Colors.white,
+//                 size: 22,
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   // ── Quick Actions ─────────────────────────────────────────────────────────
+//   Widget _buildQuickActions() {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           const Text(
+//             'Quick Actions',
+//             style: TextStyle(
+//               fontSize: 18,
+//               fontWeight: FontWeight.w700,
+//               color: Color(0xff212121),
+//               letterSpacing: -0.3,
+//             ),
+//           ),
+//           const SizedBox(height: 14),
+//           GridView.count(
+//             shrinkWrap: true,
+//             physics: const NeverScrollableScrollPhysics(),
+//             crossAxisCount: 2,
+//             crossAxisSpacing: 12,
+//             mainAxisSpacing: 12,
+//             childAspectRatio: 1.5,
+//             children: [
+//               _ActionCard(
+//                 icon: Icons.explore_outlined,
+//                 label: 'Discover',
+//                 color: const Color(0xff2196F3),
+//                 onTap: () =>
+//                     Navigator.pushNamed(context, AppRoutes.discoverScreen),
+//               ),
+//               _ActionCard(
+//                 icon: Icons.military_tech_outlined,
+//                 label: 'Match',
+//                 color: const Color(0xffFF9800),
+//                 onTap: () {},
+//               ),
+//               _ActionCard(
+//                 icon: Icons.bookmark_outline,
+//                 label: 'Saved',
+//                 color: const Color(0xff4CAF50),
+//                 onTap: () => Navigator.pushNamed(
+//                     context, AppRoutes.savedScholarshipScreen),
+//               ),
+//               _ActionCard(
+//                 icon: Icons.edit_document,
+//                 label: 'Fill Info',
+//                 color: const Color(0xff9C27B0),
+//                 onTap: () =>
+//                     Navigator.pushNamed(context, AppRoutes.personalInfoScreen),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   // ── Section Header ────────────────────────────────────────────────────────
+//   Widget _buildSectionHeader() {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: [
+//           const Text(
+//             'Latest Scholarships',
+//             style: TextStyle(
+//               fontSize: 18,
+//               fontWeight: FontWeight.w700,
+//               color: Color(0xff212121),
+//               letterSpacing: -0.3,
+//             ),
+//           ),
+//           TextButton(
+//             onPressed: () {},
+//             style: TextButton.styleFrom(
+//               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+//             ),
+//             child: Row(
+//               children: const [
+//                 Text(
+//                   'See All',
+//                   style: TextStyle(
+//                     color: Color(0xff2196F3),
+//                     fontSize: 13,
+//                     fontWeight: FontWeight.w600,
+//                   ),
+//                 ),
+//                 SizedBox(width: 4),
+//                 Icon(Icons.arrow_forward_ios,
+//                     size: 12, color: Color(0xff2196F3)),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   // ── Scholarship Cards ─────────────────────────────────────────────────────
+//   Widget _buildScholarshipCards() {
+//     return Column(
+//       children: [
+//         _ScholarshipCard(
+//           title: 'Full Scholarship to MIT',
+//           university: 'MIT',
+//           location: 'United States',
+//           type: 'Full Scholarship',
+//           deadline: 'Mar 30, 2026',
+//           imageUrl: 'assets/images/mit.png', // Placeholder
+//         ),
+//         const SizedBox(height: 12),
+//         _ScholarshipCard(
+//           title: 'Engineering Excellence Award',
+//           university: 'Stanford',
+//           location: 'USA',
+//           type: 'Partial',
+//           deadline: 'Apr 15, 2026',
+//           imageUrl: 'assets/images/stanford.png',
+//         ),
+//       ],
+//     );
+//   }
+
+//   // ── Bottom Navigation ─────────────────────────────────────────────────────
+//   Widget _buildBottomNavBar() {
+//     return Container(
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         boxShadow: [
+//           BoxShadow(
+//             color: Colors.black.withOpacity(0.08),
+//             blurRadius: 12,
+//             offset: const Offset(0, -2),
+//           ),
+//         ],
+//       ),
+//       child: SafeArea(
+//         child: BottomNavigationBar(
+//           currentIndex: _selectedIndex,
+//           onTap: (index) => setState(() => _selectedIndex = index),
+//           backgroundColor: Colors.white,
+//           selectedItemColor: const Color(0xff2196F3),
+//           unselectedItemColor: const Color(0xff9E9E9E),
+//           selectedLabelStyle: const TextStyle(
+//             fontWeight: FontWeight.w600,
+//             fontSize: 12,
+//           ),
+//           unselectedLabelStyle: const TextStyle(
+//             fontWeight: FontWeight.w500,
+//             fontSize: 11,
+//           ),
+//           showUnselectedLabels: true,
+//           type: BottomNavigationBarType.fixed,
+//           elevation: 0,
+//           items: const [
+//             BottomNavigationBarItem(
+//               icon: Icon(Icons.home_outlined, size: 26),
+//               activeIcon: Icon(Icons.home_rounded, size: 26),
+//               label: 'Home',
+//             ),
+//             BottomNavigationBarItem(
+//               icon: Icon(Icons.chat_bubble_outline, size: 24),
+//               activeIcon: Icon(Icons.chat_bubble, size: 24),
+//               label: 'Chat',
+//             ),
+//             BottomNavigationBarItem(
+//               icon: Icon(Icons.menu_rounded, size: 26),
+//               label: 'Menu',
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// // ══════════════════════════════════════════════════════════════════════════════
+// // REUSABLE WIDGETS
+// // ══════════════════════════════════════════════════════════════════════════════
+
+// // ── Action Card ───────────────────────────────────────────────────────────────
+
+// class _ActionCard extends StatelessWidget {
+//   final IconData icon;
+//   final String label;
+//   final Color color;
+//   final VoidCallback onTap;
+
+//   const _ActionCard({
+//     required this.icon,
+//     required this.label,
+//     required this.color,
+//     required this.onTap,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: onTap,
+//       child: Container(
+//         decoration: BoxDecoration(
+//           color: Colors.white,
+//           borderRadius: BorderRadius.circular(14),
+//           border: Border.all(color: const Color(0xffF0F0F0)),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.black.withOpacity(0.04),
+//               blurRadius: 8,
+//               offset: const Offset(0, 2),
+//             ),
+//           ],
+//         ),
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Container(
+//               padding: const EdgeInsets.all(12),
+//               decoration: BoxDecoration(
+//                 color: color.withOpacity(0.12),
+//                 borderRadius: BorderRadius.circular(12),
+//               ),
+//               child: Icon(icon, size: 28, color: color),
+//             ),
+//             const SizedBox(height: 10),
+//             Text(
+//               label,
+//               style: TextStyle(
+//                 fontSize: 13,
+//                 fontWeight: FontWeight.w600,
+//                 color: const Color(0xff424242),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// // ── Banner Section ────────────────────────────────────────────────────────────
+
+// class _BannerSection extends StatefulWidget {
+//   const _BannerSection();
+
+//   @override
+//   State<_BannerSection> createState() => _BannerSectionState();
+// }
+
+// class _BannerSectionState extends State<_BannerSection> {
+//   final List<Map<String, String>> _slides = [
+//     {
+//       'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRU0QzCrFe54Ne8qUBrLcJDwvW4PpMTvKPQQ&s',
+//       'label': '🎓 Apply for Scholarships',
+//     },
+//     {
+//       'image': 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=900&q=90',
+//       'label': '🏆 Achieve Your Dreams',
+//     },
+//     {
+//       'image': 'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=900&q=90',
+//       'label': '📚 Start Learning Today',
+//     },
+//   ];
+
+//   int _currentIndex = 0;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Column(
+//         children: [
+//           // ── Carousel ─────────────────────────────────────────────────────────
+//           Stack(
+//             alignment: Alignment.bottomCenter,
+//             children: [
+//               CarouselSlider(
+//                 options: CarouselOptions(
+//                   height: 160,
+//                   viewportFraction: 1.0,
+//                   autoPlay: true,
+//                   autoPlayInterval: const Duration(seconds: 3),
+//                   autoPlayCurve: Curves.easeInOut,
+//                   autoPlayAnimationDuration: const Duration(milliseconds: 500),
+//                   onPageChanged: (index, reason) {
+//                     setState(() => _currentIndex = index);
+//                   },
+//                 ),
+//                 items: _slides.map((slide) {
+//                   return Builder(
+//                     builder: (context) {
+//                       return Container(
+//                         width: double.infinity,
+//                         margin: const EdgeInsets.symmetric(horizontal: 4),
+//                         decoration: BoxDecoration(
+//                           color: const Color(0xFF335C81),
+//                           borderRadius: BorderRadius.circular(16),
+//                         ),
+//                         clipBehavior: Clip.hardEdge,
+//                         child: Stack(
+//                           fit: StackFit.expand,
+//                           children: [
+//                             // Background image
+//                             Image.network(
+//                               slide['image']!,
+//                               fit: BoxFit.cover,
+//                               loadingBuilder: (context, child, progress) {
+//                                 if (progress == null) return child;
+//                                 return const Center(
+//                                   child: CircularProgressIndicator(
+//                                     color: Colors.white54,
+//                                     strokeWidth: 2,
+//                                   ),
+//                                 );
+//                               },
+//                               errorBuilder: (_, __, ___) => const Center(
+//                                 child: Icon(Icons.image_not_supported,
+//                                     color: Colors.white54, size: 40),
+//                               ),
+//                             ),
+//                             // Dark gradient overlay
+//                             Container(
+//                               decoration: BoxDecoration(
+//                                 gradient: LinearGradient(
+//                                   begin: Alignment.topCenter,
+//                                   end: Alignment.bottomCenter,
+//                                   colors: [
+//                                     Colors.transparent,
+//                                     Colors.black.withOpacity(0.65),
+//                                   ],
+//                                 ),
+//                               ),
+//                             ),
+//                             // Label text
+//                             Positioned(
+//                               bottom: 28,
+//                               left: 16,
+//                               right: 16,
+//                               child: Text(
+//                                 slide['label']!,
+//                                 style: const TextStyle(
+//                                   color: Colors.white,
+//                                   fontSize: 16,
+//                                   fontWeight: FontWeight.w700,
+//                                   shadows: [
+//                                     Shadow(
+//                                       color: Colors.black45,
+//                                       blurRadius: 6,
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       );
+//                     },
+//                   );
+//                 }).toList(),
+//               ),
+
+//               // ── Dots Indicator ────────────────────────────────────────────────
+//               Positioned(
+//                 bottom: 10,
+//                 child: AnimatedSmoothIndicator(
+//                   activeIndex: _currentIndex,
+//                   count: _slides.length,
+//                   effect: const ExpandingDotsEffect(
+//                     dotWidth: 8,
+//                     dotHeight: 8,
+//                     expansionFactor: 2.5,
+//                     spacing: 5,
+//                     dotColor: Colors.white38,
+//                     activeDotColor: Colors.white,
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// // ── Scholarship Card ──────────────────────────────────────────────────────────
+
+// class _ScholarshipCard extends StatelessWidget {
+//   final String title;
+//   final String university;
+//   final String location;
+//   final String type;
+//   final String deadline;
+//   final String imageUrl;
+
+//   const _ScholarshipCard({
+//     required this.title,
+//     required this.university,
+//     required this.location,
+//     required this.type,
+//     required this.deadline,
+//     required this.imageUrl,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Container(
+//         decoration: BoxDecoration(
+//           color: Colors.white,
+//           borderRadius: BorderRadius.circular(16),
+//           border: Border.all(color: const Color(0xffF0F0F0)),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.black.withOpacity(0.04),
+//               blurRadius: 10,
+//               offset: const Offset(0, 2),
+//             ),
+//           ],
+//         ),
+//         child: Padding(
+//           padding: const EdgeInsets.all(14),
+//           child: Row(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               // Image
+//               Container(
+//                 width: 70,
+//                 height: 70,
+//                 decoration: BoxDecoration(
+//                   color: const Color(0xffF5F5F5),
+//                   borderRadius: BorderRadius.circular(12),
+//                 ),
+//                 child: const Center(
+//                   child: Icon(Icons.school_rounded,
+//                       size: 32, color: Color(0xff2196F3)),
+//                 ),
+//               ),
+//               const SizedBox(width: 14),
+//               // Content
+//               Expanded(
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Text(
+//                       title,
+//                       maxLines: 2,
+//                       overflow: TextOverflow.ellipsis,
+//                       style: const TextStyle(
+//                         fontSize: 14,
+//                         fontWeight: FontWeight.w600,
+//                         color: Color(0xff212121),
+//                         height: 1.3,
+//                       ),
+//                     ),
+//                     const SizedBox(height: 6),
+//                     Row(
+//                       children: [
+//                         const Icon(Icons.location_on_outlined,
+//                             size: 13, color: Color(0xff9E9E9E)),
+//                         const SizedBox(width: 4),
+//                         Text(
+//                           '$university, $location',
+//                           style: const TextStyle(
+//                             fontSize: 11,
+//                             color: Color(0xff757575),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                     const SizedBox(height: 8),
+//                     Row(
+//                       children: [
+//                         Container(
+//                           padding: const EdgeInsets.symmetric(
+//                               horizontal: 8, vertical: 3),
+//                           decoration: BoxDecoration(
+//                             color: const Color(0xffE3F2FD),
+//                             borderRadius: BorderRadius.circular(6),
+//                           ),
+//                           child: Text(
+//                             type,
+//                             style: const TextStyle(
+//                               fontSize: 10,
+//                               fontWeight: FontWeight.w600,
+//                               color: Color(0xff1976D2),
+//                             ),
+//                           ),
+//                         ),
+//                         const Spacer(),
+//                         const Icon(Icons.access_time,
+//                             size: 12, color: Color(0xffFF9800)),
+//                         const SizedBox(width: 4),
+//                         Text(
+//                           deadline,
+//                           style: const TextStyle(
+//                             fontSize: 11,
+//                             fontWeight: FontWeight.w600,
+//                             color: Color(0xffFF9800),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
+
+
+
+
+
+
+// import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:flutter/material.dart';
+// import 'package:google_fonts/google_fonts.dart';
+// import 'package:scholarship_app/routes/app_routes.dart';
+// import 'package:scholarship_app/screens/fill_information/personal_info_screen.dart';
+// import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+// class Homescreens extends StatelessWidget {
+//   const Homescreens({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Scholarship App',
+//       theme: ThemeData(
+//         textTheme: GoogleFonts.poppinsTextTheme(),
+//         scaffoldBackgroundColor: const Color(0xFFF8FAFB),
+//         useMaterial3: true,
+//       ),
+//       home: const HomeScreen(),
+//     );
+//   }
+// }
+
+// class HomeScreen extends StatefulWidget {
+//   const HomeScreen({super.key});
+
+//   @override
+//   State<HomeScreen> createState() => _HomeScreenState();
+// }
+
+// class _HomeScreenState extends State<HomeScreen> {
+//   int _selectedIndex = 0;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: const Color(0xFFF8FAFB),
+//       body: SafeArea(
+//         child: Column(
+//           children: [
+//             // ── Header ────────────────────────────────────────────────────
+//             _buildHeader(),
+
+//             // ── Body ──────────────────────────────────────────────────────
+//             Expanded(
+//               child: SingleChildScrollView(
+//                 physics: const BouncingScrollPhysics(),
+//                 child: Column(
+//                   children: [
+//                     const SizedBox(height: 16),
+
+//                     // Profile Card
+//                     _buildProfileCard(),
+
+//                     const SizedBox(height: 20),
+
+//                     // Search Bar
+//                     _buildSearchBar(),
+
+//                     const SizedBox(height: 24),
+
+//                     // Banner Slider
+//                     const _BannerSection(),
+
+//                     const SizedBox(height: 24),
+
+//                     // Quick Actions
+//                     _buildQuickActions(),
+
+//                     const SizedBox(height: 24),
+
+//                     // Latest Scholarships Header
+//                     _buildSectionHeader(),
+
+//                     const SizedBox(height: 16),
+
+//                     // Scholarship Cards
+//                     _buildScholarshipCards(),
+
+//                     const SizedBox(height: 24),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//       bottomNavigationBar: _buildBottomNavBar(),
+//     );
+//   }
+
+//   // ── Header ────────────────────────────────────────────────────────────────
+//   Widget _buildHeader() {
+//     return Container(
+//       padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         boxShadow: [
+//           BoxShadow(
+//             color: Colors.black.withOpacity(0.04),
+//             blurRadius: 8,
+//             offset: const Offset(0, 2),
+//           ),
+//         ],
+//       ),
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: [
+//           Row(
+//             children: [
+//               Container(
+//                 padding: const EdgeInsets.all(8),
+//                 decoration: BoxDecoration(
+//                   gradient: const LinearGradient(
+//                     colors: [Color(0xff2196F3), Color(0xff1976D2)],
+//                   ),
+//                   borderRadius: BorderRadius.circular(12),
+//                 ),
+//                 child: const Icon(Icons.school_rounded,
+//                     size: 24, color: Colors.white),
+//               ),
+//               const SizedBox(width: 12),
+//               const Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   Text(
+//                     'Scholarship',
+//                     style: TextStyle(
+//                       fontSize: 20,
+//                       fontWeight: FontWeight.w700,
+//                       color: Color(0xff212121),
+//                       letterSpacing: -0.5,
+//                     ),
+//                   ),
+//                   Text(
+//                     'Find Your Future',
+//                     style: TextStyle(
+//                       fontSize: 11,
+//                       color: Color(0xff9E9E9E),
+//                       fontWeight: FontWeight.w500,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ),
+//           Stack(
+//             children: [
+//               IconButton(
+//                 onPressed: () =>
+//                     Navigator.pushNamed(context, AppRoutes.notificationScreen),
+//                 icon: Container(
+//                   padding: const EdgeInsets.all(10),
+//                   decoration: BoxDecoration(
+//                     color: const Color(0xFFF5F5F5),
+//                     borderRadius: BorderRadius.circular(12),
+//                   ),
+//                   child: const Icon(
+//                     Icons.notifications_outlined,
+//                     color: Color(0xff424242),
+//                     size: 22,
+//                   ),
+//                 ),
+//               ),
+//               Positioned(
+//                 top: 8,
+//                 right: 8,
+//                 child: Container(
+//                   width: 8,
+//                   height: 8,
+//                   decoration: const BoxDecoration(
+//                     color: Color(0xffF44336),
+//                     shape: BoxShape.circle,
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   // ── Profile Card ──────────────────────────────────────────────────────────
+//   Widget _buildProfileCard() {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: GestureDetector(
+//         onTap: () => Navigator.pushNamed(context, AppRoutes.profileScreen),
+//         child: Container(
+//           padding: const EdgeInsets.all(16),
+//           decoration: BoxDecoration(
+//             gradient: const LinearGradient(
+//               begin: Alignment.topLeft,
+//               end: Alignment.bottomRight,
+//               colors: [Color(0xff2196F3), Color(0xff1976D2)],
+//             ),
+//             borderRadius: BorderRadius.circular(16),
+//             boxShadow: [
+//               BoxShadow(
+//                 color: const Color(0xff2196F3).withOpacity(0.3),
+//                 blurRadius: 12,
+//                 offset: const Offset(0, 4),
+//               ),
+//             ],
+//           ),
+//           child: Row(
+//             children: [
+//               Container(
+//                 width: 56,
+//                 height: 56,
+//                 decoration: BoxDecoration(
+//                   shape: BoxShape.circle,
+//                   border: Border.all(color: Colors.white, width: 3),
+//                   boxShadow: [
+//                     BoxShadow(
+//                       color: Colors.black.withOpacity(0.15),
+//                       blurRadius: 8,
+//                       offset: const Offset(0, 2),
+//                     ),
+//                   ],
+//                   image: const DecorationImage(
+//                     image: NetworkImage("https://i.pravatar.cc/150?img=11"),
+//                     fit: BoxFit.cover,
+//                   ),
+//                 ),
+//               ),
+//               const SizedBox(width: 14),
+//               Expanded(
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     const Text(
+//                       'សួស្តី, Khunrithy 👋',
+//                       style: TextStyle(
+//                         fontSize: 16,
+//                         fontWeight: FontWeight.w700,
+//                         color: Colors.white,
+//                         letterSpacing: -0.3,
+//                       ),
+//                     ),
+//                     const SizedBox(height: 2),
+//                     Row(
+//                       children: [
+//                         Container(
+//                           padding: const EdgeInsets.symmetric(
+//                               horizontal: 8, vertical: 3),
+//                           decoration: BoxDecoration(
+//                             color: Colors.white.withOpacity(0.25),
+//                             borderRadius: BorderRadius.circular(6),
+//                           ),
+//                           child: const Text(
+//                             'Student',
+//                             style: TextStyle(
+//                               fontSize: 11,
+//                               color: Colors.white,
+//                               fontWeight: FontWeight.w600,
+//                             ),
+//                           ),
+//                         ),
+//                         const SizedBox(width: 6),
+//                         Text(
+//                           'View Profile',
+//                           style: TextStyle(
+//                             fontSize: 12,
+//                             color: Colors.white.withOpacity(0.9),
+//                             fontWeight: FontWeight.w500,
+//                           ),
+//                         ),
+//                         const Icon(
+//                           Icons.arrow_forward_ios,
+//                           color: Colors.white,
+//                           size: 11,
+//                         ),
+//                       ],
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   // ── Search Bar ────────────────────────────────────────────────────────────
+//   Widget _buildSearchBar() {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Row(
+//         children: [
+//           Expanded(
+//             child: GestureDetector(
+//               onTap: () =>
+//                   Navigator.pushNamed(context, AppRoutes.searchFilterScreen),
+//               child: Container(
+//                 height: 52,
+//                 padding: const EdgeInsets.symmetric(horizontal: 16),
+//                 decoration: BoxDecoration(
+//                   color: Colors.white,
+//                   borderRadius: BorderRadius.circular(14),
+//                   border: Border.all(color: const Color(0xffE2E8F0)),
+//                   boxShadow: [
+//                     BoxShadow(
+//                       color: Colors.black.withOpacity(0.03),
+//                       blurRadius: 8,
+//                       offset: const Offset(0, 2),
+//                     ),
+//                   ],
+//                 ),
+//                 child: const Row(
+//                   children: [
+//                     Icon(Icons.search, color: Color(0xff9E9E9E), size: 22),
+//                     SizedBox(width: 12),
+//                     Text(
+//                       'Search scholarships...',
+//                       style: TextStyle(
+//                         color: Color(0xffBDBDBD),
+//                         fontSize: 14,
+//                         fontWeight: FontWeight.w400,
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//           const SizedBox(width: 10),
+//           Container(
+//             width: 52,
+//             height: 52,
+//             decoration: BoxDecoration(
+//               gradient: const LinearGradient(
+//                 colors: [Color(0xff2196F3), Color(0xff1976D2)],
+//               ),
+//               borderRadius: BorderRadius.circular(14),
+//               boxShadow: [
+//                 BoxShadow(
+//                   color: const Color(0xff2196F3).withOpacity(0.3),
+//                   blurRadius: 8,
+//                   offset: const Offset(0, 3),
+//                 ),
+//               ],
+//             ),
+//             child: IconButton(
+//               onPressed: () =>
+//                   Navigator.pushNamed(context, AppRoutes.searchFilterScreen),
+//               icon: const Icon(
+//                 Icons.tune_rounded,
+//                 color: Colors.white,
+//                 size: 22,
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   // ── Quick Actions ─────────────────────────────────────────────────────────
+//   Widget _buildQuickActions() {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           const Text(
+//             'Quick Actions',
+//             style: TextStyle(
+//               fontSize: 18,
+//               fontWeight: FontWeight.w700,
+//               color: Color(0xff212121),
+//               letterSpacing: -0.3,
+//             ),
+//           ),
+//           const SizedBox(height: 14),
+//           GridView.count(
+//             shrinkWrap: true,
+//             physics: const NeverScrollableScrollPhysics(),
+//             crossAxisCount: 2,
+//             crossAxisSpacing: 12,
+//             mainAxisSpacing: 12,
+//             childAspectRatio: 1.5,
+//             children: [
+//               _ActionCard(
+//                 icon: Icons.explore_outlined,
+//                 label: 'Discover',
+//                 color: const Color(0xff2196F3),
+//                 onTap: () =>
+//                     Navigator.pushNamed(context, AppRoutes.discoverScreen),
+//               ),
+//               _ActionCard(
+//                 icon: Icons.military_tech_outlined,
+//                 label: 'Match',
+//                 color: const Color(0xffFF9800),
+//                 onTap: () {},
+//               ),
+//               _ActionCard(
+//                 icon: Icons.bookmark_outline,
+//                 label: 'Saved',
+//                 color: const Color(0xff4CAF50),
+//                 onTap: () => Navigator.pushNamed(
+//                     context, AppRoutes.savedScholarshipScreen),
+//               ),
+//               _ActionCard(
+//                 icon: Icons.edit_document,
+//                 label: 'Fill Info',
+//                 color: const Color(0xff9C27B0),
+//                 onTap: () {
+//                   Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => const PersonalInfoScreen(),
+//                     ),
+//                   );
+//                 },
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   // ── Section Header ────────────────────────────────────────────────────────
+//   Widget _buildSectionHeader() {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: [
+//           const Text(
+//             'Latest Scholarships',
+//             style: TextStyle(
+//               fontSize: 18,
+//               fontWeight: FontWeight.w700,
+//               color: Color(0xff212121),
+//               letterSpacing: -0.3,
+//             ),
+//           ),
+//           TextButton(
+//             onPressed: () {},
+//             style: TextButton.styleFrom(
+//               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+//             ),
+//             child: Row(
+//               children: const [
+//                 Text(
+//                   'See All',
+//                   style: TextStyle(
+//                     color: Color(0xff2196F3),
+//                     fontSize: 13,
+//                     fontWeight: FontWeight.w600,
+//                   ),
+//                 ),
+//                 SizedBox(width: 4),
+//                 Icon(Icons.arrow_forward_ios,
+//                     size: 12, color: Color(0xff2196F3)),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   // ── Scholarship Cards ─────────────────────────────────────────────────────
+//   Widget _buildScholarshipCards() {
+//     return Column(
+//       children: [
+//         _ScholarshipCard(
+//           title: 'Full Scholarship to MIT',
+//           university: 'MIT',
+//           location: 'United States',
+//           type: 'Full Scholarship',
+//           deadline: 'Mar 30, 2026',
+//           imageUrl: 'assets/images/mit.png', // Placeholder
+//         ),
+//         const SizedBox(height: 12),
+//         _ScholarshipCard(
+//           title: 'Engineering Excellence Award',
+//           university: 'Stanford',
+//           location: 'USA',
+//           type: 'Partial',
+//           deadline: 'Apr 15, 2026',
+//           imageUrl: 'assets/images/stanford.png',
+//         ),
+//       ],
+//     );
+//   }
+
+//   // ── Bottom Navigation ─────────────────────────────────────────────────────
+//   Widget _buildBottomNavBar() {
+//     return Container(
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         boxShadow: [
+//           BoxShadow(
+//             color: Colors.black.withOpacity(0.08),
+//             blurRadius: 12,
+//             offset: const Offset(0, -2),
+//           ),
+//         ],
+//       ),
+//       child: SafeArea(
+//         child: BottomNavigationBar(
+//           currentIndex: _selectedIndex,
+//           onTap: (index) => setState(() => _selectedIndex = index),
+//           backgroundColor: Colors.white,
+//           selectedItemColor: const Color(0xff2196F3),
+//           unselectedItemColor: const Color(0xff9E9E9E),
+//           selectedLabelStyle: const TextStyle(
+//             fontWeight: FontWeight.w600,
+//             fontSize: 12,
+//           ),
+//           unselectedLabelStyle: const TextStyle(
+//             fontWeight: FontWeight.w500,
+//             fontSize: 11,
+//           ),
+//           showUnselectedLabels: true,
+//           type: BottomNavigationBarType.fixed,
+//           elevation: 0,
+//           items: const [
+//             BottomNavigationBarItem(
+//               icon: Icon(Icons.home_outlined, size: 26),
+//               activeIcon: Icon(Icons.home_rounded, size: 26),
+//               label: 'Home',
+//             ),
+//             BottomNavigationBarItem(
+//               icon: Icon(Icons.chat_bubble_outline, size: 24),
+//               activeIcon: Icon(Icons.chat_bubble, size: 24),
+//               label: 'Chat',
+//             ),
+//             BottomNavigationBarItem(
+//               icon: Icon(Icons.menu_rounded, size: 26),
+//               label: 'Menu',
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// // ══════════════════════════════════════════════════════════════════════════════
+// // REUSABLE WIDGETS
+// // ══════════════════════════════════════════════════════════════════════════════
+
+// // ── Action Card ───────────────────────────────────────────────────────────────
+
+// class _ActionCard extends StatelessWidget {
+//   final IconData icon;
+//   final String label;
+//   final Color color;
+//   final VoidCallback onTap;
+
+//   const _ActionCard({
+//     required this.icon,
+//     required this.label,
+//     required this.color,
+//     required this.onTap,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: onTap,
+//       child: Container(
+//         decoration: BoxDecoration(
+//           color: Colors.white,
+//           borderRadius: BorderRadius.circular(14),
+//           border: Border.all(color: const Color(0xffF0F0F0)),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.black.withOpacity(0.04),
+//               blurRadius: 8,
+//               offset: const Offset(0, 2),
+//             ),
+//           ],
+//         ),
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Container(
+//               padding: const EdgeInsets.all(12),
+//               decoration: BoxDecoration(
+//                 color: color.withOpacity(0.12),
+//                 borderRadius: BorderRadius.circular(12),
+//               ),
+//               child: Icon(icon, size: 28, color: color),
+//             ),
+//             const SizedBox(height: 10),
+//             Text(
+//               label,
+//               style: TextStyle(
+//                 fontSize: 13,
+//                 fontWeight: FontWeight.w600,
+//                 color: const Color(0xff424242),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// // ── Banner Section ────────────────────────────────────────────────────────────
+
+// class _BannerSection extends StatefulWidget {
+//   const _BannerSection();
+
+//   @override
+//   State<_BannerSection> createState() => _BannerSectionState();
+// }
+
+// class _BannerSectionState extends State<_BannerSection> {
+//   final List<Map<String, String>> _slides = [
+//     {
+//       'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRU0QzCrFe54Ne8qUBrLcJDwvW4PpMTvKPQQ&s',
+//       'label': '🎓 Apply for Scholarships',
+//     },
+//     {
+//       'image': 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=900&q=90',
+//       'label': '🏆 Achieve Your Dreams',
+//     },
+//     {
+//       'image': 'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=900&q=90',
+//       'label': '📚 Start Learning Today',
+//     },
+//   ];
+
+//   int _currentIndex = 0;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Column(
+//         children: [
+//           // ── Carousel ─────────────────────────────────────────────────────────
+//           Stack(
+//             alignment: Alignment.bottomCenter,
+//             children: [
+//               CarouselSlider(
+//                 options: CarouselOptions(
+//                   height: 160,
+//                   viewportFraction: 1.0,
+//                   autoPlay: true,
+//                   autoPlayInterval: const Duration(seconds: 3),
+//                   autoPlayCurve: Curves.easeInOut,
+//                   autoPlayAnimationDuration: const Duration(milliseconds: 500),
+//                   onPageChanged: (index, reason) {
+//                     setState(() => _currentIndex = index);
+//                   },
+//                 ),
+//                 items: _slides.map((slide) {
+//                   return Builder(
+//                     builder: (context) {
+//                       return Container(
+//                         width: double.infinity,
+//                         margin: const EdgeInsets.symmetric(horizontal: 4),
+//                         decoration: BoxDecoration(
+//                           color: const Color(0xFF335C81),
+//                           borderRadius: BorderRadius.circular(16),
+//                         ),
+//                         clipBehavior: Clip.hardEdge,
+//                         child: Stack(
+//                           fit: StackFit.expand,
+//                           children: [
+//                             // Background image
+//                             Image.network(
+//                               slide['image']!,
+//                               fit: BoxFit.cover,
+//                               loadingBuilder: (context, child, progress) {
+//                                 if (progress == null) return child;
+//                                 return const Center(
+//                                   child: CircularProgressIndicator(
+//                                     color: Colors.white54,
+//                                     strokeWidth: 2,
+//                                   ),
+//                                 );
+//                               },
+//                               errorBuilder: (_, __, ___) => const Center(
+//                                 child: Icon(Icons.image_not_supported,
+//                                     color: Colors.white54, size: 40),
+//                               ),
+//                             ),
+//                             // Dark gradient overlay
+//                             Container(
+//                               decoration: BoxDecoration(
+//                                 gradient: LinearGradient(
+//                                   begin: Alignment.topCenter,
+//                                   end: Alignment.bottomCenter,
+//                                   colors: [
+//                                     Colors.transparent,
+//                                     Colors.black.withOpacity(0.65),
+//                                   ],
+//                                 ),
+//                               ),
+//                             ),
+//                             // Label text
+//                             Positioned(
+//                               bottom: 28,
+//                               left: 16,
+//                               right: 16,
+//                               child: Text(
+//                                 slide['label']!,
+//                                 style: const TextStyle(
+//                                   color: Colors.white,
+//                                   fontSize: 16,
+//                                   fontWeight: FontWeight.w700,
+//                                   shadows: [
+//                                     Shadow(
+//                                       color: Colors.black45,
+//                                       blurRadius: 6,
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       );
+//                     },
+//                   );
+//                 }).toList(),
+//               ),
+
+//               // ── Dots Indicator ────────────────────────────────────────────────
+//               Positioned(
+//                 bottom: 10,
+//                 child: AnimatedSmoothIndicator(
+//                   activeIndex: _currentIndex,
+//                   count: _slides.length,
+//                   effect: const ExpandingDotsEffect(
+//                     dotWidth: 8,
+//                     dotHeight: 8,
+//                     expansionFactor: 2.5,
+//                     spacing: 5,
+//                     dotColor: Colors.white38,
+//                     activeDotColor: Colors.white,
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// // ── Scholarship Card ──────────────────────────────────────────────────────────
+
+// class _ScholarshipCard extends StatelessWidget {
+//   final String title;
+//   final String university;
+//   final String location;
+//   final String type;
+//   final String deadline;
+//   final String imageUrl;
+
+//   const _ScholarshipCard({
+//     required this.title,
+//     required this.university,
+//     required this.location,
+//     required this.type,
+//     required this.deadline,
+//     required this.imageUrl,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Container(
+//         decoration: BoxDecoration(
+//           color: Colors.white,
+//           borderRadius: BorderRadius.circular(16),
+//           border: Border.all(color: const Color(0xffF0F0F0)),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.black.withOpacity(0.04),
+//               blurRadius: 10,
+//               offset: const Offset(0, 2),
+//             ),
+//           ],
+//         ),
+//         child: Padding(
+//           padding: const EdgeInsets.all(14),
+//           child: Row(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               // Image
+//               Container(
+//                 width: 70,
+//                 height: 70,
+//                 decoration: BoxDecoration(
+//                   color: const Color(0xffF5F5F5),
+//                   borderRadius: BorderRadius.circular(12),
+//                 ),
+//                 child: const Center(
+//                   child: Icon(Icons.school_rounded,
+//                       size: 32, color: Color(0xff2196F3)),
+//                 ),
+//               ),
+//               const SizedBox(width: 14),
+//               // Content
+//               Expanded(
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Text(
+//                       title,
+//                       maxLines: 2,
+//                       overflow: TextOverflow.ellipsis,
+//                       style: const TextStyle(
+//                         fontSize: 14,
+//                         fontWeight: FontWeight.w600,
+//                         color: Color(0xff212121),
+//                         height: 1.3,
+//                       ),
+//                     ),
+//                     const SizedBox(height: 6),
+//                     Row(
+//                       children: [
+//                         const Icon(Icons.location_on_outlined,
+//                             size: 13, color: Color(0xff9E9E9E)),
+//                         const SizedBox(width: 4),
+//                         Text(
+//                           '$university, $location',
+//                           style: const TextStyle(
+//                             fontSize: 11,
+//                             color: Color(0xff757575),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                     const SizedBox(height: 8),
+//                     Row(
+//                       children: [
+//                         Container(
+//                           padding: const EdgeInsets.symmetric(
+//                               horizontal: 8, vertical: 3),
+//                           decoration: BoxDecoration(
+//                             color: const Color(0xffE3F2FD),
+//                             borderRadius: BorderRadius.circular(6),
+//                           ),
+//                           child: Text(
+//                             type,
+//                             style: const TextStyle(
+//                               fontSize: 10,
+//                               fontWeight: FontWeight.w600,
+//                               color: Color(0xff1976D2),
+//                             ),
+//                           ),
+//                         ),
+//                         const Spacer(),
+//                         const Icon(Icons.access_time,
+//                             size: 12, color: Color(0xffFF9800)),
+//                         const SizedBox(width: 4),
+//                         Text(
+//                           deadline,
+//                           style: const TextStyle(
+//                             fontSize: 11,
+//                             fontWeight: FontWeight.w600,
+//                             color: Color(0xffFF9800),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
+
+
+
+
+
+
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:scholarship_app/constants/app_colors.dart';
 import 'package:scholarship_app/routes/app_routes.dart';
+import 'package:scholarship_app/screens/fill_information/personal_info_screen.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Homescreens extends StatelessWidget {
   const Homescreens({super.key});
@@ -11,15 +3604,9 @@ class Homescreens extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Scholarship App',
       theme: ThemeData(
-        // កំណត់ Font ទាំងមូលទៅជា Kantumruy Pro ឬ Font ខ្មែរផ្សេងទៀត
-        textTheme: GoogleFonts.kantumruyProTextTheme(
-          Theme.of(context).textTheme.apply(
-            bodyColor: Colors.white,
-            displayColor: Colors.white,
-          ),
-        ),
-        scaffoldBackgroundColor: const Color(0xFF0F1C36), // ពណ៌ផ្ទៃខាងក្រោយ (Dark Navy)
-        iconTheme: const IconThemeData(color: Colors.white),
+        textTheme: GoogleFonts.poppinsTextTheme(),
+        scaffoldBackgroundColor: AppColors.lightGrey,
+        useMaterial3: true,
       ),
       home: const HomeScreen(),
     );
@@ -39,298 +3626,533 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
+      backgroundColor: AppColors.lightGrey,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-          child: Column(
-            children: [
-              // 1. Header (Title & Bell)
-              const _HeaderSection(),
-              const SizedBox(height: 20),
+        child: Column(
+          children: [
+            // ── Header ────────────────────────────────────────────────────
+            _buildHeader(),
 
-              // 2. Profile Section
-              const _ProfileSection(),
-              const SizedBox(height: 20),
+            // ── Body ──────────────────────────────────────────────────────
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 16),
 
-              // 3. Search Bar
-              const _SearchBarSection(),
-              const SizedBox(height: 20),
+                    // Profile Card
+                    _buildProfileCard(),
 
-              // 4. Scrollable Content (Banner, Grid, News)
-              Expanded(
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      // Banner Slider
-                      const _BannerSection(),
-                      const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-                      // Grid Menu Buttons
-                      const _MenuGridSection(),
-                      const SizedBox(height: 20),
+                    // Search Bar
+                    _buildSearchBar(),
 
-                      // Bottom Info Card
-                      const _BottomInfoCard(),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
+                    const SizedBox(height: 24),
+
+                    // Banner Slider
+                    const _BannerSection(),
+
+                    const SizedBox(height: 24),
+
+                    // Quick Actions
+                    _buildQuickActions(),
+
+                    const SizedBox(height: 24),
+
+                    // Latest Scholarships Header
+                    _buildSectionHeader(),
+
+                    const SizedBox(height: 16),
+
+                    // Scholarship Cards
+                    _buildScholarshipCards(),
+
+                    const SizedBox(height: 24),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: _buildBottomNavBar(),
     );
   }
 
-  Widget _buildBottomNavBar() {
+  // ── Header ────────────────────────────────────────────────────────────────
+  Widget _buildHeader() {
     return Container(
-      decoration: const BoxDecoration(
-        color: Color(0xFF0F1C36),
-        border: Border(top: BorderSide(color: Colors.white10, width: 0.5)),
-      ),
-      child: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
-        backgroundColor: const Color(0xFF0F1C36),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white60,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble_outline),
-            label: 'chat',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            label: 'Menu',
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-    );
-  }
-}
-
-// ================== Sub-Widgets ==================
-
-class _HeaderSection extends StatelessWidget {
-  const _HeaderSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            const Text(
-              "Scholarship",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(width: 8),
-            // Logo Icon (Graduation Cap)
-            Icon(Icons.school, size: 32, color: Colors.blue.shade400),
-          ],
-        ),
-        IconButton(
-          onPressed: () => Navigator.pushNamed(context, AppRoutes.notificationScreen),
-          icon: const Icon(Icons.notifications_outlined, size: 28),
-        ),
-      ],
-    );
-  }
-}
-
-class _ProfileSection extends StatelessWidget {
-  const _ProfileSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, AppRoutes.profileScreen),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Profile Image
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.white, width: 1.5),
-              image: const DecorationImage(
-                image: NetworkImage("https://i.pravatar.cc/150?img=11"), // Mock Image
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          // Name Text
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
             children: [
-              const Text(
-                "សួស្តី, Khunrithy",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [AppColors.primary, AppColors.primaryDark],
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(Icons.school_rounded,
+                    size: 24, color: AppColors.white),
+              ),
+              const SizedBox(width: 12),
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Scholarship',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textDark,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  Text(
+                    'Find Your Future',
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: AppColors.grey,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Stack(
+            children: [
+              IconButton(
+                onPressed: () =>
+                    Navigator.pushNamed(context, AppRoutes.notificationScreen),
+                icon: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AppColors.lightGrey,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.notifications_outlined,
+                    color: AppColors.textDark,
+                    size: 22,
+                  ),
                 ),
               ),
-              Text(
-                "ព័ត៌មានផ្ទាល់ខ្លួន >",
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey.shade400,
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                  width: 8,
+                  height: 8,
+                  decoration: const BoxDecoration(
+                    color: AppColors.red,
+                    shape: BoxShape.circle,
+                  ),
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
   }
-}
 
-class _SearchBarSection extends StatelessWidget {
-  const _SearchBarSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: 50,
-            decoration: BoxDecoration(
-              color: const Color(0xFFD9D9D9), // Light Grey background
-              borderRadius: BorderRadius.circular(12),
+  // ── Profile Card ──────────────────────────────────────────────────────────
+  Widget _buildProfileCard() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: GestureDetector(
+        onTap: () => Navigator.pushNamed(context, AppRoutes.profileScreen),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [AppColors.primary, AppColors.primaryDark],
             ),
-            child: const TextField(
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search, color: Colors.black54),
-                hintText: "Search scholarships",
-                hintStyle: TextStyle(color: Colors.black54),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(vertical: 15),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withOpacity(0.3),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: AppColors.white, width: 3),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.15),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                  image: const DecorationImage(
+                    image: NetworkImage("https://i.pravatar.cc/150?img=11"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'សួស្តី, Khunrithy 👋',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.white,
+                        letterSpacing: -0.3,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: AppColors.white.withOpacity(0.25),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Text(
+                            'Student',
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: AppColors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          'View Profile',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.white.withOpacity(0.9),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const Icon(
+                          Icons.arrow_forward_ios,
+                          color: AppColors.white,
+                          size: 11,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ── Search Bar ────────────────────────────────────────────────────────────
+  Widget _buildSearchBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () =>
+                  Navigator.pushNamed(context, AppRoutes.searchFilterScreen),
+              child: Container(
+                height: 52,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: AppColors.divider),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.03),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: const Row(
+                  children: [
+                    Icon(Icons.search, color: AppColors.grey, size: 22),
+                    SizedBox(width: 12),
+                    Text(
+                      'Search scholarships...',
+                      style: TextStyle(
+                        color: AppColors.divider,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        const SizedBox(width: 12),
-        // Filter Button
-        Container(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-            color: const Color(0xFFD9D9D9),
-            borderRadius: BorderRadius.circular(12),
+          const SizedBox(width: 10),
+          Container(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [AppColors.primary, AppColors.primaryDark],
+              ),
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: IconButton(
+              onPressed: () =>
+                  Navigator.pushNamed(context, AppRoutes.searchFilterScreen),
+              icon: const Icon(
+                Icons.tune_rounded,
+                color: AppColors.white,
+                size: 22,
+              ),
+            ),
           ),
-          child: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.tune, color: Colors.black87),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
-}
 
-class _BannerSection extends StatelessWidget {
-  const _BannerSection();
+  // ── Quick Actions ─────────────────────────────────────────────────────────
+  Widget _buildQuickActions() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Quick Actions',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textDark,
+              letterSpacing: -0.3,
+            ),
+          ),
+          const SizedBox(height: 14),
+          GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisCount: 2,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            childAspectRatio: 1.5,
+            children: [
+              _ActionCard(
+                icon: Icons.explore_outlined,
+                label: 'Discover',
+                color: AppColors.primary,
+                onTap: () =>
+                    Navigator.pushNamed(context, AppRoutes.discoverScreen),
+              ),
+              _ActionCard(
+                icon: Icons.military_tech_outlined,
+                label: 'Match',
+                color: const Color(0xffFF9800),
+                onTap: () {},
+              ),
+              _ActionCard(
+                icon: Icons.bookmark_outline,
+                label: 'Saved',
+                color: AppColors.green,
+                onTap: () => Navigator.pushNamed(
+                    context, AppRoutes.savedScholarshipScreen),
+              ),
+              _ActionCard(
+                icon: Icons.edit_document,
+                label: 'Fill Info',
+                color: const Color(0xff9C27B0),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PersonalInfoScreen(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
+  // ── Section Header ────────────────────────────────────────────────────────
+  Widget _buildSectionHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            'Latest Scholarships',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textDark,
+              letterSpacing: -0.3,
+            ),
+          ),
+          TextButton(
+            onPressed: () {},
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            ),
+            child: Row(
+              children: const [
+                Text(
+                  'See All',
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(width: 4),
+                Icon(Icons.arrow_forward_ios,
+                    size: 12, color: AppColors.primary),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Scholarship Cards ─────────────────────────────────────────────────────
+  Widget _buildScholarshipCards() {
     return Column(
       children: [
-        Container(
-          width: double.infinity,
-          height: 140,
-          decoration: BoxDecoration(
-            color: const Color(0xFFD9D9D9), // Placeholder color
-            borderRadius: BorderRadius.circular(16),
-          ),
+        _ScholarshipCard(
+          title: 'Full Scholarship to MIT',
+          university: 'MIT',
+          location: 'United States',
+          type: 'Full Scholarship',
+          deadline: 'Mar 30, 2026',
+          imageUrl: 'assets/images/mit.png', // Placeholder
         ),
-        const SizedBox(height: 10),
-        // Dots Indicator
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildDot(isActive: true),
-            _buildDot(isActive: false),
-            _buildDot(isActive: false),
-          ],
-        )
+        const SizedBox(height: 12),
+        _ScholarshipCard(
+          title: 'Engineering Excellence Award',
+          university: 'Stanford',
+          location: 'USA',
+          type: 'Partial',
+          deadline: 'Apr 15, 2026',
+          imageUrl: 'assets/images/stanford.png',
+        ),
       ],
     );
   }
 
-  Widget _buildDot({required bool isActive}) {
+  // ── Bottom Navigation ─────────────────────────────────────────────────────
+  Widget _buildBottomNavBar() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      width: 10,
-      height: 10,
       decoration: BoxDecoration(
-        color: isActive ? const Color(0xFF335C81) : Colors.grey.shade600,
-        shape: BoxShape.circle,
+        color: AppColors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 12,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: (index) => setState(() => _selectedIndex = index),
+          backgroundColor: AppColors.white,
+          selectedItemColor: AppColors.primary,
+          unselectedItemColor: AppColors.grey,
+          selectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 11,
+          ),
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          elevation: 0,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined, size: 26),
+              activeIcon: Icon(Icons.home_rounded, size: 26),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat_bubble_outline, size: 24),
+              activeIcon: Icon(Icons.chat_bubble, size: 24),
+              label: 'Chat',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.menu_rounded, size: 26),
+              label: 'Menu',
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class _MenuGridSection extends StatelessWidget {
-  const _MenuGridSection();
+// ══════════════════════════════════════════════════════════════════════════════
+// REUSABLE WIDGETS
+// ══════════════════════════════════════════════════════════════════════════════
 
-  @override
-  Widget build(BuildContext context) {
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 2,
-      crossAxisSpacing: 15,
-      mainAxisSpacing: 15,
-      childAspectRatio: 1.4, // Adjust width/height ratio
-      children: [
-        _MenuButton(
-          icon: Icons.lightbulb_outline,
-          label: "Discover",
-          onTap: () => Navigator.pushNamed(context, AppRoutes.discoverScreen),
-        ),
-        const _MenuButton(
-          icon: Icons.stars_outlined, // Or VerifiedUserOutlined
-          label: "Match",
-        ),
-        _MenuButton(
-          icon: Icons.folder_open,
-          label: "Save",
-          onTap: () => Navigator.pushNamed(context, AppRoutes.savedScholarshipScreen),
-        ),
-        const _MenuButton(
-          icon: Icons.edit_outlined,
-          label: "Fill personal Info",
-        ),
-      ],
-    );
-  }
-}
+// ── Action Card ───────────────────────────────────────────────────────────────
 
-class _MenuButton extends StatelessWidget {
+class _ActionCard extends StatelessWidget {
   final IconData icon;
   final String label;
-  final VoidCallback? onTap;
+  final Color color;
+  final VoidCallback onTap;
 
-  const _MenuButton({required this.icon, required this.label, this.onTap});
+  const _ActionCard({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -338,12 +4160,13 @@ class _MenuButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF335C81), // Blue-Greyish color from design
-          borderRadius: BorderRadius.circular(12),
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: AppColors.lightGrey),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 4,
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 8,
               offset: const Offset(0, 2),
             ),
           ],
@@ -351,14 +4174,21 @@ class _MenuButton extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 40, color: Colors.white),
-            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, size: 28, color: color),
+            ),
+            const SizedBox(height: 10),
             Text(
               label,
               style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textDark,
               ),
             ),
           ],
@@ -368,29 +4198,277 @@ class _MenuButton extends StatelessWidget {
   }
 }
 
-class _BottomInfoCard extends StatelessWidget {
-  const _BottomInfoCard();
+// ── Banner Section ────────────────────────────────────────────────────────────
+
+class _BannerSection extends StatefulWidget {
+  const _BannerSection();
+
+  @override
+  State<_BannerSection> createState() => _BannerSectionState();
+}
+
+class _BannerSectionState extends State<_BannerSection> {
+  final List<Map<String, String>> _slides = [
+    {
+      'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRU0QzCrFe54Ne8qUBrLcJDwvW4PpMTvKPQQ&s',
+      'label': '🎓 Apply for Scholarships',
+    },
+    {
+      'image': 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=900&q=90',
+      'label': '🏆 Achieve Your Dreams',
+    },
+    {
+      'image': 'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=900&q=90',
+      'label': '📚 Start Learning Today',
+    },
+  ];
+
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 180,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: const Color(0xFFE0E0E0), // Placeholder Grey
-        borderRadius: BorderRadius.circular(8), // Less rounded than buttons
-      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Mock lines representing text
-          Container(height: 2, width: 200, color: Colors.grey.shade600),
-          const SizedBox(height: 20),
-          Container(height: 2, width: double.infinity, color: Colors.grey.shade600),
-          const SizedBox(height: 20),
-          Container(height: 2, width: double.infinity, color: Colors.grey.shade600),
+          // ── Carousel ─────────────────────────────────────────────────────────
+          Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              CarouselSlider(
+                options: CarouselOptions(
+                  height: 160,
+                  viewportFraction: 1.0,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 3),
+                  autoPlayCurve: Curves.easeInOut,
+                  autoPlayAnimationDuration: const Duration(milliseconds: 500),
+                  onPageChanged: (index, reason) {
+                    setState(() => _currentIndex = index);
+                  },
+                ),
+                items: _slides.map((slide) {
+                  return Builder(
+                    builder: (context) {
+                      return Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF335C81),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        clipBehavior: Clip.hardEdge,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            // Background image
+                            Image.network(
+                              slide['image']!,
+                              fit: BoxFit.cover,
+                              loadingBuilder: (context, child, progress) {
+                                if (progress == null) return child;
+                                return const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white54,
+                                    strokeWidth: 2,
+                                  ),
+                                );
+                              },
+                              errorBuilder: (_, __, ___) => const Center(
+                                child: Icon(Icons.image_not_supported,
+                                    color: Colors.white54, size: 40),
+                              ),
+                            ),
+                            // Dark gradient overlay
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.transparent,
+                                    Colors.black.withOpacity(0.65),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            // Label text
+                            Positioned(
+                              bottom: 28,
+                              left: 16,
+                              right: 16,
+                              child: Text(
+                                slide['label']!,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black45,
+                                      blurRadius: 6,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+
+              // ── Dots Indicator ────────────────────────────────────────────────
+              Positioned(
+                bottom: 10,
+                child: AnimatedSmoothIndicator(
+                  activeIndex: _currentIndex,
+                  count: _slides.length,
+                  effect: const ExpandingDotsEffect(
+                    dotWidth: 8,
+                    dotHeight: 8,
+                    expansionFactor: 2.5,
+                    spacing: 5,
+                    dotColor: Colors.white38,
+                    activeDotColor: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
+      ),
+    );
+  }
+}
+
+// ── Scholarship Card ──────────────────────────────────────────────────────────
+
+class _ScholarshipCard extends StatelessWidget {
+  final String title;
+  final String university;
+  final String location;
+  final String type;
+  final String deadline;
+  final String imageUrl;
+
+  const _ScholarshipCard({
+    required this.title,
+    required this.university,
+    required this.location,
+    required this.type,
+    required this.deadline,
+    required this.imageUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.lightGrey),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 10,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image
+              Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  color: AppColors.lightGrey,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Center(
+                  child: Icon(Icons.school_rounded,
+                      size: 32, color: AppColors.primary),
+                ),
+              ),
+              const SizedBox(width: 14),
+              // Content
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textDark,
+                        height: 1.3,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        const Icon(Icons.location_on_outlined,
+                            size: 13, color: AppColors.grey),
+                        const SizedBox(width: 4),
+                        Text(
+                          '$university, $location',
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: AppColors.textLight,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: const Color(0xffE3F2FD),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            type,
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primaryDark,
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        const Icon(Icons.access_time,
+                            size: 12, color: Color(0xffFF9800)),
+                        const SizedBox(width: 4),
+                        Text(
+                          deadline,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xffFF9800),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

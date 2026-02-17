@@ -4,6 +4,7 @@
 
     <!-- Internet Permission សម្រាប់ Google Sign-In -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    
 
     <application
         android:label="scholarship_app"

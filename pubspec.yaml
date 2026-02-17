@@ -40,6 +40,9 @@ dependencies:
     sdk: flutter
   google_fonts: ^8.0.1
   shared_preferences: ^2.5.4
+  carousel_slider: ^5.1.1   # for create dak slider images
+  smooth_page_indicator: ^1.2.1  # for slider indicator  (រង្វង់មូលតាម slider)
+
 
 dev_dependencies:
   flutter_test:

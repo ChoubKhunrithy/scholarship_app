@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:scholarship_app/routes/app_routes.dart';
 import 'package:scholarship_app/screens/authentication/otp_service.dart';
 
 
