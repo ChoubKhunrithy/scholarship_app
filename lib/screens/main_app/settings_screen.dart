@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scholarship_app/services/theme_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -17,14 +18,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
   // App settings
   String _selectedLanguage = 'English';
   String _notificationSound = 'Default';
+  late bool _darkMode;
 
   final List<String> _languages = [
-    'English', 'ខ្មែរ', '中文', 'Japanese', 'French'
+    'English',
+    'ខ្មែរ',
+    '中文',
+    'Japanese',
+    'French'
   ];
 
-  final List<String> _sounds = [
-    'Default', 'Silent', 'Vibrate only', 'Chime'
-  ];
+  final List<String> _sounds = ['Default', 'Silent', 'Vibrate only', 'Chime'];
+
+  @override
+  void initState() {
+    super.initState();
+    _darkMode = ThemeService().isDarkMode;
+  }
 
   void _showLanguagePicker() {
     showModalBottomSheet(
@@ -66,8 +76,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
@@ -77,19 +89,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back_ios_new,
-                      color: Color(0xff212121),
+                      color: colorScheme.onSurface,
                       size: 20,
                     ),
                     onPressed: () => Navigator.pop(context),
                   ),
-                  const Text(
+                  Text(
                     'Settings',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff212121),
+                      color: colorScheme.onSurface,
                     ),
                   ),
                 ],
@@ -107,41 +119,37 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                     _ToggleTile(
                       icon: Icons.notifications_outlined,
-                      iconColor: const Color(0xff2196F3),
+                      iconColor: colorScheme.primary,
                       label: 'Push Notifications',
                       value: _pushNotifications,
-                      onChanged: (v) =>
-                          setState(() => _pushNotifications = v),
+                      onChanged: (v) => setState(() => _pushNotifications = v),
                     ),
                     _Divider(),
 
                     _ToggleTile(
                       icon: Icons.email_outlined,
-                      iconColor: const Color(0xff2196F3),
+                      iconColor: colorScheme.primary,
                       label: 'Email Notifications',
                       value: _emailNotifications,
-                      onChanged: (v) =>
-                          setState(() => _emailNotifications = v),
+                      onChanged: (v) => setState(() => _emailNotifications = v),
                     ),
                     _Divider(),
 
                     _ToggleTile(
                       icon: Icons.alarm_outlined,
-                      iconColor: const Color(0xff2196F3),
+                      iconColor: colorScheme.primary,
                       label: 'Deadline Reminders',
                       value: _deadlineReminders,
-                      onChanged: (v) =>
-                          setState(() => _deadlineReminders = v),
+                      onChanged: (v) => setState(() => _deadlineReminders = v),
                     ),
                     _Divider(),
 
                     _ToggleTile(
                       icon: Icons.school_outlined,
-                      iconColor: const Color(0xff2196F3),
+                      iconColor: colorScheme.primary,
                       label: 'New Scholarships',
                       value: _newScholarships,
-                      onChanged: (v) =>
-                          setState(() => _newScholarships = v),
+                      onChanged: (v) => setState(() => _newScholarships = v),
                     ),
 
                     const SizedBox(height: 8),
@@ -151,7 +159,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                     _ArrowTile(
                       icon: Icons.language_rounded,
-                      iconColor: const Color(0xff2196F3),
+                      iconColor: colorScheme.primary,
                       label: 'Language',
                       trailing: _selectedLanguage,
                       onTap: _showLanguagePicker,
@@ -160,10 +168,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                     _ArrowTile(
                       icon: Icons.notifications_active_outlined,
-                      iconColor: const Color(0xff2196F3),
+                      iconColor: colorScheme.primary,
                       label: 'Notification Sound',
                       trailing: _notificationSound,
                       onTap: _showSoundPicker,
+                    ),
+                    _Divider(),
+
+                    _ToggleTile(
+                      icon: Icons.dark_mode_outlined,
+                      iconColor: colorScheme.primary,
+                      label: 'Dark Mode',
+                      value: _darkMode,
+                      onChanged: (v) {
+                        setState(() => _darkMode = v);
+                        ThemeService().setTheme(v);
+                      },
                     ),
 
                     const SizedBox(height: 8),
@@ -173,7 +193,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                     _ArrowTile(
                       icon: Icons.privacy_tip_outlined,
-                      iconColor: const Color(0xff757575),
+                      iconColor: colorScheme.onSurfaceVariant,
                       label: 'Privacy Policy',
                       onTap: () => _openLink('Privacy Policy'),
                     ),
@@ -181,7 +201,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                     _ArrowTile(
                       icon: Icons.description_outlined,
-                      iconColor: const Color(0xff757575),
+                      iconColor: colorScheme.onSurfaceVariant,
                       label: 'Terms of Service',
                       onTap: () => _openLink('Terms of Service'),
                     ),
@@ -189,7 +209,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                     _ArrowTile(
                       icon: Icons.help_outline_rounded,
-                      iconColor: const Color(0xff757575),
+                      iconColor: colorScheme.onSurfaceVariant,
                       label: 'Help & Support',
                       onTap: () => _openLink('Help & Support'),
                     ),
@@ -197,19 +217,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                     _ArrowTile(
                       icon: Icons.star_outline_rounded,
-                      iconColor: const Color(0xff757575),
+                      iconColor: colorScheme.onSurfaceVariant,
                       label: 'Rate App',
                       onTap: () => _openLink('Rate App'),
                     ),
 
                     // ── VERSION ───────────────────────────────────────────
                     const SizedBox(height: 40),
-                    const Center(
+                    Center(
                       child: Text(
                         'Version 1.0.0',
                         style: TextStyle(
                           fontSize: 13,
-                          color: Color(0xffBDBDBD),
+                          color: colorScheme.outline,
                         ),
                       ),
                     ),
@@ -233,16 +253,17 @@ class _SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       width: double.infinity,
-      color: const Color(0xffF5F5F5),
+      color: colorScheme.surfaceContainerHighest,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Text(
         title,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.w600,
-          color: Color(0xff757575),
+          color: colorScheme.onSurfaceVariant,
           letterSpacing: 0.3,
         ),
       ),
@@ -267,6 +288,7 @@ class _ToggleTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       child: Row(
@@ -276,9 +298,9 @@ class _ToggleTile extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 15,
-                color: Color(0xff212121),
+                color: colorScheme.onSurface,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -286,10 +308,6 @@ class _ToggleTile extends StatelessWidget {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: const Color(0xff2196F3),
-            activeTrackColor: const Color(0xff90CAF9),
-            inactiveThumbColor: Colors.white,
-            inactiveTrackColor: const Color(0xffE0E0E0),
           ),
         ],
       ),
@@ -314,6 +332,7 @@ class _ArrowTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -325,9 +344,9 @@ class _ArrowTile extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
-                  color: Color(0xff212121),
+                  color: colorScheme.onSurface,
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -335,17 +354,17 @@ class _ArrowTile extends StatelessWidget {
             if (trailing != null) ...[
               Text(
                 trailing!,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
-                  color: Color(0xff9E9E9E),
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(width: 6),
             ],
-            const Icon(
+            Icon(
               Icons.arrow_forward_ios,
               size: 14,
-              color: Color(0xffBDBDBD),
+              color: colorScheme.outline,
             ),
           ],
         ),
@@ -357,9 +376,10 @@ class _ArrowTile extends StatelessWidget {
 class _Divider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(left: 54),
-      child: Divider(height: 1, color: Color(0xffF0F0F0)),
+    return Padding(
+      padding: const EdgeInsets.only(left: 54),
+      child: Divider(
+          height: 1, color: Theme.of(context).colorScheme.outlineVariant),
     );
   }
 }
@@ -381,19 +401,21 @@ class _PickerSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 12),
           Container(
-            width: 40, height: 4,
+            width: 40,
+            height: 4,
             decoration: BoxDecoration(
-              color: const Color(0xffE0E0E0),
+              color: colorScheme.outline,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -401,14 +423,14 @@ class _PickerSheet extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
-                color: Color(0xff212121),
+                color: colorScheme.onSurface,
               ),
             ),
           ),
-          const Divider(height: 1),
+          Divider(height: 1, color: colorScheme.outlineVariant),
           ...items.map((item) {
             final isSelected = item == selected;
             return Column(
@@ -432,20 +454,20 @@ class _PickerSheet extends StatelessWidget {
                                   ? FontWeight.w600
                                   : FontWeight.w400,
                               color: isSelected
-                                  ? const Color(0xff2196F3)
-                                  : const Color(0xff424242),
+                                  ? colorScheme.primary
+                                  : colorScheme.onSurface,
                             ),
                           ),
                         ),
                         if (isSelected)
-                          const Icon(Icons.check_circle_rounded,
-                              color: Color(0xff2196F3), size: 22),
+                          Icon(Icons.check_circle_rounded,
+                              color: colorScheme.primary, size: 22),
                       ],
                     ),
                   ),
                 ),
                 if (item != items.last)
-                  const Divider(height: 1, color: Color(0xffF5F5F5)),
+                  Divider(height: 1, color: colorScheme.outlineVariant),
               ],
             );
           }),
