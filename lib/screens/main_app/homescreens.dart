@@ -4434,11 +4434,6 @@
 //   }
 // }
 
-
-
-
-
-
 // import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:scholarship_app/constants/app_colors.dart';
@@ -5316,14 +5311,6 @@
 //     );
 //   }
 // }
-
-
-
-
-
-
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
@@ -6258,26 +6245,11 @@
 //   }
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scholarship_app/constants/app_colors.dart';
 import 'package:scholarship_app/routes/app_routes.dart';
 import 'package:scholarship_app/screens/fill_information/personal_info_screen.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class Homescreens extends StatelessWidget {
   const Homescreens({super.key});
@@ -6309,8 +6281,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: AppColors.lightGrey,
+      backgroundColor: colorScheme.surfaceContainerHighest,
       body: SafeArea(
         child: Column(
           children: [
@@ -6684,6 +6657,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildSearchBar() {
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
@@ -6696,9 +6670,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 52,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                  color: AppColors.white,
+                  color: colorScheme.surface,
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppColors.divider),
+                  border: Border.all(color: colorScheme.outline),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.03),
@@ -6707,14 +6681,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(Icons.search, color: AppColors.grey, size: 22),
-                    SizedBox(width: 12),
+                    Icon(Icons.search,
+                        color: colorScheme.onSurfaceVariant, size: 22),
+                    const SizedBox(width: 12),
                     Text(
                       'Search scholarships...',
                       style: TextStyle(
-                        color: AppColors.divider,
+                        color: colorScheme.onSurfaceVariant,
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                       ),
@@ -6744,7 +6719,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: IconButton(
               onPressed: () =>
                   Navigator.pushNamed(context, AppRoutes.searchFilterScreen),
-              icon: const Icon(Icons.tune_rounded, color: AppColors.white, size: 22),
+              icon: const Icon(Icons.tune_rounded,
+                  color: AppColors.white, size: 22),
             ),
           ),
         ],
@@ -6753,17 +6729,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildQuickActions() {
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Quick Actions',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: AppColors.textDark,
+              color: colorScheme.onSurface,
               letterSpacing: -0.3,
             ),
           ),
@@ -6779,20 +6756,27 @@ class _HomeScreenState extends State<HomeScreen> {
               _ActionCard(
                 icon: Icons.explore_outlined,
                 label: 'Discover',
-                onTap: () => Navigator.pushNamed(context, AppRoutes.discoverScreen),
+                onTap: () =>
+                    Navigator.pushNamed(context, AppRoutes.discoverScreen),
               ),
-              _ActionCard(icon: Icons.military_tech_outlined, label: 'Match', onTap: () {}),
+              _ActionCard(
+                  icon: Icons.military_tech_outlined,
+                  label: 'Match',
+                  onTap: () {}),
               _ActionCard(
                 icon: Icons.bookmark_outline,
                 label: 'Saved',
-                onTap: () => Navigator.pushNamed(context, AppRoutes.savedScholarshipScreen),
+                onTap: () => Navigator.pushNamed(
+                    context, AppRoutes.savedScholarshipScreen),
               ),
               _ActionCard(
                 icon: Icons.edit_document,
                 label: 'Fill Info',
                 onTap: () {
-                  Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const PersonalInfoScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const PersonalInfoScreen()));
                 },
               ),
             ],
@@ -6803,17 +6787,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildSectionHeader() {
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
+          Text(
             'Latest Scholarships',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: AppColors.textDark,
+              color: colorScheme.onSurface,
               letterSpacing: -0.3,
             ),
           ),
@@ -6823,10 +6808,15 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             ),
             child: Row(
-              children: const [
-                Text('See All', style: TextStyle(color: AppColors.primary, fontSize: 13, fontWeight: FontWeight.w600)),
-                SizedBox(width: 4),
-                Icon(Icons.arrow_forward_ios, size: 12, color: AppColors.primary),
+              children: [
+                Text('See All',
+                    style: TextStyle(
+                        color: colorScheme.primary,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600)),
+                const SizedBox(width: 4),
+                Icon(Icons.arrow_forward_ios,
+                    size: 12, color: colorScheme.primary),
               ],
             ),
           ),
@@ -6860,29 +6850,42 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildBottomNavBar() {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: colorScheme.surface,
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 12, offset: const Offset(0, -2)),
+          BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 12,
+              offset: const Offset(0, -2)),
         ],
       ),
       child: SafeArea(
         child: BottomNavigationBar(
           currentIndex: _selectedIndex,
           onTap: (index) => setState(() => _selectedIndex = index),
-          backgroundColor: AppColors.white,
-          selectedItemColor: AppColors.primary,
-          unselectedItemColor: AppColors.grey,
-          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
-          unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 11),
+          backgroundColor: colorScheme.surface,
+          selectedItemColor: colorScheme.primary,
+          unselectedItemColor: colorScheme.onSurfaceVariant,
+          selectedLabelStyle:
+              const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+          unselectedLabelStyle:
+              const TextStyle(fontWeight: FontWeight.w500, fontSize: 11),
           showUnselectedLabels: true,
           type: BottomNavigationBarType.fixed,
           elevation: 0,
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home_outlined, size: 26), activeIcon: Icon(Icons.home_rounded, size: 26), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline, size: 24), activeIcon: Icon(Icons.chat_bubble, size: 24), label: 'Chat'),
-            BottomNavigationBarItem(icon: Icon(Icons.menu_rounded, size: 26), label: 'Menu'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home_outlined, size: 26),
+                activeIcon: Icon(Icons.home_rounded, size: 26),
+                label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.chat_bubble_outline, size: 24),
+                activeIcon: Icon(Icons.chat_bubble, size: 24),
+                label: 'Chat'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.menu_rounded, size: 26), label: 'Menu'),
           ],
         ),
       ),
@@ -6897,18 +6900,25 @@ class _ActionCard extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  const _ActionCard({required this.icon, required this.label, required this.onTap});
+  const _ActionCard(
+      {required this.icon, required this.label, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: colorScheme.surface,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: AppColors.lightGrey),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8, offset: const Offset(0, 2))],
+          border: Border.all(color: colorScheme.outlineVariant),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 8,
+                offset: const Offset(0, 2))
+          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -6916,13 +6926,17 @@ class _ActionCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
+                color: colorScheme.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, size: 28, color: AppColors.primary),
+              child: Icon(icon, size: 28, color: colorScheme.primary),
             ),
             const SizedBox(height: 10),
-            Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textDark)),
+            Text(label,
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: colorScheme.onSurface)),
           ],
         ),
       ),
@@ -6941,9 +6955,24 @@ class _BannerSection extends StatefulWidget {
 
 class _BannerSectionState extends State<_BannerSection> {
   final List<Map<String, String>> _slides = [
-    {'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRU0QzCrFe54Ne8qUBrLcJDwvW4PpMTvKPQQ&s', 'label': '🎓 Apply for Scholarships'},
-    {'image': 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=900&q=90', 'label': '🏆 Achieve Your Dreams'},
-    {'image': 'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=900&q=90', 'label': '📚 Start Learning Today'},
+    {
+      'image':
+          'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=1200&q=90',
+      'title': 'Scholarship Opportunities',
+      'subtitle': 'Find your chance to study abroad'
+    },
+    {
+      'image':
+          'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=90',
+      'title': 'Achieve Your Dreams',
+      'subtitle': 'Get world-class education'
+    },
+    {
+      'image':
+          'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=1200&q=90',
+      'title': 'Start Learning Today',
+      'subtitle': 'Many opportunities awaiting you'
+    },
   ];
 
   int _currentIndex = 0;
@@ -6952,73 +6981,162 @@ class _BannerSectionState extends State<_BannerSection> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Stack(
-        alignment: Alignment.bottomCenter,
+      child: Column(
         children: [
-          CarouselSlider(
-            options: CarouselOptions(
-              height: 130,
-              viewportFraction: 1.0,
-              autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 3),
-              autoPlayCurve: Curves.easeInOut,
-              autoPlayAnimationDuration: const Duration(milliseconds: 500),
-              onPageChanged: (index, reason) => setState(() => _currentIndex = index),
+          Container(
+            height: 140,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withOpacity(0.15),
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
+                ),
+              ],
             ),
-            items: _slides.map((slide) {
-              return Builder(builder: (context) {
-                return Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  decoration: BoxDecoration(color: const Color(0xFF335C81), borderRadius: BorderRadius.circular(16)),
-                  clipBehavior: Clip.hardEdge,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Image.network(
-                        slide['image']!,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, progress) {
-                          if (progress == null) return child;
-                          return const Center(child: CircularProgressIndicator(color: Colors.white54, strokeWidth: 2));
-                        },
-                        errorBuilder: (_, __, ___) => const Center(child: Icon(Icons.image_not_supported, color: Colors.white54, size: 40)),
-                      ),
-                      Container(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: CarouselSlider(
+                options: CarouselOptions(
+                  height: 140,
+                  viewportFraction: 1.0,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 4),
+                  autoPlayCurve: Curves.easeInOutCubic,
+                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                  enlargeCenterPage: false,
+                  onPageChanged: (index, reason) =>
+                      setState(() => _currentIndex = index),
+                ),
+                items: _slides.map((slide) {
+                  return Builder(
+                    builder: (context) {
+                      return Container(
+                        width: double.infinity,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [Colors.transparent, Colors.black.withOpacity(0.65)],
+                            colors: [
+                              AppColors.primary,
+                              AppColors.primary.withOpacity(0.8),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
                           ),
                         ),
-                      ),
-                      Positioned(
-                        bottom: 28, left: 16, right: 16,
-                        child: Text(
-                          slide['label']!,
-                          style: const TextStyle(
-                            color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700,
-                            shadows: [Shadow(color: Colors.black45, blurRadius: 6)],
-                          ),
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            // Background Image
+                            Image.network(
+                              slide['image']!,
+                              fit: BoxFit.cover,
+                              loadingBuilder: (context, child, progress) {
+                                if (progress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white.withOpacity(0.7),
+                                    strokeWidth: 2.5,
+                                  ),
+                                );
+                              },
+                              errorBuilder: (_, __, ___) => Container(
+                                color: AppColors.primary.withOpacity(0.2),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.school_rounded,
+                                    color: Colors.white54,
+                                    size: 60,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // Gradient Overlay
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.black.withOpacity(0.1),
+                                    Colors.black.withOpacity(0.7),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            // Content
+                            Positioned(
+                              left: 20,
+                              right: 20,
+                              bottom: 20,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    slide['title']!,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: -0.5,
+                                      shadows: [
+                                        Shadow(
+                                          color: Colors.black38,
+                                          blurRadius: 8,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    slide['subtitle']!,
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.95),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 0.2,
+                                      shadows: const [
+                                        Shadow(
+                                          color: Colors.black26,
+                                          blurRadius: 4,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              });
-            }).toList(),
-          ),
-          Positioned(
-            bottom: 10,
-            child: AnimatedSmoothIndicator(
-              activeIndex: _currentIndex,
-              count: _slides.length,
-              effect: const ExpandingDotsEffect(
-                dotWidth: 8, dotHeight: 8, expansionFactor: 2.5, spacing: 5,
-                dotColor: Colors.white38, activeDotColor: Colors.white,
+                      );
+                    },
+                  );
+                }).toList(),
               ),
             ),
+          ),
+          const SizedBox(height: 14),
+          // Modern Dot Indicators
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(_slides.length, (index) {
+              final isActive = index == _currentIndex;
+              final colorScheme = Theme.of(context).colorScheme;
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                width: isActive ? 24 : 8,
+                height: 8,
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                decoration: BoxDecoration(
+                  color: isActive
+                      ? colorScheme.primary
+                      : colorScheme.primary.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              );
+            }),
           ),
         ],
       ),
@@ -7037,20 +7155,30 @@ class _ScholarshipCard extends StatelessWidget {
   final String imageUrl;
 
   const _ScholarshipCard({
-    required this.title, required this.university, required this.location,
-    required this.type, required this.deadline, required this.imageUrl,
+    required this.title,
+    required this.university,
+    required this.location,
+    required this.type,
+    required this.deadline,
+    required this.imageUrl,
   });
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.lightGrey),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 2))],
+          border: Border.all(color: colorScheme.outlineVariant),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 10,
+                offset: const Offset(0, 2))
+          ],
         ),
         child: Padding(
           padding: const EdgeInsets.all(14),
@@ -7058,35 +7186,62 @@ class _ScholarshipCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 70, height: 70,
-                decoration: BoxDecoration(color: AppColors.lightGrey, borderRadius: BorderRadius.circular(12)),
-                child: const Center(child: Icon(Icons.school_rounded, size: 32, color: AppColors.primary)),
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(12)),
+                child: Center(
+                    child: Icon(Icons.school_rounded,
+                        size: 32, color: colorScheme.primary)),
               ),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, maxLines: 2, overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textDark, height: 1.3)),
+                    Text(title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: colorScheme.onSurface,
+                            height: 1.3)),
                     const SizedBox(height: 6),
                     Row(children: [
-                      const Icon(Icons.location_on_outlined, size: 13, color: AppColors.grey),
+                      Icon(Icons.location_on_outlined,
+                          size: 13, color: colorScheme.onSurfaceVariant),
                       const SizedBox(width: 4),
-                      Text('$university, $location', style: const TextStyle(fontSize: 11, color: AppColors.textLight)),
+                      Text('$university, $location',
+                          style: TextStyle(
+                              fontSize: 11,
+                              color: colorScheme.onSurfaceVariant)),
                     ]),
                     const SizedBox(height: 8),
                     Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                          decoration: BoxDecoration(color: const Color(0xffE3F2FD), borderRadius: BorderRadius.circular(6)),
-                          child: Text(type, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.primaryDark)),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                              color: colorScheme.primary.withOpacity(0.12),
+                              borderRadius: BorderRadius.circular(6)),
+                          child: Text(type,
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: colorScheme.primary)),
                         ),
                         const Spacer(),
-                        const Icon(Icons.access_time, size: 12, color: Color(0xffFF9800)),
+                        const Icon(Icons.access_time,
+                            size: 12, color: Color(0xffFF9800)),
                         const SizedBox(width: 4),
-                        Text(deadline, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xffFF9800))),
+                        Text(deadline,
+                            style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xffFF9800))),
                       ],
                     ),
                   ],
@@ -7099,4 +7254,3 @@ class _ScholarshipCard extends StatelessWidget {
     );
   }
 }
-
