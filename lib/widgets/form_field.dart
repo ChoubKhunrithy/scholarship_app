@@ -1,5 +1,4 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:scholarship_app/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -19,20 +18,22 @@ class FieldLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return RichText(
       text: TextSpan(
         text: label,
-        style: const TextStyle(
-          color: AppColors.textDark,
+        style: TextStyle(
+          color: colorScheme.onSurface,
           fontSize: labelFontSize,
           fontWeight: FontWeight.normal,
         ),
         children: isRequired
-            ? const [
+            ? [
                 TextSpan(
                   text: '*',
                   style: TextStyle(
-                    color: AppColors.red,
+                    color: colorScheme.error,
                     fontSize: asteriskFontSize,
                   ),
                 ),
@@ -67,6 +68,7 @@ class ValidatedDropdown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasError = errorText != null && errorText!.isNotEmpty;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,10 +77,10 @@ class ValidatedDropdown<T> extends StatelessWidget {
           height: fieldHeight,
           child: Container(
             decoration: BoxDecoration(
-              color: AppColors.inputBackground,
+              color: colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(12),
               border: hasError
-                  ? Border.all(color: AppColors.red, width: 1)
+                  ? Border.all(color: colorScheme.error, width: 1)
                   : null,
             ),
             child: ButtonTheme(
@@ -88,22 +90,21 @@ class ValidatedDropdown<T> extends StatelessWidget {
                   value: value,
                   hint: Text(
                     hintText,
-                    style:
-                        hintStyle ??
-                        const TextStyle(
-                          color: AppColors.hintText,
+                    style: hintStyle ??
+                        TextStyle(
+                          color: colorScheme.onSurfaceVariant,
                           fontSize: hintFontSize,
                         ),
                   ),
-                  style: const TextStyle(
-                    color: AppColors.textDark,
+                  style: TextStyle(
+                    color: colorScheme.onSurface,
                     fontSize: textFontSize,
                   ),
                   isExpanded: true,
-                  iconStyleData: const IconStyleData(
+                  iconStyleData: IconStyleData(
                     icon: Icon(
                       Icons.keyboard_arrow_down,
-                      color: AppColors.grey,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                   dropdownStyleData: DropdownStyleData(
@@ -111,7 +112,7 @@ class ValidatedDropdown<T> extends StatelessWidget {
                     offset: const Offset(0, -5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: AppColors.white,
+                      color: colorScheme.surface,
                     ),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 0,
@@ -143,8 +144,8 @@ class ValidatedDropdown<T> extends StatelessWidget {
                           itemLabel != null
                               ? itemLabel!(item)
                               : item.toString(),
-                          style: const TextStyle(
-                            color: AppColors.textDark,
+                          style: TextStyle(
+                            color: colorScheme.onSurface,
                             fontSize: textFontSize,
                           ),
                         ),
@@ -159,8 +160,8 @@ class ValidatedDropdown<T> extends StatelessWidget {
                           itemLabel != null
                               ? itemLabel!(item)
                               : item.toString(),
-                          style: const TextStyle(
-                            color: AppColors.textDark,
+                          style: TextStyle(
+                            color: colorScheme.onSurface,
                             fontSize: textFontSize,
                           ),
                         ),
@@ -178,8 +179,8 @@ class ValidatedDropdown<T> extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8, left: 12),
             child: Text(
               errorText!,
-              style: const TextStyle(
-                color: AppColors.red,
+              style: TextStyle(
+                color: colorScheme.error,
                 fontSize: errorFontSize,
               ),
             ),
@@ -207,6 +208,7 @@ class ValidatedDatePickerField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasError = errorText != null && errorText!.isNotEmpty;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,10 +220,10 @@ class ValidatedDatePickerField extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             child: Container(
               decoration: BoxDecoration(
-                color: AppColors.inputBackground,
+                color: colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(12),
                 border: hasError
-                    ? Border.all(color: AppColors.red, width: 1)
+                    ? Border.all(color: colorScheme.error, width: 1)
                     : null,
               ),
               child: Align(
@@ -237,12 +239,13 @@ class ValidatedDatePickerField extends StatelessWidget {
                             : '${selectedDate!.day.toString().padLeft(2, '0')}/${selectedDate!.month.toString().padLeft(2, '0')}/${selectedDate!.year}',
                         style: TextStyle(
                           color: selectedDate == null
-                              ? AppColors.hintText
-                              : AppColors.textDark,
+                              ? colorScheme.onSurfaceVariant
+                              : colorScheme.onSurface,
                           fontSize: hintFontSize,
                         ),
                       ),
-                      const Icon(Icons.date_range_outlined, color: AppColors.grey),
+                      Icon(Icons.date_range_outlined,
+                          color: colorScheme.onSurfaceVariant),
                     ],
                   ),
                 ),
@@ -255,8 +258,8 @@ class ValidatedDatePickerField extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8, left: 12),
             child: Text(
               errorText!,
-              style: const TextStyle(
-                color: AppColors.red,
+              style: TextStyle(
+                color: colorScheme.error,
                 fontSize: errorFontSize,
               ),
             ),
@@ -284,6 +287,7 @@ class ValidatedImagePickerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasError = errorText != null && errorText!.isNotEmpty;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,10 +299,10 @@ class ValidatedImagePickerButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             child: Container(
               decoration: BoxDecoration(
-                color: AppColors.inputBackground,
+                color: colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(12),
                 border: hasError
-                    ? Border.all(color: AppColors.red, width: 1)
+                    ? Border.all(color: colorScheme.error, width: 1)
                     : null,
               ),
               child: Align(
@@ -307,17 +311,17 @@ class ValidatedImagePickerButton extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.camera_alt_outlined,
-                        color: AppColors.grey,
+                        color: colorScheme.onSurfaceVariant,
                         size: 20,
                       ),
                       const SizedBox(width: 12),
                       Text(
                         text,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: hintFontSize,
-                          color: AppColors.hintText,
+                          color: colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -332,8 +336,8 @@ class ValidatedImagePickerButton extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8, left: 12),
             child: Text(
               errorText!,
-              style: const TextStyle(
-                color: AppColors.red,
+              style: TextStyle(
+                color: colorScheme.error,
                 fontSize: errorFontSize,
               ),
             ),
@@ -395,6 +399,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     final hasError = _internalError != null && _internalError!.isNotEmpty;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -403,10 +408,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
           height: fieldHeight,
           child: Container(
             decoration: BoxDecoration(
-              color: AppColors.inputBackground,
+              color: colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(12),
               border: hasError
-                  ? Border.all(color: AppColors.red, width: 1)
+                  ? Border.all(color: colorScheme.error, width: 1)
                   : null,
             ),
             child: Center(
@@ -415,17 +420,16 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 keyboardType: widget.keyboardType,
                 inputFormatters: widget.inputFormatters,
                 maxLines: widget.maxLines,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: textFontSize,
-                  color: AppColors.textDark,
+                  color: colorScheme.onSurface,
                 ),
                 textAlignVertical: TextAlignVertical.center,
                 decoration: InputDecoration(
                   hintText: widget.hintText,
-                  hintStyle:
-                      widget.hintStyle ??
-                      const TextStyle(
-                        color: AppColors.hintText,
+                  hintStyle: widget.hintStyle ??
+                      TextStyle(
+                        color: colorScheme.onSurfaceVariant,
                         fontSize: hintFontSize,
                       ),
                   filled: true,
@@ -462,8 +466,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
             padding: const EdgeInsets.only(top: 8, left: 12),
             child: Text(
               _internalError!,
-              style: const TextStyle(
-                color: AppColors.red,
+              style: TextStyle(
+                color: colorScheme.error,
                 fontSize: errorFontSize,
               ),
             ),
@@ -496,6 +500,8 @@ class CustomDropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return SizedBox(
       height: fieldHeight,
       child: Center(
@@ -503,14 +509,13 @@ class CustomDropdown<T> extends StatelessWidget {
           initialValue: value,
           decoration: InputDecoration(
             hintText: hintText,
-            hintStyle:
-                hintStyle ??
-                const TextStyle(
-                  color: AppColors.hintText,
+            hintStyle: hintStyle ??
+                TextStyle(
+                  color: colorScheme.onSurfaceVariant,
                   fontSize: hintFontSize,
                 ),
             filled: true,
-            fillColor: AppColors.inputBackground,
+            fillColor: colorScheme.surfaceContainerHighest,
             suffixIcon: suffixIcon,
             isDense: true,
             contentPadding: const EdgeInsets.symmetric(
@@ -527,19 +532,20 @@ class CustomDropdown<T> extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.primary, width: 2),
+              borderSide: BorderSide(color: colorScheme.primary, width: 2),
             ),
           ),
           isExpanded: true,
-          icon: const Icon(Icons.keyboard_arrow_down, color: AppColors.grey),
+          icon: Icon(Icons.keyboard_arrow_down,
+              color: colorScheme.onSurfaceVariant),
           items: items.map((item) {
             return DropdownMenuItem<T>(
               value: item,
               child: Text(
                 itemLabel != null ? itemLabel!(item) : item.toString(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: textFontSize,
-                  color: AppColors.textDark,
+                  color: colorScheme.onSurface,
                 ),
               ),
             );

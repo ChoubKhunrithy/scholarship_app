@@ -6248,6 +6248,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scholarship_app/constants/app_colors.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 import 'package:scholarship_app/routes/app_routes.dart';
 import 'package:scholarship_app/screens/fill_information/personal_info_screen.dart';
 
@@ -6256,9 +6257,10 @@ class Homescreens extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Scholarship App',
+      title: t.translate('appTitle'),
       theme: ThemeData(
         textTheme: GoogleFonts.poppinsTextTheme(),
         scaffoldBackgroundColor: AppColors.lightGrey,
@@ -6277,8 +6279,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -6311,19 +6311,23 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavBar(),
     );
   }
 
   Widget _buildHeroSection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final t = AppLocalizations.of(context);
+
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.primaryDark],
+          colors: isDark
+              ? [const Color(0xFF2C2C2C), const Color(0xFF1E1E1E)]
+              : [AppColors.primary, AppColors.primaryDark],
         ),
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(32),
           bottomRight: Radius.circular(32),
         ),
@@ -6399,8 +6403,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Scholarship',
+                          Text(
+                            t.translate('homeScholarshipBrand'),
                             style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w700,
@@ -6410,7 +6414,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           Text(
-                            'Find Your Future',
+                            t.translate('homeFindYourFuture'),
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w400,
@@ -6550,7 +6554,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Good Morning \u{1F44B}',
+                              t.translate('homeGoodMorning'),
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w400,
@@ -6559,8 +6563,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             const SizedBox(height: 1),
-                            const Text(
-                              'Khunrithy',
+                            Text(
+                              t.translate('homeUserName'),
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
@@ -6594,7 +6598,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   const SizedBox(width: 5),
                                   Text(
-                                    'Student',
+                                    t.translate('homeStudentBadge'),
                                     style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w600,
@@ -6626,9 +6630,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
-                          children: const [
+                          children: [
                             Text(
-                              'Profile',
+                              t.translate('homeProfileButton'),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
@@ -6658,6 +6662,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildSearchBar() {
     final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
@@ -6687,7 +6692,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: colorScheme.onSurfaceVariant, size: 22),
                     const SizedBox(width: 12),
                     Text(
-                      'Search scholarships...',
+                      t.translate('homeSearchHint'),
                       style: TextStyle(
                         color: colorScheme.onSurfaceVariant,
                         fontSize: 14,
@@ -6700,28 +6705,38 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(width: 10),
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColors.primary, AppColors.primaryDark],
-              ),
-              borderRadius: BorderRadius.circular(14),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.primary.withOpacity(0.3),
-                  blurRadius: 8,
-                  offset: const Offset(0, 3),
+          Builder(
+            builder: (context) {
+              final isDark = Theme.of(context).brightness == Brightness.dark;
+              return Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: isDark
+                        ? [const Color(0xFF3A3A3A), const Color(0xFF2C2C2C)]
+                        : [AppColors.primary, AppColors.primaryDark],
+                  ),
+                  borderRadius: BorderRadius.circular(14),
+                  boxShadow: [
+                    BoxShadow(
+                      color: isDark
+                          ? Colors.black.withOpacity(0.3)
+                          : AppColors.primary.withOpacity(0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: IconButton(
-              onPressed: () =>
-                  Navigator.pushNamed(context, AppRoutes.searchFilterScreen),
-              icon: const Icon(Icons.tune_rounded,
-                  color: AppColors.white, size: 22),
-            ),
+                child: IconButton(
+                  onPressed: () => Navigator.pushNamed(
+                      context, AppRoutes.searchFilterScreen),
+                  icon: Icon(Icons.tune_rounded,
+                      color: isDark ? colorScheme.onSurface : AppColors.white,
+                      size: 22),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -6730,13 +6745,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildQuickActions() {
     final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Quick Actions',
+            t.translate('homeQuickActionsTitle'),
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
@@ -6755,23 +6771,23 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               _ActionCard(
                 icon: Icons.explore_outlined,
-                label: 'Discover',
+                label: t.translate('homeActionDiscover'),
                 onTap: () =>
                     Navigator.pushNamed(context, AppRoutes.discoverScreen),
               ),
               _ActionCard(
                   icon: Icons.military_tech_outlined,
-                  label: 'Match',
+                  label: t.translate('homeActionMatch'),
                   onTap: () {}),
               _ActionCard(
                 icon: Icons.bookmark_outline,
-                label: 'Saved',
+                label: t.translate('homeActionSaved'),
                 onTap: () => Navigator.pushNamed(
                     context, AppRoutes.savedScholarshipScreen),
               ),
               _ActionCard(
                 icon: Icons.edit_document,
-                label: 'Fill Info',
+                label: t.translate('homeActionFillInfo'),
                 onTap: () {
                   Navigator.push(
                       context,
@@ -6788,13 +6804,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildSectionHeader() {
     final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Latest Scholarships',
+            t.translate('homeLatestScholarships'),
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
@@ -6809,7 +6826,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             child: Row(
               children: [
-                Text('See All',
+                Text(t.translate('homeSeeAll'),
                     style: TextStyle(
                         color: colorScheme.primary,
                         fontSize: 13,
@@ -6826,69 +6843,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildScholarshipCards() {
+    final t = AppLocalizations.of(context);
     return Column(
       children: [
         _ScholarshipCard(
-          title: 'Full Scholarship to MIT',
-          university: 'MIT',
-          location: 'United States',
-          type: 'Full Scholarship',
-          deadline: 'Mar 30, 2026',
+          title: t.translate('homeScholarship1Title'),
+          university: t.translate('homeScholarship1University'),
+          location: t.translate('homeScholarship1Location'),
+          type: t.translate('homeScholarship1Type'),
+          deadline: t.translate('homeScholarship1Deadline'),
           imageUrl: 'assets/images/mit.png',
         ),
         const SizedBox(height: 12),
         _ScholarshipCard(
-          title: 'Engineering Excellence Award',
-          university: 'Stanford',
-          location: 'USA',
-          type: 'Partial',
-          deadline: 'Apr 15, 2026',
+          title: t.translate('homeScholarship2Title'),
+          university: t.translate('homeScholarship2University'),
+          location: t.translate('homeScholarship2Location'),
+          type: t.translate('homeScholarship2Type'),
+          deadline: t.translate('homeScholarship2Deadline'),
           imageUrl: 'assets/images/stanford.png',
         ),
       ],
-    );
-  }
-
-  Widget _buildBottomNavBar() {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        boxShadow: [
-          BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 12,
-              offset: const Offset(0, -2)),
-        ],
-      ),
-      child: SafeArea(
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: (index) => setState(() => _selectedIndex = index),
-          backgroundColor: colorScheme.surface,
-          selectedItemColor: colorScheme.primary,
-          unselectedItemColor: colorScheme.onSurfaceVariant,
-          selectedLabelStyle:
-              const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
-          unselectedLabelStyle:
-              const TextStyle(fontWeight: FontWeight.w500, fontSize: 11),
-          showUnselectedLabels: true,
-          type: BottomNavigationBarType.fixed,
-          elevation: 0,
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined, size: 26),
-                activeIcon: Icon(Icons.home_rounded, size: 26),
-                label: 'Home'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.chat_bubble_outline, size: 24),
-                activeIcon: Icon(Icons.chat_bubble, size: 24),
-                label: 'Chat'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.menu_rounded, size: 26), label: 'Menu'),
-          ],
-        ),
-      ),
     );
   }
 }
@@ -6954,31 +6929,31 @@ class _BannerSection extends StatefulWidget {
 }
 
 class _BannerSectionState extends State<_BannerSection> {
-  final List<Map<String, String>> _slides = [
-    {
-      'image':
-          'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=1200&q=90',
-      'title': 'Scholarship Opportunities',
-      'subtitle': 'Find your chance to study abroad'
-    },
-    {
-      'image':
-          'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=90',
-      'title': 'Achieve Your Dreams',
-      'subtitle': 'Get world-class education'
-    },
-    {
-      'image':
-          'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=1200&q=90',
-      'title': 'Start Learning Today',
-      'subtitle': 'Many opportunities awaiting you'
-    },
-  ];
-
   int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+    final List<Map<String, String>> slides = [
+      {
+        'image':
+            'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=1200&q=90',
+        'title': t.translate('homeBannerTitle1'),
+        'subtitle': t.translate('homeBannerSubtitle1')
+      },
+      {
+        'image':
+            'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=90',
+        'title': t.translate('homeBannerTitle2'),
+        'subtitle': t.translate('homeBannerSubtitle2')
+      },
+      {
+        'image':
+            'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=1200&q=90',
+        'title': t.translate('homeBannerTitle3'),
+        'subtitle': t.translate('homeBannerSubtitle3')
+      },
+    ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -7009,7 +6984,7 @@ class _BannerSectionState extends State<_BannerSection> {
                   onPageChanged: (index, reason) =>
                       setState(() => _currentIndex = index),
                 ),
-                items: _slides.map((slide) {
+                items: slides.map((slide) {
                   return Builder(
                     builder: (context) {
                       return Container(
@@ -7120,7 +7095,7 @@ class _BannerSectionState extends State<_BannerSection> {
           // Modern Dot Indicators
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(_slides.length, (index) {
+            children: List.generate(slides.length, (index) {
               final isActive = index == _currentIndex;
               final colorScheme = Theme.of(context).colorScheme;
               return AnimatedContainer(

@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 import 'package:scholarship_app/models/application_data.dart';
 import 'package:scholarship_app/screens/fill_information/reference_screen.dart';
 import 'package:scholarship_app/widgets/button.dart';
 import 'package:scholarship_app/widgets/custom_app_bar.dart';
 import 'package:scholarship_app/widgets/form_field.dart';
 import 'package:scholarship_app/widgets/section_header.dart';
-import 'package:flutter/material.dart';
 
 class ScholarshipPreferenceScreen extends StatefulWidget {
   const ScholarshipPreferenceScreen({super.key});
@@ -32,101 +33,100 @@ class _ScholarshipPreferenceScreenState
   String? _preferredDegreeError;
   String? _preferredMajorError;
 
-  final List<String> _destinationCountries = [
-    'Cambodia',
-    'United States',
-    'United Kingdom',
-    'Canada',
-    'Australia',
-    'Germany',
-    'France',
-    'Japan',
-    'South Korea',
-    'Singapore',
-    'Malaysia',
-    'China',
-    'Netherlands',
-    'Sweden',
-    'Switzerland',
-    'New Zealand',
-    'Other',
-  ];
+  List<String> _getDestinationCountries(AppLocalizations t) => [
+        t.translate('prefCountryCambodia'),
+        t.translate('prefCountryUS'),
+        t.translate('prefCountryUK'),
+        t.translate('prefCountryCanada'),
+        t.translate('prefCountryAustralia'),
+        t.translate('prefCountryGermany'),
+        t.translate('prefCountryFrance'),
+        t.translate('prefCountryJapan'),
+        t.translate('prefCountrySouthKorea'),
+        t.translate('prefCountrySingapore'),
+        t.translate('prefCountryMalaysia'),
+        t.translate('prefCountryChina'),
+        t.translate('prefCountryNetherlands'),
+        t.translate('prefCountrySweden'),
+        t.translate('prefCountryNewZealand'),
+        t.translate('prefCountryOther'),
+      ];
 
-  final List<String> _preferredUniversities = [
-    // Cambodia
-    'Royal University of Phnom Penh (RUPP)',
-    'Institute of Technology of Cambodia (ITC)',
-    'Royal University of Agriculture (RUA)',
-    'Royal University of Fine Arts (RUFA)',
-    'Royal University of Law and Economics (RULE)',
-    'National University of Management (NUM)',
-    'University of Cambodia',
-    'University of Puthisastra',
-    'Paññasastra University of Cambodia',
-    'Asia Euro University',
-    'University of Health Sciences (UHS)',
-    'International University (IU)',
-    'Western University',
-    'American University of Phnom Penh',
-    'Build Bright University',
-    'Cambodian Mekong University',
-    'CamEd Business School',
-    'Phnom Penh International University',
-    'IIC University of Technology',
-    'National Polytechnic Institute of Cambodia',
-    'Limkokwing University of Creative Technology',
+  List<String> _getPreferredUniversities(AppLocalizations t) => [
+        // Cambodia
+        t.translate('prefUniRUPP'),
+        t.translate('prefUniITC'),
+        t.translate('prefUniRUA'),
+        t.translate('prefUniRUFA'),
+        t.translate('prefUniRULE'),
+        t.translate('prefUniNUM'),
+        t.translate('prefUniUC'),
+        t.translate('prefUniPuthisastra'),
+        t.translate('prefUniPannasastra'),
+        t.translate('prefUniAsiaEuro'),
+        t.translate('prefUniUHS'),
+        t.translate('prefUniIU'),
+        t.translate('prefUniWestern'),
+        t.translate('prefUniAUPP'),
+        t.translate('prefUniBuildBright'),
+        t.translate('prefUniCMU'),
+        t.translate('prefUniCamEd'),
+        t.translate('prefUniPPIU'),
+        t.translate('prefUniIIC'),
+        t.translate('prefUniNPIC'),
+        t.translate('prefUniLimkokwing'),
 
-    // International
-    'Harvard University',
-    'Stanford University',
-    'Massachusetts Institute of Technology (MIT)',
-    'University of Oxford',
-    'University of Cambridge',
-    'Imperial College London',
-    'ETH Zurich',
-    'University of Toronto',
-    'University of Melbourne',
-    'National University of Singapore (NUS)',
-    'University College London (UCL)',
-    'California Institute of Technology (Caltech)',
-    'Princeton University',
-    'Yale University',
+        // International
+        t.translate('prefUniHarvard'),
+        t.translate('prefUniStanford'),
+        t.translate('prefUniMIT'),
+        t.translate('prefUniOxford'),
+        t.translate('prefUniCambridge'),
+        t.translate('prefUniImperial'),
+        t.translate('prefUniETH'),
+        t.translate('prefUniToronto'),
+        t.translate('prefUniMelbourne'),
+        t.translate('prefUniNUS'),
+        t.translate('prefUniUCL'),
+        t.translate('prefUniCaltech'),
+        t.translate('prefUniPrinceton'),
+        t.translate('prefUniYale'),
 
-    'Other',
-  ];
+        t.translate('prefUniOther'),
+      ];
 
-  final List<String> _preferredDegrees = [
-    'Bachelor\'s Degree',
-    'Master\'s Degree',
-    'Doctoral Degree (PhD)',
-    'Associate Degree',
-    'Professional Certificate',
-    'Diploma',
-  ];
+  List<String> _getPreferredDegrees(AppLocalizations t) => [
+        t.translate('prefDegreeBachelor'),
+        t.translate('prefDegreeMaster'),
+        t.translate('prefDegreePhd'),
+        t.translate('prefDegreeAssociate'),
+        t.translate('prefDegreeProfCert'),
+        t.translate('prefDegreeDiploma'),
+      ];
 
-  final List<String> _preferredMajors = [
-    'Computer Science',
-    'Information Technology',
-    'Software Engineering',
-    'Data Science',
-    'Artificial Intelligence',
-    'Business Administration',
-    'Accounting',
-    'Marketing',
-    'Finance',
-    'Economics',
-    'Mechanical Engineering',
-    'Electrical Engineering',
-    'Civil Engineering',
-    'Architecture',
-    'Medicine',
-    'Nursing',
-    'Law',
-    'Psychology',
-    'Education',
-    'Graphic Design',
-    'Other',
-  ];
+  List<String> _getPreferredMajors(AppLocalizations t) => [
+        t.translate('prefMajorCS'),
+        t.translate('prefMajorIT'),
+        t.translate('prefMajorSE'),
+        t.translate('prefMajorDataScience'),
+        t.translate('prefMajorAI'),
+        t.translate('prefMajorBusiness'),
+        t.translate('prefMajorAccounting'),
+        t.translate('prefMajorMarketing'),
+        t.translate('prefMajorFinance'),
+        t.translate('prefMajorEconomics'),
+        t.translate('prefMajorMechEng'),
+        t.translate('prefMajorElecEng'),
+        t.translate('prefMajorCivilEng'),
+        t.translate('prefMajorArchitecture'),
+        t.translate('prefMajorMedicine'),
+        t.translate('prefMajorNursing'),
+        t.translate('prefMajorLaw'),
+        t.translate('prefMajorPsychology'),
+        t.translate('prefMajorEducation'),
+        t.translate('prefMajorGraphicDesign'),
+        t.translate('prefMajorOther'),
+      ];
 
   @override
   void initState() {
@@ -152,17 +152,18 @@ class _ScholarshipPreferenceScreenState
     setState(() {
       _hasAttemptedSubmit = true;
 
+      final t = AppLocalizations.of(context);
       _destinationCountryError = _selectedDestinationCountry == null
-          ? 'Please select destination country'
+          ? t.translate('prefSelectCountry')
           : null;
       _preferredUniversityError = _selectedPreferredUniversity == null
-          ? 'Please select preferred university'
+          ? t.translate('prefSelectUniversity')
           : null;
       _preferredDegreeError = _selectedPreferredDegree == null
-          ? 'Please select preferred degree'
+          ? t.translate('prefSelectDegree')
           : null;
       _preferredMajorError = _selectedPreferredMajor == null
-          ? 'Please select preferred major'
+          ? t.translate('prefSelectMajor')
           : null;
     });
 
@@ -183,8 +184,12 @@ class _ScholarshipPreferenceScreenState
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Fill Personal information'),
+      backgroundColor: colorScheme.surface,
+      appBar: CustomAppBar(title: t.translate('prefAppBar')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -195,19 +200,18 @@ class _ScholarshipPreferenceScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SectionHeader(title: 'Scholarship Preference'),
+              SectionHeader(title: t.translate('prefSection')),
               const SizedBox(height: 20),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Destination Country'),
+                    FieldLabel(label: t.translate('prefCountryLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedDestinationCountry,
-                      hintText: 'Destination Country',
-                      items: _destinationCountries,
+                      hintText: t.translate('prefCountryHint'),
+                      items: _getDestinationCountries(t),
                       errorText: _destinationCountryError,
                       onChanged: (value) {
                         setState(() {
@@ -219,17 +223,16 @@ class _ScholarshipPreferenceScreenState
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Preferred University'),
+                    FieldLabel(label: t.translate('prefUniversityLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedPreferredUniversity,
-                      hintText: 'Preferred University',
-                      items: _preferredUniversities,
+                      hintText: t.translate('prefUniversityHint'),
+                      items: _getPreferredUniversities(t),
                       errorText: _preferredUniversityError,
                       onChanged: (value) {
                         setState(() {
@@ -241,17 +244,16 @@ class _ScholarshipPreferenceScreenState
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Preferred Degree'),
+                    FieldLabel(label: t.translate('prefDegreeLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedPreferredDegree,
-                      hintText: 'Preferred Degree',
-                      items: _preferredDegrees,
+                      hintText: t.translate('prefDegreeHint'),
+                      items: _getPreferredDegrees(t),
                       errorText: _preferredDegreeError,
                       onChanged: (value) {
                         setState(() {
@@ -263,17 +265,16 @@ class _ScholarshipPreferenceScreenState
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Preferred Major'),
+                    FieldLabel(label: t.translate('prefMajorLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedPreferredMajor,
-                      hintText: 'Preferred Major',
-                      items: _preferredMajors,
+                      hintText: t.translate('prefMajorHint'),
+                      items: _getPreferredMajors(t),
                       errorText: _preferredMajorError,
                       onChanged: (value) {
                         setState(() {
@@ -285,9 +286,9 @@ class _ScholarshipPreferenceScreenState
                   ],
                 ),
               ),
-
               const SizedBox(height: 12),
-              PrimaryButton(text: 'Next', onPressed: _submitForm),
+              PrimaryButton(
+                  text: t.translate('prefNextButton'), onPressed: _submitForm),
             ],
           ),
         ),

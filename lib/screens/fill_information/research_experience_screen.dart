@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 import 'package:scholarship_app/models/application_data.dart';
 import 'package:scholarship_app/screens/fill_information/award_achievement_screen.dart';
 import 'package:scholarship_app/widgets/button.dart';
 import 'package:scholarship_app/widgets/custom_app_bar.dart';
 import 'package:scholarship_app/widgets/form_field.dart';
 import 'package:scholarship_app/widgets/section_header.dart';
-import 'package:flutter/material.dart';
 
 class ResearchExperienceScreen extends StatefulWidget {
   const ResearchExperienceScreen({super.key});
@@ -33,65 +34,65 @@ class _ResearchExperienceScreenState extends State<ResearchExperienceScreen> {
   String? _publisherError;
   String? _locationError;
 
-  final List<String> _researchExperiences = [
-    'No Research Experience',
-    'Undergraduate Research',
-    'Graduate Research',
-    'Thesis / Capstone Project',
-    'Conference Presentation',
-    'Research Assistant',
-    'Independent Research',
-    'Published Research',
-    'Collaborative Research',
+  List<String> _getResearchExperiences(AppLocalizations t) => [
+    t.translate('researchExpNone'),
+    t.translate('researchExpUndergrad'),
+    t.translate('researchExpGrad'),
+    t.translate('researchExpThesis'),
+    t.translate('researchExpConference'),
+    t.translate('researchExpAssistant'),
+    t.translate('researchExpIndependent'),
+    t.translate('researchExpPublished'),
+    t.translate('researchExpCollaborative'),
   ];
 
-    final List<String> _authorsList = [
-    'Single Author',
-    'First Author',
-    'Co-Author',
-    'Corresponding Author',
-    'Research Team Member',
+  List<String> _getAuthorsList(AppLocalizations t) => [
+    t.translate('researchAuthorSingle'),
+    t.translate('researchAuthorFirst'),
+    t.translate('researchAuthorCo'),
+    t.translate('researchAuthorCorresponding'),
+    t.translate('researchAuthorTeamMember'),
   ];
 
-  final List<String> _researchFields = [
-    'Computer Science',
-    'Engineering',
-    'Natural Sciences',
-    'Social Sciences',
-    'Medicine & Health',
-    'Business & Economics',
-    'Environmental Studies',
-    'Mathematics',
-    'Physics',
-    'Chemistry',
-    'Biology',
-    'Other',
+  List<String> _getResearchFields(AppLocalizations t) => [
+    t.translate('researchFieldCS'),
+    t.translate('researchFieldEngineering'),
+    t.translate('researchFieldNatural'),
+    t.translate('researchFieldSocial'),
+    t.translate('researchFieldMedicine'),
+    t.translate('researchFieldBusiness'),
+    t.translate('researchFieldEnvironmental'),
+    t.translate('researchFieldMath'),
+    t.translate('researchFieldPhysics'),
+    t.translate('researchFieldChemistry'),
+    t.translate('researchFieldBiology'),
+    t.translate('researchFieldOther'),
   ];
 
-  final List<String> _publishers = [
-    'Not Published',
-    'Journal Article',
-    'Conference Proceedings',
-    'Book Chapter',
-    'Thesis/Dissertation',
-    'Working Paper',
-    'Online Publication',
-    'University Repository',
+  List<String> _getPublishers(AppLocalizations t) => [
+    t.translate('researchPubNotPublished'),
+    t.translate('researchPubJournal'),
+    t.translate('researchPubConference'),
+    t.translate('researchPubBookChapter'),
+    t.translate('researchPubThesis'),
+    t.translate('researchPubWorking'),
+    t.translate('researchPubOnline'),
+    t.translate('researchPubUniversity'),
   ];
 
-  final List<String> _locations = [
-    'Cambodia',
-    'Vietnam',
-    'Singapore',
-    'Malaysia',
-    'United States',
-    'United Kingdom',
-    'Australia',
-    'Japan',
-    'South Korea',
-    'China',
-    'Online/Virtual',
-    'Other',
+  List<String> _getLocations(AppLocalizations t) => [
+    t.translate('researchLocCambodia'),
+    t.translate('researchLocVietnam'),
+    t.translate('researchLocSingapore'),
+    t.translate('researchLocMalaysia'),
+    t.translate('researchLocUS'),
+    t.translate('researchLocUK'),
+    t.translate('researchLocAustralia'),
+    t.translate('researchLocJapan'),
+    t.translate('researchLocSouthKorea'),
+    t.translate('researchLocChina'),
+    t.translate('researchLocOnline'),
+    t.translate('researchLocOther'),
   ];
 
   @override
@@ -120,21 +121,19 @@ class _ResearchExperienceScreenState extends State<ResearchExperienceScreen> {
     setState(() {
       _hasAttemptedSubmit = true;
 
+      final t = AppLocalizations.of(context);
       _researchExperienceError = _selectedResearchExperience == null
-          ? 'Please select research experience'
+          ? t.translate('researchSelectExperience')
           : null;
-      _authorsError = _selectedAuthors == null
-          ? 'Please select author/s'
-          : null;
+      _authorsError =
+          _selectedAuthors == null ? t.translate('researchSelectAuthors') : null;
       _researchFieldError = _selectedResearchField == null
-          ? 'Please select research field'
+          ? t.translate('researchSelectField')
           : null;
-      _publisherError = _selectedPublisher == null
-          ? 'Please select publisher'
-          : null;
-      _locationError = _selectedLocation == null
-          ? 'Please select location'
-          : null;
+      _publisherError =
+          _selectedPublisher == null ? t.translate('researchSelectPublisher') : null;
+      _locationError =
+          _selectedLocation == null ? t.translate('researchSelectLocation') : null;
     });
 
     if (_researchExperienceError != null ||
@@ -155,8 +154,12 @@ class _ResearchExperienceScreenState extends State<ResearchExperienceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Fill Personal information'),
+      backgroundColor: colorScheme.surface,
+      appBar: CustomAppBar(title: t.translate('researchAppBar')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -167,19 +170,18 @@ class _ResearchExperienceScreenState extends State<ResearchExperienceScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SectionHeader(title: 'Research Experience'),
+              SectionHeader(title: t.translate('researchSection')),
               const SizedBox(height: 20),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Research Experience'),
+                    FieldLabel(label: t.translate('researchExperienceLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedResearchExperience,
-                      hintText: 'Research Experience',
-                      items: _researchExperiences,
+                      hintText: t.translate('researchExperienceHint'),
+                      items: _getResearchExperiences(t),
                       errorText: _researchExperienceError,
                       onChanged: (value) {
                         setState(() {
@@ -191,17 +193,16 @@ class _ResearchExperienceScreenState extends State<ResearchExperienceScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Author/s'),
+                    FieldLabel(label: t.translate('researchAuthorsLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedAuthors,
-                      hintText: 'Select author role',
-                      items: _authorsList,
+                      hintText: t.translate('researchAuthorsHint'),
+                      items: _getAuthorsList(t),
                       errorText: _authorsError,
                       onChanged: (value) {
                         setState(() {
@@ -213,17 +214,16 @@ class _ResearchExperienceScreenState extends State<ResearchExperienceScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Research Field'),
+                    FieldLabel(label: t.translate('researchFieldLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedResearchField,
-                      hintText: 'Name of Field',
-                      items: _researchFields,
+                      hintText: t.translate('researchFieldHint'),
+                      items: _getResearchFields(t),
                       errorText: _researchFieldError,
                       onChanged: (value) {
                         setState(() {
@@ -235,17 +235,16 @@ class _ResearchExperienceScreenState extends State<ResearchExperienceScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Publisher'),
+                    FieldLabel(label: t.translate('researchPublisherLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedPublisher,
-                      hintText: 'Publisher',
-                      items: _publishers,
+                      hintText: t.translate('researchPublisherHint'),
+                      items: _getPublishers(t),
                       errorText: _publisherError,
                       onChanged: (value) {
                         setState(() {
@@ -257,17 +256,16 @@ class _ResearchExperienceScreenState extends State<ResearchExperienceScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Location'),
+                    FieldLabel(label: t.translate('researchLocationLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedLocation,
-                      hintText: 'Location',
-                      items: _locations,
+                      hintText: t.translate('researchLocationHint'),
+                      items: _getLocations(t),
                       errorText: _locationError,
                       onChanged: (value) {
                         setState(() {
@@ -279,9 +277,8 @@ class _ResearchExperienceScreenState extends State<ResearchExperienceScreen> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 12),
-              PrimaryButton(text: 'Next', onPressed: _submitForm),
+              PrimaryButton(text: t.translate('researchNextButton'), onPressed: _submitForm),
             ],
           ),
         ),

@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 import 'package:scholarship_app/models/application_data.dart';
 import 'package:scholarship_app/screens/fill_information/work_experience_screen.dart';
 import 'package:scholarship_app/widgets/button.dart';
 import 'package:scholarship_app/widgets/custom_app_bar.dart';
 import 'package:scholarship_app/widgets/form_field.dart';
 import 'package:scholarship_app/widgets/section_header.dart';
-import 'package:flutter/material.dart';
 
 class LanguagesScreen extends StatefulWidget {
   const LanguagesScreen({super.key});
@@ -28,45 +29,45 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
   String? _englishLevelError;
   String? _ieltsCertificateError;
 
-  final List<String> _spokenLanguages = [
-    'Khmer',
-    'English',
-    'Chinese (Mandarin)',
-    'Chinese (Cantonese)',
-    'Thai',
-    'Vietnamese',
-    'French',
-    'Spanish',
-    'Japanese',
-    'Korean',
-    'German',
-    'Arabic',
-    'Other',
+  List<String> _getSpokenLanguages(AppLocalizations t) => [
+    t.translate('languagesKhmer'),
+    t.translate('languagesEnglish'),
+    t.translate('languagesMandarinChinese'),
+    t.translate('languagesCantoneseChinese'),
+    t.translate('languagesThai'),
+    t.translate('languagesVietnamese'),
+    t.translate('languagesFrench'),
+    t.translate('languagesSpanish'),
+    t.translate('languagesJapanese'),
+    t.translate('languagesKorean'),
+    t.translate('languagesGerman'),
+    t.translate('languagesArabic'),
+    t.translate('languagesOther'),
   ];
 
-  final List<String> _englishLevels = [
-    'Beginner (A1)',
-    'Elementary (A2)',
-    'Intermediate (B1)',
-    'Upper Intermediate (B2)',
-    'Advanced (C1)',
-    'Proficient (C2)',
-    'Native Speaker',
+  List<String> _getEnglishLevels(AppLocalizations t) => [
+    t.translate('languagesLevelBeginner'),
+    t.translate('languagesLevelElementary'),
+    t.translate('languagesLevelIntermediate'),
+    t.translate('languagesLevelUpperIntermediate'),
+    t.translate('languagesLevelAdvanced'),
+    t.translate('languagesLevelProficient'),
+    t.translate('languagesLevelNative'),
   ];
 
-  final List<String> _ieltsCertificates = [
-    'No Certificate',
-    'Band 4.0',
-    'Band 4.5',
-    'Band 5.0',
-    'Band 5.5',
-    'Band 6.0',
-    'Band 6.5',
-    'Band 7.0',
-    'Band 7.5',
-    'Band 8.0',
-    'Band 8.5',
-    'Band 9.0',
+  List<String> _getIeltsCertificates(AppLocalizations t) => [
+    t.translate('languagesIeltsNone'),
+    t.translate('languagesIeltsBand4'),
+    t.translate('languagesIeltsBand4_5'),
+    t.translate('languagesIeltsBand5'),
+    t.translate('languagesIeltsBand5_5'),
+    t.translate('languagesIeltsBand6'),
+    t.translate('languagesIeltsBand6_5'),
+    t.translate('languagesIeltsBand7'),
+    t.translate('languagesIeltsBand7_5'),
+    t.translate('languagesIeltsBand8'),
+    t.translate('languagesIeltsBand8_5'),
+    t.translate('languagesIeltsBand9'),
   ];
 
   @override
@@ -90,14 +91,14 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
   void _submitForm() {
     setState(() {
       _hasAttemptedSubmit = true;
+      final t = AppLocalizations.of(context);
       _spokenLanguageError = _selectedSpokenLanguage == null
-          ? 'Please select spoken language'
+          ? t.translate('languagesSelectSpoken')
           : null;
-      _englishLevelError = _selectedEnglishLevel == null
-          ? 'Please select English level'
-          : null;
+      _englishLevelError =
+          _selectedEnglishLevel == null ? t.translate('languagesSelectLevel') : null;
       _ieltsCertificateError = _selectedIELTSCertificate == null
-          ? 'Please select IELTS certificate level'
+          ? t.translate('languagesSelectIelts')
           : null;
     });
 
@@ -117,8 +118,12 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Fill Personal information'),
+      backgroundColor: colorScheme.surface,
+      appBar: CustomAppBar(title: t.translate('languagesAppBar')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -129,19 +134,18 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SectionHeader(title: 'Your languages'),
+              SectionHeader(title: t.translate('languagesSection')),
               const SizedBox(height: 20),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Spoken Language'),
+                    FieldLabel(label: t.translate('languagesSpokenLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedSpokenLanguage,
-                      hintText: 'Spoken Language',
-                      items: _spokenLanguages,
+                      hintText: t.translate('languagesSpokenHint'),
+                      items: _getSpokenLanguages(t),
                       errorText: _spokenLanguageError,
                       onChanged: (value) {
                         setState(() {
@@ -153,17 +157,16 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'English Level'),
+                    FieldLabel(label: t.translate('languagesEnglishLevelLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedEnglishLevel,
-                      hintText: 'English Level',
-                      items: _englishLevels,
+                      hintText: t.translate('languagesEnglishLevelHint'),
+                      items: _getEnglishLevels(t),
                       errorText: _englishLevelError,
                       onChanged: (value) {
                         setState(() {
@@ -175,17 +178,16 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'English IELTS Certificate'),
+                    FieldLabel(label: t.translate('languagesIeltsCertLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedIELTSCertificate,
-                      hintText: 'IELTS Certificate',
-                      items: _ieltsCertificates,
+                      hintText: t.translate('languagesIeltsCertHint'),
+                      items: _getIeltsCertificates(t),
                       errorText: _ieltsCertificateError,
                       onChanged: (value) {
                         setState(() {
@@ -197,9 +199,8 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 12),
-              PrimaryButton(text: 'Next', onPressed: _submitForm),
+              PrimaryButton(text: t.translate('languagesNextButton'), onPressed: _submitForm),
             ],
           ),
         ),

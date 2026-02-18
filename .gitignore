@@ -45,3 +45,6 @@ windows/flutter/ephemeral/
 
 # Misc
 *.log
+
+# Environment variables (API keys)
+.env

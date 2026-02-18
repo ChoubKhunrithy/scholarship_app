@@ -1,4 +1,3 @@
-import 'package:scholarship_app/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -15,18 +14,25 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return AppBar(
       title: Text(
         title,
-        style: const TextStyle(
-          color: AppColors.white,
-          fontSize: 22,
+        style: TextStyle(
+          color: isDark ? colorScheme.onSurface : colorScheme.onPrimary,
+          fontSize: 20,
           fontWeight: FontWeight.w600,
+          letterSpacing: 0.15,
         ),
       ),
-      backgroundColor: AppColors.primary,
+      backgroundColor:
+          isDark ? colorScheme.surfaceContainerHighest : colorScheme.primary,
       elevation: 0,
-      iconTheme: const IconThemeData(color: AppColors.white),
+      iconTheme: IconThemeData(
+        color: isDark ? colorScheme.onSurface : colorScheme.onPrimary,
+      ),
       leading: showBackButton
           ? IconButton(
               icon: const Icon(Icons.arrow_back),
@@ -36,6 +42,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  @override 
-  Size get preferredSize => const Size.fromHeight(56); 
+  @override
+  Size get preferredSize => const Size.fromHeight(56);
 }

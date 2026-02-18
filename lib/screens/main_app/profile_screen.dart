@@ -2,12 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:scholarship_app/constants/app_colors.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 import 'package:scholarship_app/screens/main_app/editProfile.dart';
 import 'package:scholarship_app/screens/main_app/notification_screen.dart';
 import 'package:scholarship_app/screens/main_app/settings_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final bool embedded;
+  const ProfileScreen({super.key, this.embedded = false});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -22,7 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final t = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: colorScheme.surfaceContainerHighest,
@@ -34,11 +36,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             pinned: true,
             backgroundColor: colorScheme.surface,
             elevation: 0,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios,
-                  color: colorScheme.onSurface, size: 20),
-              onPressed: () => Navigator.pop(context),
-            ),
+            automaticallyImplyLeading: !widget.embedded,
+            leading: widget.embedded
+                ? null
+                : IconButton(
+                    icon: Icon(Icons.arrow_back_ios,
+                        color: colorScheme.onSurface, size: 20),
+                    onPressed: () => Navigator.pop(context),
+                  ),
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: BoxDecoration(
@@ -85,7 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     Text(
-                      userSubtitle,
+                      t.translate('profileManageSubtitle'),
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.9),
                         fontSize: 14,
@@ -151,15 +156,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(
+                              children: [
+                                const Icon(
                                   Icons.edit_rounded,
                                   color: Colors.white,
                                   size: 20,
                                 ),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 Text(
-                                  'Edit Profile',
+                                  t.translate('profileEditButton'),
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
@@ -184,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Expanded(
                         child: _buildStatCard(
                           savedCount.toString(),
-                          'Saved',
+                          t.translate('profileSavedLabel'),
                           Icons.bookmark_rounded,
                           Colors.amber,
                         ),
@@ -193,7 +198,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Expanded(
                         child: _buildStatCard(
                           appliedCount.toString(),
-                          'Applied',
+                          t.translate('profileAppliedLabel'),
                           Icons.send_rounded,
                           colorScheme.primary,
                         ),
@@ -211,7 +216,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Account Settings',
+                        t.translate('profileAccountSettings'),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -235,13 +240,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: const Text('Logout'),
-                          content:
-                              const Text('Are you sure you want to logout?'),
+                          title: Text(t.translate('profileLogout')),
+                          content: Text(t.translate('profileLogoutConfirm')),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(context),
-                              child: const Text('Cancel'),
+                              child: Text(t.translate('profileLogoutCancel')),
                             ),
                             TextButton(
                               onPressed: () {
@@ -249,7 +253,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 // Add logout logic here
                               },
                               child: Text(
-                                'Logout',
+                                t.translate('profileLogout'),
                                 style: TextStyle(color: AppColors.red),
                               ),
                             ),
@@ -277,7 +281,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'Logout',
+                            t.translate('profileLogout'),
                             style: TextStyle(
                               color: AppColors.red,
                               fontSize: 16,
@@ -362,15 +366,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildMenuCard() {
     final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
     final menuItems = [
       {
         'icon': Icons.person_outline,
-        'label': 'Computer Science',
+        'label': t.translate('profileFieldOfStudy'),
         'onTap': () => print("Clicked Computer Science"),
       },
       {
         'icon': Icons.notifications_none,
-        'label': 'Notifications',
+        'label': t.translate('profileNotifications'),
         'onTap': () {
           Navigator.push(
             context,
@@ -382,17 +387,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
       {
         'icon': Icons.star_border,
-        'label': 'My Applications',
+        'label': t.translate('profileMyApplications'),
         'onTap': () => print("Clicked My Applications"),
       },
       {
         'icon': Icons.menu_book,
-        'label': 'Help & Support',
+        'label': t.translate('profileHelpSupport'),
         'onTap': () => print("Clicked Help & Support"),
       },
       {
         'icon': Icons.settings,
-        'label': 'Settings',
+        'label': t.translate('profileSettings'),
         'onTap': () {
           Navigator.push(
             context,

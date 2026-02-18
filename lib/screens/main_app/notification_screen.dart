@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -8,40 +9,47 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-  final List<NotificationItem> notifications = [
-    NotificationItem(
-      title: "Application Deadline Approaching",
-      subtitle: "MIT Scholarship deadline in 3 days",
-      time: "2 hours ago",
-      icon: Icons.notifications_active,
-      iconColor: Color(0xFFFF6B6B),
-      isRead: false,
-    ),
-    NotificationItem(
-      title: "New Scholarship Available",
-      subtitle: "Stanford Engineering Scholarship",
-      time: "5 hours ago",
-      icon: Icons.school,
-      iconColor: Color(0xFF4ECDC4),
-      isRead: false,
-    ),
-    NotificationItem(
-      title: "Application Submitted",
-      subtitle: "Your application to Oxford has been submitted",
-      time: "1 day ago",
-      icon: Icons.check_circle,
-      iconColor: Color(0xFF95E1D3),
-      isRead: true,
-    ),
-    NotificationItem(
-      title: "Complete your Profile",
-      subtitle: "Add your Document to improve your chance",
-      time: "2 days ago",
-      icon: Icons.person,
-      iconColor: Color(0xFFFFB347),
-      isRead: true,
-    ),
-  ];
+  late List<NotificationItem> notifications;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final t = AppLocalizations.of(context);
+    notifications = [
+      NotificationItem(
+        title: t.translate('notifTitleDeadlineApproaching'),
+        subtitle: t.translate('notifSubtitleMITDeadline'),
+        time: t.translate('notifTime2HoursAgo'),
+        icon: Icons.notifications_active,
+        iconColor: Color(0xFFFF6B6B),
+        isRead: false,
+      ),
+      NotificationItem(
+        title: t.translate('notifTitleNewScholarship'),
+        subtitle: t.translate('notifSubtitleStanford'),
+        time: t.translate('notifTime5HoursAgo'),
+        icon: Icons.school,
+        iconColor: Color(0xFF4ECDC4),
+        isRead: false,
+      ),
+      NotificationItem(
+        title: t.translate('notifTitleAppSubmitted'),
+        subtitle: t.translate('notifSubtitleOxfordSubmitted'),
+        time: t.translate('notifTime1DayAgo'),
+        icon: Icons.check_circle,
+        iconColor: Color(0xFF95E1D3),
+        isRead: true,
+      ),
+      NotificationItem(
+        title: t.translate('notifTitleCompleteProfile'),
+        subtitle: t.translate('notifSubtitleAddDocument'),
+        time: t.translate('notifTime2DaysAgo'),
+        icon: Icons.person,
+        iconColor: Color(0xFFFFB347),
+        isRead: true,
+      ),
+    ];
+  }
 
   void _markAllAsRead() {
     setState(() {
@@ -59,35 +67,37 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
     final unreadCount = notifications.where((n) => !n.isRead).length;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: colorScheme.surfaceContainerHighest,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.surface,
         elevation: 0,
-        surfaceTintColor: Colors.white,
+        surfaceTintColor: colorScheme.surface,
         leading: IconButton(
-          icon:
-              const Icon(Icons.arrow_back_ios, color: Colors.black87, size: 20),
+          icon: Icon(Icons.arrow_back_ios,
+              color: colorScheme.onSurface, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Notifications",
+            Text(
+              t.translate('notificationTitle'),
               style: TextStyle(
-                color: Colors.black87,
+                color: colorScheme.onSurface,
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
               ),
             ),
             if (unreadCount > 0)
               Text(
-                "$unreadCount unread",
-                style: const TextStyle(
-                  color: Colors.black45,
+                "$unreadCount ${t.translate('notificationUnreadCount')}",
+                style: TextStyle(
+                  color: colorScheme.onSurfaceVariant,
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                 ),
@@ -98,10 +108,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           if (unreadCount > 0)
             TextButton(
               onPressed: _markAllAsRead,
-              child: const Text(
-                "Mark all read",
+              child: Text(
+                t.translate('notificationMarkAllRead'),
                 style: TextStyle(
-                  color: Color(0xFF007AFF),
+                  color: colorScheme.primary,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
@@ -111,27 +121,28 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ],
       ),
       body: notifications.isEmpty
-          ? _buildEmptyState()
+          ? _buildEmptyState(colorScheme)
           : ListView.builder(
               padding: const EdgeInsets.symmetric(vertical: 8),
               itemCount: notifications.length,
               itemBuilder: (context, index) {
                 final item = notifications[index];
-                return _buildNotificationCard(item, index);
+                return _buildNotificationCard(item, index, colorScheme);
               },
             ),
     );
   }
 
-  Widget _buildNotificationCard(NotificationItem item, int index) {
+  Widget _buildNotificationCard(
+      NotificationItem item, int index, ColorScheme colorScheme) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: colorScheme.onSurface.withOpacity(0.04),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -179,8 +190,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     ? FontWeight.w500
                                     : FontWeight.w600,
                                 color: item.isRead
-                                    ? Colors.black54
-                                    : Colors.black87,
+                                    ? colorScheme.onSurfaceVariant
+                                    : colorScheme.onSurface,
                               ),
                             ),
                           ),
@@ -188,8 +199,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             Container(
                               width: 8,
                               height: 8,
-                              decoration: const BoxDecoration(
-                                color: Color(0xFF007AFF),
+                              decoration: BoxDecoration(
+                                color: colorScheme.primary,
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -200,7 +211,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         item.subtitle,
                         style: TextStyle(
                           fontSize: 13,
-                          color: item.isRead ? Colors.black38 : Colors.black54,
+                          color: item.isRead
+                              ? colorScheme.outline
+                              : colorScheme.onSurfaceVariant,
                           height: 1.4,
                         ),
                         maxLines: 2,
@@ -212,14 +225,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           Icon(
                             Icons.access_time,
                             size: 12,
-                            color: Colors.black38,
+                            color: colorScheme.outline,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             item.time,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
-                              color: Colors.black38,
+                              color: colorScheme.outline,
                             ),
                           ),
                         ],
@@ -235,7 +248,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(ColorScheme colorScheme) {
+    final t = AppLocalizations.of(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -244,30 +258,30 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             width: 120,
             height: 120,
             decoration: BoxDecoration(
-              color: const Color(0xFFF0F0F0),
+              color: colorScheme.outlineVariant,
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.notifications_off_outlined,
               size: 60,
-              color: Colors.black26,
+              color: colorScheme.outline,
             ),
           ),
           const SizedBox(height: 24),
-          const Text(
-            "No notifications yet",
+          Text(
+            t.translate('notificationEmpty'),
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: Colors.black54,
+              color: colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
-            "You're all caught up!",
+          Text(
+            t.translate('notificationAllCaughtUp'),
             style: TextStyle(
               fontSize: 14,
-              color: Colors.black38,
+              color: colorScheme.outline,
             ),
           ),
         ],
