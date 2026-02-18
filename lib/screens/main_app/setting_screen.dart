@@ -18,18 +18,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: colorScheme.surface,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+          icon: Icon(Icons.arrow_back_ios, color: colorScheme.onSurface),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          "Settings", // Fixed typo from 'Seetings'
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        title: Text(
+          "Settings",
+          style: TextStyle(color: colorScheme.onSurface, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
@@ -37,42 +40,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // NOTIFICATIONS SECTION
-            _buildSectionHeader("Notifications"),
+            _buildSectionHeader("Notifications", colorScheme),
             _buildSwitchTile("Push Notifications", pushNotify, (val) {
               setState(() => pushNotify = val);
-            }),
+            }, colorScheme),
             _buildSwitchTile("Email Notifications", emailNotify, (val) {
               setState(() => emailNotify = val);
-            }),
+            }, colorScheme),
             _buildSwitchTile("Deadline Reminders", deadlineReminders, (val) {
               setState(() => deadlineReminders = val);
-            }),
+            }, colorScheme),
             _buildSwitchTile("New Scholarships", newScholarships, (val) {
               setState(() => newScholarships = val);
-            }),
+            }, colorScheme),
 
             const SizedBox(height: 20),
 
             // MORE NOTIFICATIONS SECTION
-            _buildSectionHeader("Notifications"),
-            _buildNavigationTile(Icons.language, "Language", "English"),
-            _buildNavigationTile(Icons.notifications, "Notification Sound", "Default"),
+            _buildSectionHeader("Notifications", colorScheme),
+            _buildNavigationTile(Icons.language, "Language", "English", colorScheme),
+            _buildNavigationTile(Icons.notifications, "Notification Sound", "Default", colorScheme),
 
             const SizedBox(height: 20),
 
             // ABOUT SECTION
-            _buildSectionHeader("About"),
-            _buildSimpleTile("Privacy Policy"),
-            _buildSimpleTile("Terms of Service"),
-            _buildSimpleTile("Help & Support"),
-            _buildSimpleTile("Rate App"),
+            _buildSectionHeader("About", colorScheme),
+            _buildSimpleTile("Privacy Policy", colorScheme),
+            _buildSimpleTile("Terms of Service", colorScheme),
+            _buildSimpleTile("Help & Support", colorScheme),
+            _buildSimpleTile("Rate App", colorScheme),
 
             // VERSION INFO
             const SizedBox(height: 40),
-            const Center(
+            Center(
               child: Text(
                 "Version 1.0.0",
-                style: TextStyle(color: Colors.grey, fontSize: 14),
+                style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 14),
               ),
             ),
             const SizedBox(height: 40),
@@ -82,69 +85,69 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // Header for each category
-  Widget _buildSectionHeader(String title) {
+  Widget _buildSectionHeader(String title, ColorScheme colorScheme) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: colorScheme.onSurface,
+        ),
       ),
     );
   }
 
-  // Tile with a Switch toggle
-  Widget _buildSwitchTile(String title, bool value, Function(bool) onChanged) {
+  Widget _buildSwitchTile(String title, bool value, Function(bool) onChanged, ColorScheme colorScheme) {
     return Column(
       children: [
         SwitchListTile.adaptive(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-          title: Text(title, style: const TextStyle(fontSize: 15)),
+          title: Text(title, style: TextStyle(fontSize: 15, color: colorScheme.onSurface)),
           value: value,
-          activeColor: const Color(0xFF008ED6),
+          activeColor: colorScheme.primary,
           onChanged: onChanged,
         ),
-        const Divider(height: 1, indent: 20, endIndent: 20),
+        Divider(height: 1, indent: 20, endIndent: 20, color: colorScheme.outlineVariant),
       ],
     );
   }
 
-  // Tile with an icon and trailing text (like Language: English)
-  Widget _buildNavigationTile(IconData icon, String title, String trailingText) {
+  Widget _buildNavigationTile(IconData icon, String title, String trailingText, ColorScheme colorScheme) {
     return Column(
       children: [
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-          leading: Icon(icon, color: const Color(0xFF008ED6)),
-          title: Text(title),
+          leading: Icon(icon, color: colorScheme.primary),
+          title: Text(title, style: TextStyle(color: colorScheme.onSurface)),
           trailing: SizedBox(
             width: 100,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(trailingText, style: const TextStyle(color: Colors.grey)),
-                const Icon(Icons.chevron_right, color: Colors.grey),
+                Text(trailingText, style: TextStyle(color: colorScheme.onSurfaceVariant)),
+                Icon(Icons.chevron_right, color: colorScheme.onSurfaceVariant),
               ],
             ),
           ),
           onTap: () {},
         ),
-        const Divider(height: 1, indent: 20, endIndent: 20),
+        Divider(height: 1, indent: 20, endIndent: 20, color: colorScheme.outlineVariant),
       ],
     );
   }
 
-  // Simple arrow tile for About section
-  Widget _buildSimpleTile(String title) {
+  Widget _buildSimpleTile(String title, ColorScheme colorScheme) {
     return Column(
       children: [
         ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-          title: Text(title),
-          trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+          title: Text(title, style: TextStyle(color: colorScheme.onSurface)),
+          trailing: Icon(Icons.chevron_right, color: colorScheme.onSurfaceVariant),
           onTap: () {},
         ),
-        const Divider(height: 1, indent: 20, endIndent: 20),
+        Divider(height: 1, indent: 20, endIndent: 20, color: colorScheme.outlineVariant),
       ],
     );
   }

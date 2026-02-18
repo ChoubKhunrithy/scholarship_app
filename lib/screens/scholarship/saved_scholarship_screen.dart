@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:scholarship_app/constants/app_colors.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 
 class SavedScholarshipScreen extends StatefulWidget {
   const SavedScholarshipScreen({super.key});
@@ -14,32 +14,32 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
   final List<SavedScholarship> _scholarships = [
     SavedScholarship(
       id: 1,
-      title: "ASEAN Engineering Scholarship",
-      institution: "NUS, Singapore",
-      country: "Singapore",
-      type: "Full Scholarship",
-      deadline: "2026-04-15",
-      amount: "\$50,000/year",
+      titleKey: 'savedMockTitle1',
+      institutionKey: 'savedMockInst1',
+      countryKey: 'savedMockCountry1',
+      typeKey: 'savedMockType1',
+      deadline: '2026-04-15',
+      amount: '\$50,000/year',
       isVisible: true,
     ),
     SavedScholarship(
       id: 2,
-      title: "Commonwealth Scholarship",
-      institution: "University of Oxford",
-      country: "United Kingdom",
-      type: "Partial Funding",
-      deadline: "2026-03-20",
-      amount: "\$30,000/year",
+      titleKey: 'savedMockTitle2',
+      institutionKey: 'savedMockInst2',
+      countryKey: 'savedMockCountry2',
+      typeKey: 'savedMockType2',
+      deadline: '2026-03-20',
+      amount: '\$30,000/year',
       isVisible: true,
     ),
     SavedScholarship(
       id: 3,
-      title: "Asia Pacific Leadership Program",
-      institution: "University of Tokyo",
-      country: "Japan",
-      type: "Full Scholarship",
-      deadline: "2026-05-10",
-      amount: "\$45,000/year",
+      titleKey: 'savedMockTitle3',
+      institutionKey: 'savedMockInst3',
+      countryKey: 'savedMockCountry3',
+      typeKey: 'savedMockType3',
+      deadline: '2026-05-10',
+      amount: '\$45,000/year',
       isVisible: true,
     ),
   ];
@@ -52,9 +52,9 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Scholarship removed from saved'),
+        content: Text(AppLocalizations.of(context).translate('savedRemoved')),
         action: SnackBarAction(
-          label: 'UNDO',
+          label: AppLocalizations.of(context).translate('savedUndo'),
           onPressed: () {
             setState(() {
               final scholarship = _scholarships.firstWhere((s) => s.id == id);
@@ -72,58 +72,60 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
       if (sortType == 'deadline') {
         _scholarships.sort((a, b) => a.deadline.compareTo(b.deadline));
       } else if (sortType == 'name') {
-        _scholarships.sort((a, b) => a.title.compareTo(b.title));
+        _scholarships.sort((a, b) => a.titleKey.compareTo(b.titleKey));
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
     final visibleScholarships =
         _scholarships.where((s) => s.isVisible).toList();
     final savedCount = visibleScholarships.length;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: colorScheme.surfaceContainerHighest,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: colorScheme.surface,
         leading: IconButton(
-          icon:
-              const Icon(Icons.arrow_back_ios, color: Colors.black87, size: 20),
+          icon: Icon(Icons.arrow_back_ios,
+              color: colorScheme.onSurface, size: 20),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
-          "Saved Scholarships",
+        title: Text(
+          t.translate('savedTitle'),
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
-            color: Colors.black87,
+            color: colorScheme.onSurface,
           ),
         ),
         actions: [
           PopupMenuButton<String>(
-            icon: const Icon(Icons.sort, color: Colors.black87),
+            icon: Icon(Icons.sort, color: colorScheme.onSurface),
             onSelected: _sortScholarships,
             itemBuilder: (context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'deadline',
                 child: Row(
                   children: [
                     Icon(Icons.calendar_today, size: 18),
                     SizedBox(width: 12),
-                    Text('Sort by Deadline'),
+                    Text(t.translate('savedSortByDeadline')),
                   ],
                 ),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'name',
                 child: Row(
                   children: [
                     Icon(Icons.sort_by_alpha, size: 18),
                     SizedBox(width: 12),
-                    Text('Sort by Name'),
+                    Text(t.translate('savedSortByName')),
                   ],
                 ),
               ),
@@ -132,16 +134,17 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
         ],
       ),
       body: savedCount == 0
-          ? _buildEmptyState()
+          ? _buildEmptyState(colorScheme)
           : Column(
               children: [
-                _buildHeader(savedCount),
+                _buildHeader(savedCount, colorScheme),
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     itemCount: visibleScholarships.length,
                     itemBuilder: (context, index) {
-                      return _buildScholarshipCard(visibleScholarships[index]);
+                      return _buildScholarshipCard(
+                          visibleScholarships[index], colorScheme, t);
                     },
                   ),
                 ),
@@ -150,16 +153,16 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
     );
   }
 
-  Widget _buildHeader(int count) {
+  Widget _buildHeader(int count, ColorScheme colorScheme) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      color: Colors.white,
+      color: colorScheme.surface,
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: colorScheme.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
@@ -167,15 +170,15 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
                 Icon(
                   Icons.bookmark,
                   size: 16,
-                  color: AppColors.primary,
+                  color: colorScheme.primary,
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  "$count Saved",
+                  "$count ${AppLocalizations.of(context).translate('savedCount')}",
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.primary,
+                    color: colorScheme.primary,
                   ),
                 ),
               ],
@@ -186,7 +189,8 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
     );
   }
 
-  Widget _buildScholarshipCard(SavedScholarship scholarship) {
+  Widget _buildScholarshipCard(SavedScholarship scholarship,
+      ColorScheme colorScheme, AppLocalizations t) {
     final daysUntilDeadline =
         DateTime.parse(scholarship.deadline).difference(DateTime.now()).inDays;
     final isUrgent = daysUntilDeadline <= 7;
@@ -194,11 +198,11 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: colorScheme.onSurface.withOpacity(0.04),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -224,11 +228,11 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            scholarship.title,
-                            style: const TextStyle(
+                            t.translate(scholarship.titleKey),
+                            style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: Colors.black87,
+                              color: colorScheme.onSurface,
                               height: 1.3,
                             ),
                           ),
@@ -238,15 +242,15 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
                               Icon(
                                 Icons.school_outlined,
                                 size: 16,
-                                color: Colors.black54,
+                                color: colorScheme.onSurfaceVariant,
                               ),
                               const SizedBox(width: 6),
                               Expanded(
                                 child: Text(
-                                  scholarship.institution,
-                                  style: const TextStyle(
+                                  t.translate(scholarship.institutionKey),
+                                  style: TextStyle(
                                     fontSize: 13,
-                                    color: Colors.black54,
+                                    color: colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                               ),
@@ -258,14 +262,14 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
                               Icon(
                                 Icons.location_on_outlined,
                                 size: 16,
-                                color: Colors.black54,
+                                color: colorScheme.onSurfaceVariant,
                               ),
                               const SizedBox(width: 6),
                               Text(
-                                scholarship.country,
-                                style: const TextStyle(
+                                t.translate(scholarship.countryKey),
+                                style: TextStyle(
                                   fontSize: 13,
-                                  color: Colors.black54,
+                                  color: colorScheme.onSurfaceVariant,
                                 ),
                               ),
                             ],
@@ -278,7 +282,7 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
                       onPressed: () => _removeItem(scholarship.id),
                       icon: Icon(
                         Icons.bookmark,
-                        color: AppColors.primary,
+                        color: colorScheme.primary,
                         size: 26,
                       ),
                       padding: EdgeInsets.zero,
@@ -292,15 +296,16 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
                   runSpacing: 8,
                   children: [
                     _buildInfoChip(
-                      scholarship.type,
-                      scholarship.type == "Full Scholarship"
+                      t.translate(scholarship.typeKey),
+                      scholarship.typeKey == 'savedMockType1' ||
+                              scholarship.typeKey == 'savedMockType3'
                           ? const Color(0xFF4CAF50)
                           : const Color(0xFFFF9800),
                       Icons.card_giftcard,
                     ),
                     _buildInfoChip(
                       scholarship.amount,
-                      AppColors.primary,
+                      colorScheme.primary,
                       Icons.attach_money,
                     ),
                   ],
@@ -311,7 +316,7 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
                   decoration: BoxDecoration(
                     color: isUrgent
                         ? const Color(0xFFFFEBEE)
-                        : const Color(0xFFF5F5F5),
+                        : colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -319,18 +324,19 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
                       Icon(
                         Icons.event_outlined,
                         size: 16,
-                        color:
-                            isUrgent ? const Color(0xFFD32F2F) : Colors.black54,
+                        color: isUrgent
+                            ? const Color(0xFFD32F2F)
+                            : colorScheme.onSurfaceVariant,
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        "Deadline: ${_formatDate(scholarship.deadline)}",
+                        "${t.translate('savedDeadline')} ${_formatDate(scholarship.deadline, t)}",
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
                           color: isUrgent
                               ? const Color(0xFFD32F2F)
-                              : Colors.black87,
+                              : colorScheme.onSurface,
                         ),
                       ),
                       if (isUrgent) ...[
@@ -345,7 +351,7 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
-                            "${daysUntilDeadline}d left",
+                            "$daysUntilDeadline${AppLocalizations.of(context).translate('savedDaysLeft')}",
                             style: const TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
@@ -398,7 +404,7 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(ColorScheme colorScheme) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -407,33 +413,33 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
             width: 120,
             height: 120,
             decoration: BoxDecoration(
-              color: Colors.grey.shade100,
+              color: colorScheme.surfaceContainerHighest,
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.bookmark_border,
               size: 60,
-              color: Colors.grey.shade400,
+              color: colorScheme.outline,
             ),
           ),
           const SizedBox(height: 24),
-          const Text(
-            "No Saved Scholarships",
+          Text(
+            AppLocalizations.of(context).translate('savedEmpty'),
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
-              color: Colors.black87,
+              color: colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Text(
-              "Start saving scholarships to keep track of opportunities you're interested in",
+              AppLocalizations.of(context).translate('savedEmptyMessage'),
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.black54,
+                color: colorScheme.onSurfaceVariant,
                 height: 1.5,
               ),
             ),
@@ -442,10 +448,11 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
           ElevatedButton.icon(
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.explore),
-            label: const Text("Explore Scholarships"),
+            label: Text(
+                AppLocalizations.of(context).translate('savedExploreButton')),
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
+              backgroundColor: colorScheme.primary,
+              foregroundColor: colorScheme.onPrimary,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -457,21 +464,21 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
     );
   }
 
-  String _formatDate(String dateString) {
+  String _formatDate(String dateString, AppLocalizations t) {
     final date = DateTime.parse(dateString);
     final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
+      t.translate('monthJan'),
+      t.translate('monthFeb'),
+      t.translate('monthMar'),
+      t.translate('monthApr'),
+      t.translate('monthMay'),
+      t.translate('monthJun'),
+      t.translate('monthJul'),
+      t.translate('monthAug'),
+      t.translate('monthSep'),
+      t.translate('monthOct'),
+      t.translate('monthNov'),
+      t.translate('monthDec'),
     ];
     return "${months[date.month - 1]} ${date.day}, ${date.year}";
   }
@@ -479,20 +486,20 @@ class _SavedScholarshipScreenState extends State<SavedScholarshipScreen> {
 
 class SavedScholarship {
   final int id;
-  final String title;
-  final String institution;
-  final String country;
-  final String type;
+  final String titleKey;
+  final String institutionKey;
+  final String countryKey;
+  final String typeKey;
   final String deadline;
   final String amount;
   bool isVisible;
 
   SavedScholarship({
     required this.id,
-    required this.title,
-    required this.institution,
-    required this.country,
-    required this.type,
+    required this.titleKey,
+    required this.institutionKey,
+    required this.countryKey,
+    required this.typeKey,
     required this.deadline,
     required this.amount,
     this.isVisible = true,

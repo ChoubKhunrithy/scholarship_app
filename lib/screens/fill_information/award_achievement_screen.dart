@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 import 'package:scholarship_app/models/application_data.dart';
 import 'package:scholarship_app/screens/fill_information/scholarship_preference_screen.dart';
 import 'package:scholarship_app/widgets/button.dart';
 import 'package:scholarship_app/widgets/custom_app_bar.dart';
 import 'package:scholarship_app/widgets/form_field.dart';
 import 'package:scholarship_app/widgets/section_header.dart';
-import 'package:flutter/material.dart';
 
 class AwardAchievementScreen extends StatefulWidget {
   const AwardAchievementScreen({super.key});
@@ -32,84 +33,82 @@ class _AwardAchievementScreenState extends State<AwardAchievementScreen> {
   String? _locationError;
   String? _descriptionError;
 
-  final List<String> _awardAchievements = [
-    'No Award/Achievement',
-    'Academic Excellence Award',
-    'Scholarship Recipient',
-    'Competition Winner',
-    'Dean\'s List',
-    'Honor Roll',
-    'Best Student Award',
-    'Research Grant',
-    'Leadership Award',
-    'Community Service Award',
-    'Sports Achievement',
-    'Arts & Culture Award',
-    'Other',
+  List<String> _getAwardAchievements(AppLocalizations t) => [
+    t.translate('awardNone'),
+    t.translate('awardAcademicExcellence'),
+    t.translate('awardScholarshipRecipient'),
+    t.translate('awardCompetitionWinner'),
+    t.translate('awardDeansList'),
+    t.translate('awardHonorRoll'),
+    t.translate('awardBestStudent'),
+    t.translate('awardResearchGrant'),
+    t.translate('awardLeadership'),
+    t.translate('awardCommunityService'),
+    t.translate('awardSports'),
+    t.translate('awardArtsCulture'),
+    t.translate('awardOther'),
   ];
 
-  final List<String> _programNames = [
-  'Scholarship Program',
-  'Academic Excellence Program',
-  'Competition',
-  'Research Program',
-  'Leadership Program',
-  'Community Service Program',
-  'Sports Program',
-  'Arts Program',
-  'Innovation Challenge',
-  'Entrepreneurship Program',
-  'Exchange Program',
-  'Other',
-];
-
-  final List<String> _organizations = [
-    'University/College',
-    'Government Agency',
-    'Private Company',
-    'Non-Profit Organization',
-    'International Organization',
-    'Research Institution',
-    'Professional Association',
-    'Community Organization',
-    'Educational Foundation',
-    'Corporate Foundation',
-    'Other',
+  List<String> _getProgramNames(AppLocalizations t) => [
+    t.translate('awardProgScholarship'),
+    t.translate('awardProgAcademic'),
+    t.translate('awardProgCompetition'),
+    t.translate('awardProgResearch'),
+    t.translate('awardProgLeadership'),
+    t.translate('awardProgCommunity'),
+    t.translate('awardProgSports'),
+    t.translate('awardProgArts'),
+    t.translate('awardProgInnovation'),
+    t.translate('awardProgEntrepreneurship'),
+    t.translate('awardProgExchange'),
+    t.translate('awardProgOther'),
   ];
 
-  final List<String> _locations = [
-  'Cambodia',
-  'Vietnam',
-  'Singapore',
-  'Malaysia',
-  'Indonesia',
-  'Philippines',
-  'United States',
-  'United Kingdom',
-  'Australia',
-  'Japan',
-  'South Korea',
-  'China',
-  'International / Multiple Countries',
-  'Other',
-];
+  List<String> _getOrganizations(AppLocalizations t) => [
+    t.translate('awardOrgUniversity'),
+    t.translate('awardOrgGovernment'),
+    t.translate('awardOrgPrivate'),
+    t.translate('awardOrgNonProfit'),
+    t.translate('awardOrgInternational'),
+    t.translate('awardOrgResearch'),
+    t.translate('awardOrgProfessional'),
+    t.translate('awardOrgCommunity'),
+    t.translate('awardOrgEduFoundation'),
+    t.translate('awardOrgCorpFoundation'),
+    t.translate('awardOrgOther'),
+  ];
 
+  List<String> _getLocations(AppLocalizations t) => [
+    t.translate('awardLocCambodia'),
+    t.translate('awardLocVietnam'),
+    t.translate('awardLocSingapore'),
+    t.translate('awardLocMalaysia'),
+    t.translate('awardLocIndonesia'),
+    t.translate('awardLocPhilippines'),
+    t.translate('awardLocUS'),
+    t.translate('awardLocUK'),
+    t.translate('awardLocAustralia'),
+    t.translate('awardLocJapan'),
+    t.translate('awardLocSouthKorea'),
+    t.translate('awardLocChina'),
+    t.translate('awardLocInternational'),
+    t.translate('awardLocOther'),
+  ];
 
-final List<String> _descriptions = [
-  'Top 1%',
-  'Top 5%',
-  'Top 10%',
-  'First Place',
-  'Second Place',
-  'Third Place',
-  'Honorable Mention',
-  'Finalist',
-  'Participant',
-  'Certificate of Achievement',
-  'Certificate of Completion',
-  'Other',
-];
-
+  List<String> _getDescriptions(AppLocalizations t) => [
+    t.translate('awardDescTop1'),
+    t.translate('awardDescTop5'),
+    t.translate('awardDescTop10'),
+    t.translate('awardDescFirst'),
+    t.translate('awardDescSecond'),
+    t.translate('awardDescThird'),
+    t.translate('awardDescHonorable'),
+    t.translate('awardDescFinalist'),
+    t.translate('awardDescParticipant'),
+    t.translate('awardDescCertAchievement'),
+    t.translate('awardDescCertCompletion'),
+    t.translate('awardDescOther'),
+  ];
 
   @override
   void initState() {
@@ -137,21 +136,18 @@ final List<String> _descriptions = [
     setState(() {
       _hasAttemptedSubmit = true;
 
+      final t = AppLocalizations.of(context);
       _awardAchievementError = _selectedAwardAchievement == null
-          ? 'Please select award & special achievement'
+          ? t.translate('awardSelectAchievement')
           : null;
-      _programNameError = _selectedProgramName == null
-          ? 'Please select program name'
-          : null;
-      _organizationError = _selectedOrganization == null
-          ? 'Please select organization'
-          : null;
-      _locationError = _selectedLocation == null
-          ? 'Please select location'
-          : null;
-      _descriptionError = _selectedDescription == null
-          ? 'Please select description'
-          : null;
+      _programNameError =
+          _selectedProgramName == null ? t.translate('awardSelectProgram') : null;
+      _organizationError =
+          _selectedOrganization == null ? t.translate('awardSelectOrganization') : null;
+      _locationError =
+          _selectedLocation == null ? t.translate('awardSelectLocation') : null;
+      _descriptionError =
+          _selectedDescription == null ? t.translate('awardSelectDescription') : null;
     });
 
     if (_awardAchievementError != null ||
@@ -174,8 +170,12 @@ final List<String> _descriptions = [
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Fill Personal information'),
+      backgroundColor: colorScheme.surface,
+      appBar: CustomAppBar(title: t.translate('awardAppBar')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -186,19 +186,18 @@ final List<String> _descriptions = [
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SectionHeader(title: 'Award & Special Achievement'),
+              SectionHeader(title: t.translate('awardSection')),
               const SizedBox(height: 20),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Award & Special Achievement'),
+                    FieldLabel(label: t.translate('awardAchievementLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedAwardAchievement,
-                      hintText: 'Award & Special Achievement',
-                      items: _awardAchievements,
+                      hintText: t.translate('awardAchievementHint'),
+                      items: _getAwardAchievements(t),
                       errorText: _awardAchievementError,
                       onChanged: (value) {
                         setState(() {
@@ -210,17 +209,16 @@ final List<String> _descriptions = [
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Program Name'),
+                    FieldLabel(label: t.translate('awardProgramNameLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedProgramName,
-                      hintText: 'Program Name',
-                      items: _programNames,
+                      hintText: t.translate('awardProgramNameHint'),
+                      items: _getProgramNames(t),
                       errorText: _programNameError,
                       onChanged: (value) {
                         setState(() {
@@ -232,17 +230,16 @@ final List<String> _descriptions = [
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Organization'),
+                    FieldLabel(label: t.translate('awardOrganizationLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedOrganization,
-                      hintText: 'Organization',
-                      items: _organizations,
+                      hintText: t.translate('awardOrganizationHint'),
+                      items: _getOrganizations(t),
                       errorText: _organizationError,
                       onChanged: (value) {
                         setState(() {
@@ -254,17 +251,16 @@ final List<String> _descriptions = [
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Location'),
+                    FieldLabel(label: t.translate('awardLocationLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedLocation,
-                      hintText: 'Location',
-                      items: _locations,
+                      hintText: t.translate('awardLocationHint'),
+                      items: _getLocations(t),
                       errorText: _locationError,
                       onChanged: (value) {
                         setState(() {
@@ -276,17 +272,16 @@ final List<String> _descriptions = [
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Description'),
+                    FieldLabel(label: t.translate('awardDescriptionLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedDescription,
-                      hintText: 'Description',
-                      items: _descriptions,
+                      hintText: t.translate('awardDescriptionHint'),
+                      items: _getDescriptions(t),
                       errorText: _descriptionError,
                       onChanged: (value) {
                         setState(() {
@@ -298,9 +293,8 @@ final List<String> _descriptions = [
                   ],
                 ),
               ),
-
               const SizedBox(height: 12),
-              PrimaryButton(text: 'Next', onPressed: _submitForm),
+              PrimaryButton(text: t.translate('awardNextButton'), onPressed: _submitForm),
             ],
           ),
         ),

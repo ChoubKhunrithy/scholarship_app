@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:scholarship_app/constants/app_colors.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 import 'package:scholarship_app/models/application_data.dart';
 import 'package:scholarship_app/screens/fill_information/education_background_screen.dart';
 import 'package:scholarship_app/widgets/button.dart';
@@ -43,17 +43,22 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
   bool _hasAttemptedSubmit = false;
 
-  final List<String> _genders = ['Male', 'Female', 'Other'];
-  final List<String> _nationalities = [
-    'Cambodian',
-    'Vietnamese',
-    'Laotian',
-    'Chinese',
-    'American',
-    'Japanese',
-    'Korean',
-    'Other',
-  ];
+  List<String> _getGenders(AppLocalizations t) => [
+        t.translate('personalInfoGenderMale'),
+        t.translate('personalInfoGenderFemale'),
+        t.translate('personalInfoGenderOther'),
+      ];
+
+  List<String> _getNationalities(AppLocalizations t) => [
+        t.translate('personalInfoNationalityCambodian'),
+        t.translate('personalInfoNationalityVietnamese'),
+        t.translate('personalInfoNationalityLaotian'),
+        t.translate('personalInfoNationalityChinese'),
+        t.translate('personalInfoNationalityAmerican'),
+        t.translate('personalInfoNationalityJapanese'),
+        t.translate('personalInfoNationalityKorean'),
+        t.translate('personalInfoNationalityOther'),
+      ];
 
   @override
   void initState() {
@@ -107,11 +112,12 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       firstDate: DateTime(1950),
       lastDate: DateTime.now(),
       locale: const Locale('en', 'GB'),
-      helpText: 'Select Date of Birth',
+      helpText: AppLocalizations.of(context).translate('personalInfoDobHint'),
       builder: (context, child) {
+        final cs = Theme.of(context).colorScheme;
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(primary: AppColors.primary),
+            colorScheme: cs.copyWith(primary: cs.primary),
           ),
           child: child!,
         );
@@ -142,10 +148,12 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
         });
       }
     } catch (e) {
+      final t = AppLocalizations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error picking image: ${e.toString()}'),
-          backgroundColor: AppColors.red,
+          content: Text(
+              '${t.translate('personalInfoErrorPickingImage')}: ${e.toString()}'),
+          backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
     }
@@ -154,32 +162,37 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   void _showImageSourceDialog() {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
+        final colorScheme = Theme.of(dialogContext).colorScheme;
+        final t = AppLocalizations.of(context);
         return AlertDialog(
-          backgroundColor: AppColors.inputBackground,
+          backgroundColor: colorScheme.surface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          title: const Text('Choose Image Source'),
+          title: Text(t.translate('personalInfoImageSourceTitle'),
+              style: TextStyle(color: colorScheme.onSurface)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: const Icon(Icons.camera_alt, color: AppColors.primary),
-                title: const Text('Camera'),
+                leading: Icon(Icons.camera_alt, color: colorScheme.primary),
+                title: Text(t.translate('personalInfoCameraOption'),
+                    style: TextStyle(color: colorScheme.onSurface)),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pop(dialogContext);
                   _pickImage(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: const Icon(
+                leading: Icon(
                   Icons.photo_library,
-                  color: AppColors.primary,
+                  color: colorScheme.primary,
                 ),
-                title: const Text('Gallery'),
+                title: Text(t.translate('personalInfoGalleryOption'),
+                    style: TextStyle(color: colorScheme.onSurface)),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pop(dialogContext);
                   _pickImage(ImageSource.gallery);
                 },
               ),
@@ -191,37 +204,40 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
   }
 
   String? _validateName(String? value) {
+    final t = AppLocalizations.of(context);
     if (value == null || value.isEmpty) {
-      return 'This field is required';
+      return t.translate('personalInfoFieldRequired');
     }
     if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
-      return 'Only letters are allowed';
+      return t.translate('personalInfoLettersOnly');
     }
     if (value.length < 2) {
-      return 'Name must be at least 2 characters';
+      return t.translate('personalInfoNameMinLength');
     }
     return null;
   }
 
   String? _validateEmail(String? value) {
+    final t = AppLocalizations.of(context);
     if (value == null || value.isEmpty) {
-      return 'Email is required';
+      return t.translate('personalInfoEmailRequired');
     }
     if (!value.contains('@')) {
-      return 'Email must contain @';
+      return t.translate('personalInfoEmailAtSign');
     }
     if (!value.contains('.com')) {
-      return 'Email must contain .com';
+      return t.translate('personalInfoEmailDotCom');
     }
     return null;
   }
 
   String? _validatePhone(String? value) {
+    final t = AppLocalizations.of(context);
     if (value == null || value.isEmpty) {
-      return 'Phone number is required';
+      return t.translate('personalInfoPhoneRequired');
     }
     if (value.length < 8) {
-      return 'Phone must be at least 8 digits';
+      return t.translate('personalInfoPhoneMinDigits');
     }
     return null;
   }
@@ -236,16 +252,20 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
       _emailError = _validateEmail(_emailController.text);
 
       if (_selectedGender == null) {
-        _genderError = 'Please select gender';
+        _genderError =
+            AppLocalizations.of(context).translate('personalInfoSelectGender');
       }
       if (_selectedNationality == null) {
-        _nationalityError = 'Please select nationality';
+        _nationalityError = AppLocalizations.of(context)
+            .translate('personalInfoSelectNationality');
       }
       if (_selectedDate == null) {
-        _dateError = 'Please select date of birth';
+        _dateError =
+            AppLocalizations.of(context).translate('personalInfoSelectDob');
       }
       if (_profileImage == null) {
-        _imageError = 'Please choose a profile image';
+        _imageError =
+            AppLocalizations.of(context).translate('personalInfoSelectImage');
       }
     });
 
@@ -272,9 +292,13 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: 'Fill Personal Information',
+      backgroundColor: colorScheme.surface,
+      appBar: CustomAppBar(
+        title: t.translate('personalInfoAppBar'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -286,7 +310,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SectionHeader(title: 'Information'),
+              SectionHeader(title: t.translate('personalInfoSection')),
               const SizedBox(height: 20),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,18 +319,18 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const FieldLabel(label: 'First Name'),
+                        FieldLabel(label: t.translate('personalInfoFirstName')),
                         const SizedBox(height: 8),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             border: _firstNameError != null
-                                ? Border.all(color: AppColors.red, width: 1)
+                                ? Border.all(color: colorScheme.error, width: 1)
                                 : null,
                           ),
                           child: CustomTextField(
                             controller: _firstNameController,
-                            hintText: 'Ex: Choub',
+                            hintText: t.translate('personalInfoFirstNameHint'),
                             validator: (value) {
                               return null;
                             },
@@ -317,8 +341,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                             padding: const EdgeInsets.only(top: 8, left: 12),
                             child: Text(
                               _firstNameError!,
-                              style: const TextStyle(
-                                color: AppColors.red,
+                              style: TextStyle(
+                                color: colorScheme.error,
                                 fontSize: 10,
                               ),
                             ),
@@ -332,18 +356,18 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const FieldLabel(label: 'Last Name'),
+                        FieldLabel(label: t.translate('personalInfoLastName')),
                         const SizedBox(height: 8),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             border: _lastNameError != null
-                                ? Border.all(color: AppColors.red, width: 1)
+                                ? Border.all(color: colorScheme.error, width: 1)
                                 : null,
                           ),
                           child: CustomTextField(
                             controller: _lastNameController,
-                            hintText: 'Ex: Khunrithy',
+                            hintText: t.translate('personalInfoLastNameHint'),
                             validator: (value) {
                               return null;
                             },
@@ -354,8 +378,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                             padding: const EdgeInsets.only(top: 8, left: 12),
                             child: Text(
                               _lastNameError!,
-                              style: const TextStyle(
-                                color: AppColors.red,
+                              style: TextStyle(
+                                color: colorScheme.error,
                                 fontSize: 10,
                               ),
                             ),
@@ -370,12 +394,12 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Gender'),
+                    FieldLabel(label: t.translate('personalInfoGender')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedGender,
-                      hintText: 'Select',
-                      items: _genders,
+                      hintText: t.translate('personalInfoSelectHint'),
+                      items: _getGenders(t),
                       errorText: _genderError,
                       onChanged: (value) {
                         setState(() {
@@ -391,12 +415,12 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Nationality'),
+                    FieldLabel(label: t.translate('personalInfoNationality')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedNationality,
-                      hintText: 'Select',
-                      items: _nationalities,
+                      hintText: t.translate('personalInfoSelectHint'),
+                      items: _getNationalities(t),
                       errorText: _nationalityError,
                       onChanged: (value) {
                         setState(() {
@@ -412,7 +436,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Date Of Birth'),
+                    FieldLabel(label: t.translate('personalInfoDob')),
                     const SizedBox(height: 8),
                     ValidatedDatePickerField(
                       selectedDate: _selectedDate,
@@ -426,18 +450,18 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Phone Number(contact)'),
+                    FieldLabel(label: t.translate('personalInfoPhone')),
                     const SizedBox(height: 8),
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         border: _phoneError != null
-                            ? Border.all(color: AppColors.red, width: 1)
+                            ? Border.all(color: colorScheme.error, width: 1)
                             : null,
                       ),
                       child: CustomTextField(
                         controller: _phoneController,
-                        hintText: '0312287763',
+                        hintText: t.translate('personalInfoPhoneHint'),
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
@@ -452,8 +476,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                         padding: const EdgeInsets.only(top: 8, left: 12),
                         child: Text(
                           _phoneError!,
-                          style: const TextStyle(
-                            color: AppColors.red,
+                          style: TextStyle(
+                            color: colorScheme.error,
                             fontSize: 10,
                           ),
                         ),
@@ -465,18 +489,18 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Email'),
+                    FieldLabel(label: t.translate('personalInfoEmail')),
                     const SizedBox(height: 8),
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         border: _emailError != null
-                            ? Border.all(color: AppColors.red, width: 1)
+                            ? Border.all(color: colorScheme.error, width: 1)
                             : null,
                       ),
                       child: CustomTextField(
                         controller: _emailController,
-                        hintText: 'choubkhunrithy@gmail.com',
+                        hintText: t.translate('personalInfoEmailHint'),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           return null;
@@ -488,8 +512,8 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                         padding: const EdgeInsets.only(top: 8, left: 12),
                         child: Text(
                           _emailError!,
-                          style: const TextStyle(
-                            color: AppColors.red,
+                          style: TextStyle(
+                            color: colorScheme.error,
                             fontSize: 10,
                           ),
                         ),
@@ -500,13 +524,13 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const FieldLabel(label: 'Choose a profile image'),
+                  FieldLabel(label: t.translate('personalInfoChooseImage')),
                   const SizedBox(height: 8),
                   ValidatedImagePickerButton(
                     onTap: _showImageSourceDialog,
                     text: _profileImage == null
-                        ? 'Go to Gallery'
-                        : 'Image Selected ✓',
+                        ? t.translate('personalInfoGalleryButton')
+                        : t.translate('personalInfoImageSelected'),
                     hasImage: _profileImage != null,
                     errorText: _imageError,
                   ),
@@ -532,18 +556,18 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                                 setState(() {
                                   _profileImage = null;
                                   if (_hasAttemptedSubmit) {
-                                    _imageError =
-                                        'Please choose a profile image';
+                                    _imageError = AppLocalizations.of(context)
+                                        .translate('personalInfoSelectImage');
                                   }
                                 });
                               },
-                              icon: const CircleAvatar(
-                                backgroundColor: AppColors.red,
+                              icon: CircleAvatar(
+                                backgroundColor: colorScheme.error,
                                 radius: 12,
                                 child: Icon(
                                   Icons.close,
                                   size: 16,
-                                  color: AppColors.white,
+                                  color: colorScheme.onError,
                                 ),
                               ),
                             ),
@@ -554,7 +578,9 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                 ],
               ),
               const SizedBox(height: 32),
-              PrimaryButton(text: 'Next', onPressed: _submitForm),
+              PrimaryButton(
+                  text: t.translate('personalInfoNextButton'),
+                  onPressed: _submitForm),
             ],
           ),
         ),

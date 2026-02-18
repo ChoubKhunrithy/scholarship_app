@@ -1,11 +1,11 @@
-import 'package:scholarship_app/constants/app_colors.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 import 'package:scholarship_app/models/application_data.dart';
 import 'package:scholarship_app/widgets/button.dart';
 import 'package:scholarship_app/widgets/custom_app_bar.dart';
 import 'package:scholarship_app/widgets/form_field.dart';
 import 'package:scholarship_app/widgets/section_header.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class ReferenceScreen extends StatefulWidget {
   const ReferenceScreen({super.key});
@@ -33,35 +33,35 @@ class _ReferenceScreenState extends State<ReferenceScreen> {
   String? _phoneError;
   String? _emailError;
 
-  final List<String> _positions = [
-    'Professor',
-    'Associate Professor',
-    'Assistant Professor',
-    'Lecturer',
-    'Teacher',
-    'Department Head',
-    'Academic Advisor',
-    'Research Supervisor',
-    'Manager',
-    'Director',
-    'Supervisor',
-    'Team Leader',
-    'HR Manager',
-    'Other',
+  List<String> _getPositions(AppLocalizations t) => [
+    t.translate('referenceProfessor'),
+    t.translate('referenceAssocProfessor'),
+    t.translate('referenceAsstProfessor'),
+    t.translate('referenceLecturer'),
+    t.translate('referenceTeacher'),
+    t.translate('referenceDeptHead'),
+    t.translate('referenceAcademicAdvisor'),
+    t.translate('referenceResearchSupervisor'),
+    t.translate('referenceManager'),
+    t.translate('referenceDirector'),
+    t.translate('referenceSupervisor'),
+    t.translate('referenceTeamLeader'),
+    t.translate('referenceHRManager'),
+    t.translate('referenceOther'),
   ];
 
-  final List<String> _workPlaces = [
-    'University',
-    'College',
-    'High School',
-    'Research Institution',
-    'Private Company',
-    'Government Agency',
-    'Non-Profit Organization',
-    'International Organization',
-    'Educational Institution',
-    'Corporate Office',
-    'Other',
+  List<String> _getWorkPlaces(AppLocalizations t) => [
+    t.translate('referenceWpUniversity'),
+    t.translate('referenceWpCollege'),
+    t.translate('referenceWpHighSchool'),
+    t.translate('referenceWpResearchInst'),
+    t.translate('referenceWpPrivateCompany'),
+    t.translate('referenceWpGovernment'),
+    t.translate('referenceWpNonProfit'),
+    t.translate('referenceWpInternational'),
+    t.translate('referenceWpEducational'),
+    t.translate('referenceWpCorporate'),
+    t.translate('referenceWpOther'),
   ];
 
   @override
@@ -114,34 +114,37 @@ class _ReferenceScreenState extends State<ReferenceScreen> {
   }
 
   String? _validateName(String? value) {
+    final t = AppLocalizations.of(context);
     if (value == null || value.isEmpty) {
-      return 'Full name is required';
+      return t.translate('referenceNameRequired');
     }
     if (value.length < 2) {
-      return 'Name must be at least 2 characters';
+      return t.translate('referenceNameMinLength');
     }
     return null;
   }
 
   String? _validatePhone(String? value) {
+    final t = AppLocalizations.of(context);
     if (value == null || value.isEmpty) {
-      return 'Phone number is required';
+      return t.translate('referencePhoneRequired');
     }
     if (value.length < 8) {
-      return 'Phone must be at least 8 digits';
+      return t.translate('referencePhoneMinDigits');
     }
     return null;
   }
 
   String? _validateEmail(String? value) {
+    final t = AppLocalizations.of(context);
     if (value == null || value.isEmpty) {
-      return 'Email is required';
+      return t.translate('referenceEmailRequired');
     }
     if (!value.contains('@')) {
-      return 'Email must contain @';
+      return t.translate('referenceEmailAtSign');
     }
     if (!value.contains('.')) {
-      return 'Email must contain a domain';
+      return t.translate('referenceEmailDomain');
     }
     return null;
   }
@@ -155,9 +158,9 @@ class _ReferenceScreenState extends State<ReferenceScreen> {
       _emailError = _validateEmail(_emailController.text);
 
       _positionError =
-          _selectedPosition == null ? 'Please select position' : null;
+          _selectedPosition == null ? AppLocalizations.of(context).translate('referenceSelectPosition') : null;
       _workPlaceError =
-          _selectedWorkPlace == null ? 'Please select work place' : null;
+          _selectedWorkPlace == null ? AppLocalizations.of(context).translate('referenceSelectWorkPlace') : null;
     });
 
     bool isFormValid = _fullNameError == null &&
@@ -175,8 +178,8 @@ class _ReferenceScreenState extends State<ReferenceScreen> {
     // success message
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Application submitted successfully!'),
-        backgroundColor: Colors.green,
+        content: Text(AppLocalizations.of(context).translate('referenceSubmitSuccess')),
+        backgroundColor: const Color(0xFF4CAF50),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -187,8 +190,12 @@ class _ReferenceScreenState extends State<ReferenceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Fill Personal information'),
+      backgroundColor: colorScheme.surface,
+      appBar: CustomAppBar(title: t.translate('referenceAppBar')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -199,25 +206,24 @@ class _ReferenceScreenState extends State<ReferenceScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SectionHeader(title: 'Reference'),
+              SectionHeader(title: t.translate('referenceSection')),
               const SizedBox(height: 20),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Full Name'),
+                    FieldLabel(label: t.translate('referenceFullName')),
                     const SizedBox(height: 8),
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         border: _fullNameError != null
-                            ? Border.all(color: AppColors.red, width: 1)
+                            ? Border.all(color: colorScheme.error, width: 1)
                             : null,
                       ),
                       child: CustomTextField(
                         controller: _fullNameController,
-                        hintText: 'Please fill full name',
+                        hintText: t.translate('referenceFullNameHint'),
                         validator: (value) => null,
                       ),
                     ),
@@ -226,8 +232,8 @@ class _ReferenceScreenState extends State<ReferenceScreen> {
                         padding: const EdgeInsets.only(top: 8, left: 12),
                         child: Text(
                           _fullNameError!,
-                          style: const TextStyle(
-                            color: AppColors.red,
+                          style: TextStyle(
+                            color: colorScheme.error,
                             fontSize: 10,
                           ),
                         ),
@@ -235,17 +241,16 @@ class _ReferenceScreenState extends State<ReferenceScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Position'),
+                    FieldLabel(label: t.translate('referencePosition')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedPosition,
-                      hintText: 'Your Position',
-                      items: _positions,
+                      hintText: t.translate('referencePositionHint'),
+                      items: _getPositions(t),
                       errorText: _positionError,
                       onChanged: (value) {
                         setState(() {
@@ -257,17 +262,16 @@ class _ReferenceScreenState extends State<ReferenceScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Work Place'),
+                    FieldLabel(label: t.translate('referenceWorkPlace')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedWorkPlace,
-                      hintText: 'Work Place',
-                      items: _workPlaces,
+                      hintText: t.translate('referenceWorkPlaceHint'),
+                      items: _getWorkPlaces(t),
                       errorText: _workPlaceError,
                       onChanged: (value) {
                         setState(() {
@@ -279,23 +283,22 @@ class _ReferenceScreenState extends State<ReferenceScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Your Phone Number'),
+                    FieldLabel(label: t.translate('referencePhone')),
                     const SizedBox(height: 8),
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         border: _phoneError != null
-                            ? Border.all(color: AppColors.red, width: 1)
+                            ? Border.all(color: colorScheme.error, width: 1)
                             : null,
                       ),
                       child: CustomTextField(
                         controller: _phoneController,
-                        hintText: 'Your Phone Number',
+                        hintText: t.translate('referencePhoneHint'),
                         keyboardType: TextInputType.phone,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
@@ -308,8 +311,8 @@ class _ReferenceScreenState extends State<ReferenceScreen> {
                         padding: const EdgeInsets.only(top: 8, left: 12),
                         child: Text(
                           _phoneError!,
-                          style: const TextStyle(
-                            color: AppColors.red,
+                          style: TextStyle(
+                            color: colorScheme.error,
                             fontSize: 10,
                           ),
                         ),
@@ -317,23 +320,22 @@ class _ReferenceScreenState extends State<ReferenceScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Your Email'),
+                    FieldLabel(label: t.translate('referenceEmail')),
                     const SizedBox(height: 8),
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         border: _emailError != null
-                            ? Border.all(color: AppColors.red, width: 1)
+                            ? Border.all(color: colorScheme.error, width: 1)
                             : null,
                       ),
                       child: CustomTextField(
                         controller: _emailController,
-                        hintText: 'Your Email',
+                        hintText: t.translate('referenceEmailHint'),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) => null,
                       ),
@@ -343,8 +345,8 @@ class _ReferenceScreenState extends State<ReferenceScreen> {
                         padding: const EdgeInsets.only(top: 8, left: 12),
                         child: Text(
                           _emailError!,
-                          style: const TextStyle(
-                            color: AppColors.red,
+                          style: TextStyle(
+                            color: colorScheme.error,
                             fontSize: 10,
                           ),
                         ),
@@ -352,9 +354,8 @@ class _ReferenceScreenState extends State<ReferenceScreen> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 12),
-              PrimaryButton(text: 'Submit', onPressed: _submitForm),
+              PrimaryButton(text: t.translate('referenceSubmitButton'), onPressed: _submitForm),
             ],
           ),
         ),

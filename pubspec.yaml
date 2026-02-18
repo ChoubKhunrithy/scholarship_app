@@ -29,11 +29,14 @@ dependencies:
     sdk: flutter
   google_fonts: ^8.0.1
   shared_preferences: ^2.5.4
+  intl: ^0.20.2
   carousel_slider: ^5.1.1
   smooth_page_indicator: ^1.2.1
   firebase_core: ^3.6.0
   firebase_auth: ^5.3.1
   google_sign_in: ^6.2.1
+  google_generative_ai: any
+  flutter_dotenv: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +54,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
+    - .env
     - assets/images/onboarding/
     - assets/images/
     - assets/icons/

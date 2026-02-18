@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 import 'package:scholarship_app/models/application_data.dart';
 import 'package:scholarship_app/screens/fill_information/research_experience_screen.dart';
 import 'package:scholarship_app/widgets/button.dart';
 import 'package:scholarship_app/widgets/custom_app_bar.dart';
 import 'package:scholarship_app/widgets/form_field.dart';
 import 'package:scholarship_app/widgets/section_header.dart';
-import 'package:flutter/material.dart';
 
 class WorkExperienceScreen extends StatefulWidget {
   const WorkExperienceScreen({super.key});
@@ -28,33 +29,33 @@ class _WorkExperienceScreenState extends State<WorkExperienceScreen> {
   String? _workDurationError;
   String? _workTypeError;
 
-  final List<String> _workExperiences = [
-    'No Experience',
-    'Fresh Graduate',
-    'Intern',
-    '1-2 years',
-    '2-5 years',
-    '5-10 years',
-    '10+ years',
+  List<String> _getWorkExperiences(AppLocalizations t) => [
+    t.translate('workExpNoExperience'),
+    t.translate('workExpFreshGraduate'),
+    t.translate('workExpIntern'),
+    t.translate('workExp1To2Years'),
+    t.translate('workExp2To5Years'),
+    t.translate('workExp5To10Years'),
+    t.translate('workExp10PlusYears'),
   ];
 
-  final List<String> _workDurations = [
-    'Less than 6 months',
-    '6 months - 1 year',
-    '1-2 years',
-    '2-3 years',
-    '3-5 years',
-    '5+ years',
+  List<String> _getWorkDurations(AppLocalizations t) => [
+    t.translate('workExpDurationLess6Months'),
+    t.translate('workExpDuration6MonthsTo1Year'),
+    t.translate('workExpDuration1To2Years'),
+    t.translate('workExpDuration2To3Years'),
+    t.translate('workExpDuration3To5Years'),
+    t.translate('workExpDuration5PlusYears'),
   ];
 
-  final List<String> _workTypes = [
-    'Full-time',
-    'Part-time',
-    'Internship',
-    'Volunteer',
-    'Freelance',
-    'Contract',
-    'Self-employed',
+  List<String> _getWorkTypes(AppLocalizations t) => [
+    t.translate('workExpTypeFullTime'),
+    t.translate('workExpTypePartTime'),
+    t.translate('workExpTypeInternship'),
+    t.translate('workExpTypeVolunteer'),
+    t.translate('workExpTypeFreelance'),
+    t.translate('workExpTypeContract'),
+    t.translate('workExpTypeSelfEmployed'),
   ];
 
   @override
@@ -78,15 +79,14 @@ class _WorkExperienceScreenState extends State<WorkExperienceScreen> {
   void _submitForm() {
     setState(() {
       _hasAttemptedSubmit = true;
+      final t = AppLocalizations.of(context);
       _workExperienceError = _selectedWorkExperience == null
-          ? 'Please select work experience'
+          ? t.translate('workExpSelectExperience')
           : null;
-      _workDurationError = _selectedWorkDuration == null
-          ? 'Please select work duration'
-          : null;
-      _workTypeError = _selectedWorkType == null
-          ? 'Please select work type'
-          : null;
+      _workDurationError =
+          _selectedWorkDuration == null ? t.translate('workExpSelectDuration') : null;
+      _workTypeError =
+          _selectedWorkType == null ? t.translate('workExpSelectType') : null;
     });
 
     if (_workExperienceError != null ||
@@ -105,8 +105,12 @@ class _WorkExperienceScreenState extends State<WorkExperienceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Fill Personal information'),
+      backgroundColor: colorScheme.surface,
+      appBar: CustomAppBar(title: t.translate('workExpAppBar')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -117,19 +121,18 @@ class _WorkExperienceScreenState extends State<WorkExperienceScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SectionHeader(title: 'Work & Volunteer Experience'),
+              SectionHeader(title: t.translate('workExpSection')),
               const SizedBox(height: 20),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Work experience'),
+                    FieldLabel(label: t.translate('workExpExperienceLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedWorkExperience,
-                      hintText: 'Work Experience',
-                      items: _workExperiences,
+                      hintText: t.translate('workExpExperienceHint'),
+                      items: _getWorkExperiences(t),
                       errorText: _workExperienceError,
                       onChanged: (value) {
                         setState(() {
@@ -141,17 +144,16 @@ class _WorkExperienceScreenState extends State<WorkExperienceScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Work Duration'),
+                    FieldLabel(label: t.translate('workExpDurationLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedWorkDuration,
-                      hintText: 'Work Duration',
-                      items: _workDurations,
+                      hintText: t.translate('workExpDurationHint'),
+                      items: _getWorkDurations(t),
                       errorText: _workDurationError,
                       onChanged: (value) {
                         setState(() {
@@ -163,17 +165,16 @@ class _WorkExperienceScreenState extends State<WorkExperienceScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Work Type'),
+                    FieldLabel(label: t.translate('workExpTypeLabel')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedWorkType,
-                      hintText: 'Work Type',
-                      items: _workTypes,
+                      hintText: t.translate('workExpTypeHint'),
+                      items: _getWorkTypes(t),
                       errorText: _workTypeError,
                       onChanged: (value) {
                         setState(() {
@@ -185,9 +186,8 @@ class _WorkExperienceScreenState extends State<WorkExperienceScreen> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 12),
-              PrimaryButton(text: 'Next', onPressed: _submitForm),
+              PrimaryButton(text: t.translate('workExpNextButton'), onPressed: _submitForm),
             ],
           ),
         ),

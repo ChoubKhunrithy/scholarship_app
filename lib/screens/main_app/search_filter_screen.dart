@@ -1,4 +1,7 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 
 class SearchFilterScreen extends StatefulWidget {
   const SearchFilterScreen({super.key});
@@ -11,18 +14,18 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
-  final List<String> _recentSearches = [
-    'Computer Science',
-    'Engineering',
-    'Business',
-  ];
+  List<String> _getRecentSearches(AppLocalizations t) => [
+        t.translate('searchRecentCS'),
+        t.translate('searchRecentEngineering'),
+        t.translate('searchRecentBusiness'),
+      ];
 
-  final List<String> _popularSearches = [
-    'STEM',
-    'Medical',
-    'Full Scholarship',
-    'USA',
-  ];
+  List<String> _getPopularSearches(AppLocalizations t) => [
+        t.translate('searchPopularSTEM'),
+        t.translate('searchPopularMedical'),
+        t.translate('searchPopularFullScholarship'),
+        t.translate('searchPopularUSA'),
+      ];
 
   void _onRecentTap(String query) {
     _searchController.text = query;
@@ -52,15 +55,18 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.surface,
       body: Column(
         children: [
           // ── Blue Header ──────────────────────────────────────────────────
           Container(
-            decoration: const BoxDecoration(
-              color: Color(0xff2196F3),
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              color: colorScheme.primary,
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
               ),
@@ -76,17 +82,17 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                     Row(
                       children: [
                         IconButton(
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back_ios_new,
-                            color: Colors.white,
+                            color: colorScheme.onPrimary,
                             size: 20,
                           ),
                           onPressed: () => Navigator.pop(context),
                         ),
-                        const Text(
-                          'Scholarship Finder',
+                        Text(
+                          t.translate('searchTitle'),
                           style: TextStyle(
-                            color: Colors.white,
+                            color: colorScheme.onPrimary,
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                           ),
@@ -103,27 +109,28 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                           child: Container(
                             height: 46,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: colorScheme.surface,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: TextField(
                               controller: _searchController,
                               focusNode: _focusNode,
                               autofocus: true,
+                              style: TextStyle(color: colorScheme.onSurface),
                               decoration: InputDecoration(
-                                hintText: 'Search by major, country, University',
-                                hintStyle: const TextStyle(
-                                  color: Color(0xffBDBDBD),
+                                hintText: t.translate('searchHint'),
+                                hintStyle: TextStyle(
+                                  color: colorScheme.outline,
                                   fontSize: 13,
                                 ),
-                                prefixIcon: const Icon(
+                                prefixIcon: Icon(
                                   Icons.search,
-                                  color: Color(0xff9E9E9E),
+                                  color: colorScheme.onSurfaceVariant,
                                   size: 20,
                                 ),
                                 border: InputBorder.none,
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 13),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 13),
                               ),
                               onSubmitted: (val) {
                                 if (val.isNotEmpty) {
@@ -142,14 +149,15 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                             width: 46,
                             height: 46,
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.25),
+                              color: colorScheme.onPrimary.withOpacity(0.25),
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                  color: Colors.white.withOpacity(0.5)),
+                                  color:
+                                      colorScheme.onPrimary.withOpacity(0.5)),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.tune_rounded,
-                              color: Colors.white,
+                              color: colorScheme.onPrimary,
                               size: 22,
                             ),
                           ),
@@ -172,52 +180,53 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                   const SizedBox(height: 8),
 
                   // ── Recent Searches ───────────────────────────────────────
-                  const Text(
-                    'Recent',
+                  Text(
+                    t.translate('searchRecentTitle'),
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff212121),
+                      color: colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 8),
 
-                  ...List.generate(_recentSearches.length, (i) {
+                  ...List.generate(_getRecentSearches(t).length, (i) {
+                    final recentSearches = _getRecentSearches(t);
                     return Column(
                       children: [
                         InkWell(
-                          onTap: () => _onRecentTap(_recentSearches[i]),
+                          onTap: () => _onRecentTap(recentSearches[i]),
                           borderRadius: BorderRadius.circular(8),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             child: Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.search,
-                                  color: Color(0xff9E9E9E),
+                                  color: colorScheme.onSurfaceVariant,
                                   size: 18,
                                 ),
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Text(
-                                    _recentSearches[i],
-                                    style: const TextStyle(
+                                    recentSearches[i],
+                                    style: TextStyle(
                                       fontSize: 14,
-                                      color: Color(0xff424242),
+                                      color: colorScheme.onSurface,
                                     ),
                                   ),
                                 ),
-                                const Icon(
+                                Icon(
                                   Icons.arrow_forward_ios,
-                                  color: Color(0xffBDBDBD),
+                                  color: colorScheme.outline,
                                   size: 14,
                                 ),
                               ],
                             ),
                           ),
                         ),
-                        if (i < _recentSearches.length - 1)
-                          const Divider(height: 1, color: Color(0xffF5F5F5)),
+                        if (i < recentSearches.length - 1)
+                          Divider(height: 1, color: colorScheme.outlineVariant),
                       ],
                     );
                   }),
@@ -225,12 +234,12 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                   const SizedBox(height: 24),
 
                   // ── Popular Searches ──────────────────────────────────────
-                  const Text(
-                    'Popular Searches',
+                  Text(
+                    t.translate('searchPopularTitle'),
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff212121),
+                      color: colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -238,26 +247,26 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                   Wrap(
                     spacing: 10,
                     runSpacing: 10,
-                    children: _popularSearches.map((tag) {
+                    children: _getPopularSearches(t).map((tag) {
                       return GestureDetector(
                         onTap: () => _onPopularTap(tag),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
-                            color: const Color(0xffE3F2FD),
+                            color: colorScheme.primary.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: const Color(0xff90CAF9),
+                              color: colorScheme.primary.withOpacity(0.4),
                               width: 1,
                             ),
                           ),
                           child: Text(
                             tag,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xff1976D2),
+                              color: colorScheme.primary,
                             ),
                           ),
                         ),
@@ -285,20 +294,29 @@ class _FilterSheetState extends State<_FilterSheet> {
   String? _selectedCountry;
   String? _selectedType;
 
-  final List<String> _countries = [
-    'United States', 'United Kingdom', 'Japan', 'Australia', 'Singapore'
-  ];
-  final List<String> _types = [
-    'Full Scholarship', 'Partial Scholarship', 'Tuition Only'
-  ];
+  List<String> _getCountries(AppLocalizations t) => [
+        t.translate('filterCountryUnitedStates'),
+        t.translate('filterCountryUnitedKingdom'),
+        t.translate('filterCountryJapan'),
+        t.translate('filterCountryAustralia'),
+        t.translate('filterCountrySingapore'),
+      ];
+  List<String> _getTypes(AppLocalizations t) => [
+        t.translate('filterTypeFullScholarship'),
+        t.translate('filterTypePartialScholarship'),
+        t.translate('filterTypeTuitionOnly'),
+      ];
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
     return Container(
       padding: const EdgeInsets.all(24),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -307,44 +325,55 @@ class _FilterSheetState extends State<_FilterSheet> {
           // Handle
           Center(
             child: Container(
-              width: 40, height: 4,
+              width: 40,
+              height: 4,
               decoration: BoxDecoration(
-                color: const Color(0xffE0E0E0),
+                color: colorScheme.outline,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
           ),
           const SizedBox(height: 20),
 
-          const Text('Filter',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+          Text(t.translate('searchFilterTitle'),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: colorScheme.onSurface)),
           const SizedBox(height: 20),
 
           // Country
-          const Text('Country',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600,
-                  color: Color(0xff757575))),
+          Text(t.translate('searchCountryLabel'),
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: colorScheme.onSurfaceVariant)),
           const SizedBox(height: 10),
           Wrap(
-            spacing: 8, runSpacing: 8,
-            children: _countries.map((c) {
+            spacing: 8,
+            runSpacing: 8,
+            children: _getCountries(t).map((c) {
               final selected = _selectedCountry == c;
               return GestureDetector(
-                onTap: () => setState(() =>
-                    _selectedCountry = selected ? null : c),
+                onTap: () =>
+                    setState(() => _selectedCountry = selected ? null : c),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
-                    color: selected ? const Color(0xff2196F3) : Colors.white,
+                    color: selected ? colorScheme.primary : colorScheme.surface,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: selected ? const Color(0xff2196F3) : const Color(0xffE0E0E0),
+                      color:
+                          selected ? colorScheme.primary : colorScheme.outline,
                     ),
                   ),
                   child: Text(c,
                       style: TextStyle(
                         fontSize: 13,
-                        color: selected ? Colors.white : const Color(0xff424242),
+                        color: selected
+                            ? colorScheme.onPrimary
+                            : colorScheme.onSurface,
                         fontWeight: FontWeight.w500,
                       )),
                 ),
@@ -355,30 +384,37 @@ class _FilterSheetState extends State<_FilterSheet> {
           const SizedBox(height: 20),
 
           // Type
-          const Text('Scholarship Type',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600,
-                  color: Color(0xff757575))),
+          Text(t.translate('searchScholarshipTypeLabel'),
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: colorScheme.onSurfaceVariant)),
           const SizedBox(height: 10),
           Wrap(
-            spacing: 8, runSpacing: 8,
-            children: _types.map((t) {
-              final selected = _selectedType == t;
+            spacing: 8,
+            runSpacing: 8,
+            children: _getTypes(t).map((typ) {
+              final selected = _selectedType == typ;
               return GestureDetector(
-                onTap: () => setState(() =>
-                    _selectedType = selected ? null : t),
+                onTap: () =>
+                    setState(() => _selectedType = selected ? null : typ),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
-                    color: selected ? const Color(0xff2196F3) : Colors.white,
+                    color: selected ? colorScheme.primary : colorScheme.surface,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: selected ? const Color(0xff2196F3) : const Color(0xffE0E0E0),
+                      color:
+                          selected ? colorScheme.primary : colorScheme.outline,
                     ),
                   ),
-                  child: Text(t,
+                  child: Text(typ,
                       style: TextStyle(
                         fontSize: 13,
-                        color: selected ? Colors.white : const Color(0xff424242),
+                        color: selected
+                            ? colorScheme.onPrimary
+                            : colorScheme.onSurface,
                         fontWeight: FontWeight.w500,
                       )),
                 ),
@@ -400,14 +436,16 @@ class _FilterSheetState extends State<_FilterSheet> {
                 });
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff2196F3),
+                backgroundColor: colorScheme.primary,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
                 elevation: 0,
               ),
-              child: const Text('Apply Filters',
+              child: Text(t.translate('searchApplyFiltersButton'),
                   style: TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: colorScheme.onPrimary,
                   )),
             ),
           ),

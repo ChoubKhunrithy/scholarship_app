@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
+import 'package:scholarship_app/services/language_service.dart';
 import 'package:scholarship_app/services/theme_service.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -23,17 +25,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final List<String> _languages = [
     'English',
     'ខ្មែរ',
-    '中文',
-    'Japanese',
-    'French'
   ];
 
-  final List<String> _sounds = ['Default', 'Silent', 'Vibrate only', 'Chime'];
+  List<String> _getSounds(AppLocalizations t) => [
+        t.translate('settingsSoundDefault'),
+        t.translate('settingsSoundSilent'),
+        t.translate('settingsSoundVibrateOnly'),
+        t.translate('settingsSoundChime'),
+      ];
 
   @override
   void initState() {
     super.initState();
     _darkMode = ThemeService().isDarkMode;
+    // Sync language display with current locale
+    final currentLocale = LanguageService.localeNotifier.value;
+    _selectedLanguage =
+        currentLocale.languageCode == 'km' ? 'ខ្មែរ' : 'English';
   }
 
   void _showLanguagePicker() {
@@ -41,21 +49,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (_) => _PickerSheet(
-        title: 'Select Language',
+        title: AppLocalizations.of(context).translate('settingsLanguage'),
         items: _languages,
         selected: _selectedLanguage,
-        onSelect: (val) => setState(() => _selectedLanguage = val),
+        onSelect: (val) {
+          setState(() => _selectedLanguage = val);
+          final langCode = val == 'ខ្មែរ' ? 'km' : 'en';
+          LanguageService().setLanguage(langCode);
+        },
       ),
     );
   }
 
   void _showSoundPicker() {
+    final t = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (_) => _PickerSheet(
-        title: 'Notification Sound',
-        items: _sounds,
+        title: t.translate('settingsNotifSound'),
+        items: _getSounds(t),
         selected: _notificationSound,
         onSelect: (val) => setState(() => _notificationSound = val),
       ),
@@ -63,9 +76,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _openLink(String page) {
+    final t = AppLocalizations.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Opening $page...'),
+        content:
+            Text(t.translate('settingsOpeningPage').replaceAll('\$page', page)),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         backgroundColor: const Color(0xff2196F3),
@@ -77,6 +92,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -97,7 +113,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     onPressed: () => Navigator.pop(context),
                   ),
                   Text(
-                    'Settings',
+                    t.translate('settingsAppBar'),
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
@@ -115,12 +131,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // ── NOTIFICATIONS SECTION ─────────────────────────────
-                    _SectionHeader(title: 'Notifications'),
+                    _SectionHeader(title: t.translate('settingsNotifications')),
 
                     _ToggleTile(
                       icon: Icons.notifications_outlined,
                       iconColor: colorScheme.primary,
-                      label: 'Push Notifications',
+                      label: t.translate('settingsPushNotif'),
                       value: _pushNotifications,
                       onChanged: (v) => setState(() => _pushNotifications = v),
                     ),
@@ -129,7 +145,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _ToggleTile(
                       icon: Icons.email_outlined,
                       iconColor: colorScheme.primary,
-                      label: 'Email Notifications',
+                      label: t.translate('settingsEmailNotif'),
                       value: _emailNotifications,
                       onChanged: (v) => setState(() => _emailNotifications = v),
                     ),
@@ -138,7 +154,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _ToggleTile(
                       icon: Icons.alarm_outlined,
                       iconColor: colorScheme.primary,
-                      label: 'Deadline Reminders',
+                      label: t.translate('settingsDeadlineReminders'),
                       value: _deadlineReminders,
                       onChanged: (v) => setState(() => _deadlineReminders = v),
                     ),
@@ -147,7 +163,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _ToggleTile(
                       icon: Icons.school_outlined,
                       iconColor: colorScheme.primary,
-                      label: 'New Scholarships',
+                      label: t.translate('settingsNewScholarships'),
                       value: _newScholarships,
                       onChanged: (v) => setState(() => _newScholarships = v),
                     ),
@@ -155,12 +171,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     const SizedBox(height: 8),
 
                     // ── APP SETTINGS SECTION ──────────────────────────────
-                    _SectionHeader(title: 'App Settings'),
+                    _SectionHeader(title: t.translate('settingsAppSettings')),
 
                     _ArrowTile(
                       icon: Icons.language_rounded,
                       iconColor: colorScheme.primary,
-                      label: 'Language',
+                      label: t.translate('settingsLanguage'),
                       trailing: _selectedLanguage,
                       onTap: _showLanguagePicker,
                     ),
@@ -169,7 +185,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _ArrowTile(
                       icon: Icons.notifications_active_outlined,
                       iconColor: colorScheme.primary,
-                      label: 'Notification Sound',
+                      label: t.translate('settingsNotifSound'),
                       trailing: _notificationSound,
                       onTap: _showSoundPicker,
                     ),
@@ -178,7 +194,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _ToggleTile(
                       icon: Icons.dark_mode_outlined,
                       iconColor: colorScheme.primary,
-                      label: 'Dark Mode',
+                      label: t.translate('settingsDarkMode'),
                       value: _darkMode,
                       onChanged: (v) {
                         setState(() => _darkMode = v);
@@ -189,12 +205,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     const SizedBox(height: 8),
 
                     // ── ABOUT SECTION ─────────────────────────────────────
-                    _SectionHeader(title: 'About'),
+                    _SectionHeader(title: t.translate('settingsAbout')),
 
                     _ArrowTile(
                       icon: Icons.privacy_tip_outlined,
                       iconColor: colorScheme.onSurfaceVariant,
-                      label: 'Privacy Policy',
+                      label: t.translate('settingsPrivacyPolicy'),
                       onTap: () => _openLink('Privacy Policy'),
                     ),
                     _Divider(),
@@ -202,7 +218,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _ArrowTile(
                       icon: Icons.description_outlined,
                       iconColor: colorScheme.onSurfaceVariant,
-                      label: 'Terms of Service',
+                      label: t.translate('settingsTerms'),
                       onTap: () => _openLink('Terms of Service'),
                     ),
                     _Divider(),
@@ -210,7 +226,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _ArrowTile(
                       icon: Icons.help_outline_rounded,
                       iconColor: colorScheme.onSurfaceVariant,
-                      label: 'Help & Support',
+                      label: t.translate('settingsHelpSupport'),
                       onTap: () => _openLink('Help & Support'),
                     ),
                     _Divider(),
@@ -218,7 +234,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _ArrowTile(
                       icon: Icons.star_outline_rounded,
                       iconColor: colorScheme.onSurfaceVariant,
-                      label: 'Rate App',
+                      label: t.translate('settingsRateApp'),
                       onTap: () => _openLink('Rate App'),
                     ),
 
@@ -226,7 +242,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     const SizedBox(height: 40),
                     Center(
                       child: Text(
-                        'Version 1.0.0',
+                        t.translate('settingsVersion'),
                         style: TextStyle(
                           fontSize: 13,
                           color: colorScheme.outline,

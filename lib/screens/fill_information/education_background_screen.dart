@@ -1,11 +1,11 @@
-import 'package:scholarship_app/constants/app_colors.dart';
+import 'package:flutter/material.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 import 'package:scholarship_app/models/application_data.dart';
 import 'package:scholarship_app/screens/fill_information/languages_screen.dart';
 import 'package:scholarship_app/widgets/button.dart';
 import 'package:scholarship_app/widgets/custom_app_bar.dart';
 import 'package:scholarship_app/widgets/form_field.dart';
 import 'package:scholarship_app/widgets/section_header.dart';
-import 'package:flutter/material.dart';
 
 class EducationBackgroundScreen extends StatefulWidget {
   const EducationBackgroundScreen({super.key});
@@ -34,30 +34,30 @@ class _EducationBackgroundScreenState extends State<EducationBackgroundScreen> {
 
   bool _hasAttemptedSubmit = false;
 
-  final List<String> _degrees = [
-    'High School',
-    'Associate Degree',
-    'Bachelor\'s Degree',
-    'Master\'s Degree',
-    'Doctoral Degree (PhD)',
-  ];
+  List<String> _getDegrees(AppLocalizations t) => [
+        t.translate('educationDegreeHighSchool'),
+        t.translate('educationDegreeAssociate'),
+        t.translate('educationDegreeBachelor'),
+        t.translate('educationDegreeMaster'),
+        t.translate('educationDegreePhd'),
+      ];
 
-  final List<String> _majors = [
-    'Computer Science',
-    'Information Technology',
-    'Software Engineering',
-    'Engineering',
-    'Business Administration',
-    'Economics',
-    'Finance',
-    'Arts and Humanities',
-    'Natural Sciences',
-    'Medicine',
-    'Law',
-    'Education',
-    'Architecture',
-    'Other',
-  ];
+  List<String> _getMajors(AppLocalizations t) => [
+        t.translate('educationMajorCS'),
+        t.translate('educationMajorIT'),
+        t.translate('educationMajorSE'),
+        t.translate('educationMajorEngineering'),
+        t.translate('educationMajorBusiness'),
+        t.translate('educationMajorEconomics'),
+        t.translate('educationMajorFinance'),
+        t.translate('educationMajorArts'),
+        t.translate('educationMajorSciences'),
+        t.translate('educationMajorMedicine'),
+        t.translate('educationMajorLaw'),
+        t.translate('educationMajorEducation'),
+        t.translate('educationMajorArchitecture'),
+        t.translate('educationMajorOther'),
+      ];
 
   final List<int> _years = List.generate(
     30,
@@ -108,31 +108,30 @@ class _EducationBackgroundScreenState extends State<EducationBackgroundScreen> {
     setState(() {
       _hasAttemptedSubmit = true;
 
+      final t = AppLocalizations.of(context);
       if (_institutionController.text.isEmpty) {
-        _institutionError = 'Institution is required';
+        _institutionError = t.translate('educationInstitutionRequired');
       } else if (_institutionController.text.length < 3) {
-        _institutionError = 'Institution name is too short';
+        _institutionError = t.translate('educationInstitutionTooShort');
       } else {
         _institutionError = null;
       }
 
       if (_gpaController.text.isEmpty) {
-        _gpaError = 'GPA/Grade is required';
+        _gpaError = t.translate('educationGpaRequired');
       } else {
         _gpaError = null;
       }
 
-      _degreeError = _selectedDegree == null
-          ? 'Please select your degree'
-          : null;
-      _majorError = _selectedMajor == null ? 'Please select your major' : null;
-      _yearError = _selectedYear == null
-          ? 'Please select graduation year'
-          : null;
+      _degreeError =
+          _selectedDegree == null ? t.translate('educationSelectDegree') : null;
+      _majorError =
+          _selectedMajor == null ? t.translate('educationSelectMajor') : null;
+      _yearError =
+          _selectedYear == null ? t.translate('educationSelectGradYear') : null;
     });
 
-    bool isFormValid =
-        _institutionError == null &&
+    bool isFormValid = _institutionError == null &&
         _gpaError == null &&
         _degreeError == null &&
         _majorError == null &&
@@ -152,8 +151,12 @@ class _EducationBackgroundScreenState extends State<EducationBackgroundScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Fill Personal information'),
+      backgroundColor: colorScheme.surface,
+      appBar: CustomAppBar(title: t.translate('educationAppBar')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -164,28 +167,27 @@ class _EducationBackgroundScreenState extends State<EducationBackgroundScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SectionHeader(title: 'Education Background'),
+              SectionHeader(title: t.translate('educationSection')),
               const SizedBox(height: 20),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Current Institution'),
+                    FieldLabel(label: t.translate('educationInstitution')),
                     const SizedBox(height: 8),
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         border: _institutionError != null
-                            ? Border.all(color: AppColors.red, width: 1)
+                            ? Border.all(color: colorScheme.error, width: 1)
                             : null,
                       ),
                       child: CustomTextField(
                         controller: _institutionController,
-                        hintText: 'Current your Institution',
-                        suffixIcon: const Icon(
+                        hintText: t.translate('educationInstitutionHint'),
+                        suffixIcon: Icon(
                           Icons.edit,
-                          color: AppColors.grey,
+                          color: colorScheme.onSurfaceVariant,
                         ),
                         validator: (value) {
                           return null;
@@ -197,8 +199,8 @@ class _EducationBackgroundScreenState extends State<EducationBackgroundScreen> {
                         padding: const EdgeInsets.only(top: 8, left: 12),
                         child: Text(
                           _institutionError!,
-                          style: const TextStyle(
-                            color: AppColors.red,
+                          style: TextStyle(
+                            color: colorScheme.error,
                             fontSize: 10,
                           ),
                         ),
@@ -206,17 +208,16 @@ class _EducationBackgroundScreenState extends State<EducationBackgroundScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Current Degree'),
+                    FieldLabel(label: t.translate('educationDegree')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedDegree,
-                      hintText: 'Current your Degree',
-                      items: _degrees,
+                      hintText: t.translate('educationDegreeHint'),
+                      items: _getDegrees(t),
                       errorText: _degreeError,
                       onChanged: (value) {
                         setState(() {
@@ -228,17 +229,16 @@ class _EducationBackgroundScreenState extends State<EducationBackgroundScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Current Major'),
+                    FieldLabel(label: t.translate('educationMajor')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<String>(
                       value: _selectedMajor,
-                      hintText: 'your current Major',
-                      items: _majors,
+                      hintText: t.translate('educationMajorHint'),
+                      items: _getMajors(t),
                       errorText: _majorError,
                       onChanged: (value) {
                         setState(() {
@@ -250,16 +250,15 @@ class _EducationBackgroundScreenState extends State<EducationBackgroundScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'Year of Graduation'),
+                    FieldLabel(label: t.translate('educationGradYear')),
                     const SizedBox(height: 8),
                     ValidatedDropdown<int>(
                       value: _selectedYear,
-                      hintText: 'year of Graduation',
+                      hintText: t.translate('educationGradYearHint'),
                       items: _years,
                       errorText: _yearError,
                       onChanged: (value) {
@@ -273,29 +272,28 @@ class _EducationBackgroundScreenState extends State<EducationBackgroundScreen> {
                   ],
                 ),
               ),
-
               FormFieldContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const FieldLabel(label: 'GPA/Grade'),
+                    FieldLabel(label: t.translate('educationGpa')),
                     const SizedBox(height: 8),
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         border: _gpaError != null
-                            ? Border.all(color: AppColors.red, width: 1)
+                            ? Border.all(color: colorScheme.error, width: 1)
                             : null,
                       ),
                       child: CustomTextField(
                         controller: _gpaController,
-                        hintText: 'GPA/Grade',
+                        hintText: t.translate('educationGpaHint'),
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
                         ),
-                        suffixIcon: const Icon(
+                        suffixIcon: Icon(
                           Icons.edit,
-                          color: AppColors.grey,
+                          color: colorScheme.onSurfaceVariant,
                         ),
                         validator: (value) {
                           return null;
@@ -307,8 +305,8 @@ class _EducationBackgroundScreenState extends State<EducationBackgroundScreen> {
                         padding: const EdgeInsets.only(top: 8, left: 12),
                         child: Text(
                           _gpaError!,
-                          style: const TextStyle(
-                            color: AppColors.red,
+                          style: TextStyle(
+                            color: colorScheme.error,
                             fontSize: 10,
                           ),
                         ),
@@ -316,9 +314,10 @@ class _EducationBackgroundScreenState extends State<EducationBackgroundScreen> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 12),
-              PrimaryButton(text: 'Next', onPressed: _submitForm),
+              PrimaryButton(
+                  text: t.translate('educationNextButton'),
+                  onPressed: _submitForm),
             ],
           ),
         ),

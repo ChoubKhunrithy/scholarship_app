@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 import 'package:scholarship_app/routes/app_routes.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -21,6 +21,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -35,24 +36,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     _currentPage = index;
                   });
                 },
-                children: const [
+                children: [
                   OnboardingContent(
                     image: 'assets/images/onboarding/onboarding1.png',
-                    title: 'Welcome to Scholarship',
-                    description:
-                        'Discover new learning opportunities and connect with fellow scholarship holders to enhance your educational journey!',
+                    title: t.translate('onboardingTitle1'),
+                    description: t.translate('onboardingDescription1'),
                   ),
                   OnboardingContent(
                     image: 'assets/images/onboarding/onboarding2.png',
-                    title: 'Discovered',
-                    description:
-                        'Unlock the full potential of your learning with personalized recommendations, progress tracking, and a vibrant community!',
+                    title: t.translate('onboardingTitle2'),
+                    description: t.translate('onboardingDescription2'),
                   ),
                   OnboardingContent(
                     image: 'assets/images/onboarding/onboarding3.png',
-                    title: 'Join us now',
-                    description:
-                        'Join us today and start your learning journey. Our easy to use platform is designed to help you succeed!',
+                    title: t.translate('onboardingTitle3'),
+                    description: t.translate('onboardingDescription3'),
                   ),
                 ],
               ),
@@ -123,7 +121,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              _currentPage == 2 ? 'Get Started' : 'Next',
+                              _currentPage == 2
+                                  ? t.translate('onboardingGetStartedButton')
+                                  : t.translate('onboardingNextButton'),
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,

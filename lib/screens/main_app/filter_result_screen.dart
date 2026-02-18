@@ -1,22 +1,7 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
-
-// ── Model ─────────────────────────────────────────────────────────────────────
-
-class ScholarshipResult {
-  final String title;
-  final String university;
-  final String location;
-  final String type;
-  final String deadline;
-
-  const ScholarshipResult({
-    required this.title,
-    required this.university,
-    required this.location,
-    required this.type,
-    required this.deadline,
-  });
-}
+import 'package:scholarship_app/l10n/app_localizations.dart';
 
 // ── Screen ────────────────────────────────────────────────────────────────────
 
@@ -28,41 +13,44 @@ class FilterResultScreen extends StatefulWidget {
 }
 
 class _FilterResultScreenState extends State<FilterResultScreen> {
-  // Active filter chips
-  List<String> _activeFilters = [
-    'Computer Science',
-    'United State',
-    'Full Scholarships',
+  // Active filter chips - use translation keys
+  final List<String> _activeFilterKeys = [
+    'filterChipComputerScience',
+    'filterChipUnitedState',
+    'filterChipFullScholarships',
   ];
 
-  // Mock scholarship data
-  final List<ScholarshipResult> _allResults = const [
-    ScholarshipResult(
-      title: 'ASEAN Engineering Scholarship',
-      university: 'MIT',
-      location: 'United State',
-      type: 'Full Scholarship',
-      deadline: '2026-02-14',
-    ),
-    ScholarshipResult(
-      title: 'ASEAN Engineering Scholarship',
-      university: 'Stanford',
-      location: 'USA',
-      type: 'Full Scholarship',
-      deadline: '2026-02-14',
-    ),
+  // Mock scholarship data - use translation keys for translatable fields
+  final List<Map<String, String>> _allResultKeys = [
+    {
+      'titleKey': 'filterResultTitle1',
+      'university': 'MIT',
+      'locationKey': 'filterResultLocationUS',
+      'typeKey': 'filterResultTypeFullScholarship',
+      'deadline': '2026-02-14',
+    },
+    {
+      'titleKey': 'filterResultTitle1',
+      'university': 'Stanford',
+      'locationKey': 'filterResultLocationUSA',
+      'typeKey': 'filterResultTypeFullScholarship',
+      'deadline': '2026-02-14',
+    },
   ];
 
-  List<ScholarshipResult> get _filteredResults => _allResults;
+  List<Map<String, String>> get _filteredResults => _allResultKeys;
 
-  void _removeFilter(String filter) {
-    setState(() => _activeFilters.remove(filter));
+  void _removeFilter(String filterKey) {
+    setState(() => _activeFilterKeys.remove(filterKey));
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,19 +61,19 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back_ios_new,
-                      color: Color(0xff212121),
+                      color: colorScheme.onSurface,
                       size: 20,
                     ),
                     onPressed: () => Navigator.pop(context),
                   ),
-                  const Text(
-                    'Search Result',
+                  Text(
+                    t.translate('filterResultTitle'),
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xff212121),
+                      color: colorScheme.onSurface,
                     ),
                   ),
                 ],
@@ -93,16 +81,16 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
             ),
 
             // ── Active Filter Chips ───────────────────────────────────────
-            if (_activeFilters.isNotEmpty)
+            if (_activeFilterKeys.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Wrap(
                   spacing: 8,
                   runSpacing: 8,
-                  children: _activeFilters.map((filter) {
+                  children: _activeFilterKeys.map((filterKey) {
                     return _FilterChip(
-                      label: filter,
-                      onRemove: () => _removeFilter(filter),
+                      label: t.translate(filterKey),
+                      onRemove: () => _removeFilter(filterKey),
                     );
                   }).toList(),
                 ),
@@ -111,19 +99,19 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
             const SizedBox(height: 16),
 
             // ── Divider + Count ───────────────────────────────────────────
-            const Divider(height: 1, color: Color(0xffE0E0E0)),
+            Divider(height: 1, color: colorScheme.outline),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Text(
-                'Found ${_filteredResults.length} Scholarship${_filteredResults.length != 1 ? 's' : ''}',
-                style: const TextStyle(
+                '${t.translate('filterResultFoundCount')} ${_filteredResults.length} ${t.translate('filterResultScholarships')}',
+                style: TextStyle(
                   fontSize: 13,
-                  color: Color(0xff757575),
+                  color: colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ),
-            const Divider(height: 1, color: Color(0xffE0E0E0)),
+            Divider(height: 1, color: colorScheme.outline),
 
             // ── Results List ──────────────────────────────────────────────
             Expanded(
@@ -132,10 +120,9 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
                   : ListView.separated(
                       padding: const EdgeInsets.all(16),
                       itemCount: _filteredResults.length,
-                      separatorBuilder: (_, __) =>
-                          const SizedBox(height: 12),
+                      separatorBuilder: (_, __) => const SizedBox(height: 12),
                       itemBuilder: (_, i) =>
-                          _ScholarshipCard(item: _filteredResults[i]),
+                          _ScholarshipCard(data: _filteredResults[i]),
                     ),
             ),
           ],
@@ -155,13 +142,15 @@ class _FilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: const Color(0xff2196F3),
+          color: colorScheme.primary,
           width: 1.5,
           style: BorderStyle.solid,
         ),
@@ -171,19 +160,19 @@ class _FilterChip extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
-              color: Color(0xff2196F3),
+              color: colorScheme.primary,
               fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(width: 6),
           GestureDetector(
             onTap: onRemove,
-            child: const Icon(
+            child: Icon(
               Icons.close,
               size: 14,
-              color: Color(0xff2196F3),
+              color: colorScheme.primary,
             ),
           ),
         ],
@@ -195,16 +184,19 @@ class _FilterChip extends StatelessWidget {
 // ── Scholarship Card ──────────────────────────────────────────────────────────
 
 class _ScholarshipCard extends StatelessWidget {
-  final ScholarshipResult item;
+  final Map<String, String> data;
 
-  const _ScholarshipCard({required this.item});
+  const _ScholarshipCard({required this.data});
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xffF5F5F5),
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -212,11 +204,11 @@ class _ScholarshipCard extends StatelessWidget {
         children: [
           // Title
           Text(
-            item.title,
-            style: const TextStyle(
+            t.translate(data['titleKey']!),
+            style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w600,
-              color: Color(0xff212121),
+              color: colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 6),
@@ -224,17 +216,17 @@ class _ScholarshipCard extends StatelessWidget {
           // University + Location
           Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.location_on_outlined,
                 size: 14,
-                color: Color(0xff9E9E9E),
+                color: colorScheme.onSurfaceVariant,
               ),
               const SizedBox(width: 4),
               Text(
-                '${item.university}, ${item.location}',
-                style: const TextStyle(
+                '${data['university']!}, ${t.translate(data['locationKey']!)}',
+                style: TextStyle(
                   fontSize: 13,
-                  color: Color(0xff757575),
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
@@ -247,17 +239,17 @@ class _ScholarshipCard extends StatelessWidget {
             children: [
               // Type badge
               Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xffE3F2FD),
+                  color: colorScheme.primary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  item.type,
-                  style: const TextStyle(
+                  t.translate(data['typeKey']!),
+                  style: TextStyle(
                     fontSize: 12,
-                    color: Color(0xff1976D2),
+                    color: colorScheme.primary,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -272,8 +264,16 @@ class _ScholarshipCard extends StatelessWidget {
                     color: Color(0xffFF9800),
                   ),
                   const SizedBox(width: 4),
+                  const Text(
+                    '',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(0xffFF9800),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                   Text(
-                    item.deadline,
+                    data['deadline']!,
                     style: const TextStyle(
                       fontSize: 12,
                       color: Color(0xffFF9800),
@@ -295,41 +295,42 @@ class _ScholarshipCard extends StatelessWidget {
 class _EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.search_off_rounded,
-              size: 72, color: Colors.grey.shade300),
+          Icon(Icons.search_off_rounded, size: 72, color: colorScheme.outline),
           const SizedBox(height: 16),
-          const Text(
-            'No Results Found',
+          Text(
+            t.translate('filterResultNoResults'),
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: Color(0xff424242),
+              color: colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Try adjusting your filters\nor search with different keywords',
+          Text(
+            t.translate('filterResultTryAdjusting'),
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14, color: Color(0xff9E9E9E)),
+            style: TextStyle(fontSize: 14, color: colorScheme.onSurfaceVariant),
           ),
           const SizedBox(height: 24),
           OutlinedButton(
             onPressed: () => Navigator.pop(context),
             style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: Color(0xff2196F3)),
+              side: BorderSide(color: colorScheme.primary),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 28, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
             ),
-            child: const Text(
-              'New Search',
+            child: Text(
+              t.translate('filterResultNewSearch'),
               style: TextStyle(
-                color: Color(0xff2196F3),
+                color: colorScheme.primary,
                 fontWeight: FontWeight.w600,
               ),
             ),

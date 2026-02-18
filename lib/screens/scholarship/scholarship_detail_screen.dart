@@ -1,35 +1,40 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:scholarship_app/constants/app_colors.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 
 class ScholarshipDetailScreen extends StatefulWidget {
   const ScholarshipDetailScreen({super.key});
 
   @override
-  State<ScholarshipDetailScreen> createState() => _ScholarshipDetailScreenState();
+  State<ScholarshipDetailScreen> createState() =>
+      _ScholarshipDetailScreenState();
 }
 
 class _ScholarshipDetailScreenState extends State<ScholarshipDetailScreen> {
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: AppColors.primary,
+        backgroundColor: colorScheme.primary,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: colorScheme.onPrimary),
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.chevron_left,
             size: 30,
+            color: colorScheme.onPrimary,
           ),
           onPressed: () => Navigator.of(context).maybePop(),
         ),
         title: Text(
-          'Scholarship Details',
+          t.translate('detailTitle'),
           style: TextStyle(
-            color: Colors.white,
+            color: colorScheme.onPrimary,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -42,80 +47,98 @@ class _ScholarshipDetailScreenState extends State<ScholarshipDetailScreen> {
             children: [
               _buildHeaderImage(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Full Scholarship for Computer Science',
+                      t.translate('detailScholarshipTitle'),
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
+                        color: colorScheme.onSurface,
                       ),
                     ),
                     SizedBox(height: 6),
                     Row(
                       children: [
-                        Icon(Icons.location_on, size: 16, color: AppColors.grey),
+                        Icon(Icons.location_on,
+                            size: 16, color: colorScheme.outline),
                         SizedBox(width: 6),
                         Text(
-                          'RUPP, Cambodia',
+                          t.translate('detailScholarshipLocation'),
                           style: TextStyle(
                             fontSize: 14,
-                            color: AppColors.textLight
+                            color: colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 12),
-                    _buildDeadlineCard(context),
+                    _buildDeadlineCard(context, colorScheme),
                     const SizedBox(height: 16),
-                    _buildSectionTitle(context, 'About this scholarship'),
+                    _buildSectionTitle(
+                        context, t.translate('detailAboutTitle'), colorScheme),
                     SizedBox(height: 6),
                     Text(
-                      'This prestigious scholarship offers full tuition coverage, accommodation, '
-                      'and a monthly stipend for outstanding students pursuing Computer Science at MIT. '
-                      'The program includes mentorship opportunities and research funding.',
+                      t.translate('detailAboutDescription'),
                       style: TextStyle(
                         height: 1.4,
                         fontSize: 13,
+                        color: colorScheme.onSurface,
                       ),
                     ),
                     SizedBox(height: 16),
-                    _buildSectionTitle(context, 'Scholarship Benefits'),
+                    _buildSectionTitle(context,
+                        t.translate('detailBenefitsTitle'), colorScheme),
                     SizedBox(height: 8),
-                    _buildRequirementBullet('- Tuition'),
-                    _buildRequirementBullet('- Monthly allowance'),
-                    _buildRequirementBullet('- Research support'),
-                    _buildRequirementBullet('- Printing costs'),
+                    _buildRequirementBullet(
+                        t.translate('detailBenefit1'), colorScheme),
+                    _buildRequirementBullet(
+                        t.translate('detailBenefit2'), colorScheme),
+                    _buildRequirementBullet(
+                        t.translate('detailBenefit3'), colorScheme),
+                    _buildRequirementBullet(
+                        t.translate('detailBenefit4'), colorScheme),
                     SizedBox(height: 16),
-                    _buildSectionTitle(context, 'Eligibility Requirements'),
+                    _buildSectionTitle(context,
+                        t.translate('detailEligibilityTitle'), colorScheme),
                     SizedBox(height: 8),
-                    _buildRequirementBullet('- GPA of 3.5 or higher'),
-                    _buildRequirementBullet('- TOEFL score: 100+ or IELTS: 7.0+'),
-                    _buildRequirementBullet('- Strong background in Mathematics'),
-                    _buildRequirementBullet('- Personal statement and recommendation letters'),
+                    _buildRequirementBullet(
+                        t.translate('detailRequirement1'), colorScheme),
+                    _buildRequirementBullet(
+                        t.translate('detailRequirement2'), colorScheme),
+                    _buildRequirementBullet(
+                        t.translate('detailRequirement3'), colorScheme),
+                    _buildRequirementBullet(
+                        t.translate('detailRequirement4'), colorScheme),
                     const SizedBox(height: 16),
-                    _buildSectionTitle(context, 'Required Documents'),
+                    _buildSectionTitle(context,
+                        t.translate('detailDocumentsTitle'), colorScheme),
                     SizedBox(height: 10),
                     _buildStepItem(
                       number: 1,
-                      text: 'Create an account on MIT scholarship portal',
+                      text: t.translate('detailDocument1'),
+                      colorScheme: colorScheme,
                     ),
                     const SizedBox(height: 8),
                     _buildStepItem(
                       number: 2,
-                      text: 'Fill in personal information form',
+                      text: t.translate('detailDocument2'),
+                      colorScheme: colorScheme,
                     ),
                     const SizedBox(height: 8),
                     _buildStepItem(
                       number: 3,
-                      text: 'Upload required documents',
+                      text: t.translate('detailDocument3'),
+                      colorScheme: colorScheme,
                     ),
                     const SizedBox(height: 8),
                     _buildStepItem(
                       number: 4,
-                      text: 'Submit application before deadline',
+                      text: t.translate('detailDocument4'),
+                      colorScheme: colorScheme,
                     ),
                     const SizedBox(height: 20),
                   ],
@@ -132,14 +155,14 @@ class _ScholarshipDetailScreenState extends State<ScholarshipDetailScreen> {
           child: ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
+              backgroundColor: colorScheme.primary,
+              foregroundColor: colorScheme.onPrimary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text(
-              'Apply',
+            child: Text(
+              t.translate('detailApplyButton'),
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -153,7 +176,6 @@ class _ScholarshipDetailScreenState extends State<ScholarshipDetailScreen> {
 
   Widget _buildHeaderImage() {
     return ClipRRect(
-      // borderRadius: BorderRadius.circular(8),
       child: Image.asset(
         'assets/images/detail_rupp.png',
         height: 180,
@@ -163,34 +185,36 @@ class _ScholarshipDetailScreenState extends State<ScholarshipDetailScreen> {
     );
   }
 
-  Widget _buildDeadlineCard(BuildContext context) {
+  Widget _buildDeadlineCard(BuildContext context, ColorScheme colorScheme) {
+    final t = AppLocalizations.of(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.inputBackground,
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.divider.withOpacity(0.5)),
+        border: Border.all(color: colorScheme.outline.withOpacity(0.5)),
       ),
       child: Row(
         children: [
-          const Icon(Icons.calendar_today, size: 18, color: AppColors.red),
+          Icon(Icons.calendar_today, size: 18, color: colorScheme.error),
           const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Application Deadline',
+                t.translate('detailDeadlineLabel'),
                 style: TextStyle(
                   fontSize: 12,
+                  color: colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
-                'March-15-2026',
+                t.translate('detailDeadlineDate'),
                 style: TextStyle(
                   fontSize: 12,
-                  color: AppColors.red,
+                  color: colorScheme.error,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -198,10 +222,10 @@ class _ScholarshipDetailScreenState extends State<ScholarshipDetailScreen> {
           ),
           Spacer(),
           Text(
-            '60 day remaining',
+            t.translate('detailDaysRemaining'),
             style: TextStyle(
               fontSize: 12,
-              color: AppColors.textLight,
+              color: colorScheme.onSurfaceVariant,
             ),
           ),
         ],
@@ -209,42 +233,47 @@ class _ScholarshipDetailScreenState extends State<ScholarshipDetailScreen> {
     );
   }
 
-  Widget _buildSectionTitle(BuildContext context, String title) {
+  Widget _buildSectionTitle(
+      BuildContext context, String title, ColorScheme colorScheme) {
     return Text(
       title,
       style: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
+        color: colorScheme.onSurface,
       ),
     );
   }
 
-  Widget _buildRequirementBullet(String text) {
+  Widget _buildRequirementBullet(String text, ColorScheme colorScheme) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Text(
         text,
-        style: TextStyle(fontSize: 13),
+        style: TextStyle(fontSize: 13, color: colorScheme.onSurface),
       ),
     );
   }
 
-  Widget _buildStepItem({required int number, required String text}) {
+  Widget _buildStepItem(
+      {required int number,
+      required String text,
+      required ColorScheme colorScheme}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           width: 18,
           height: 18,
-          decoration: const BoxDecoration(
-            color: AppColors.primary,
+          decoration: BoxDecoration(
+            color: colorScheme.primary,
             shape: BoxShape.circle,
           ),
           alignment: Alignment.center,
           child: Text(
             '$number',
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: colorScheme.onPrimary,
               fontSize: 10,
               fontWeight: FontWeight.bold,
             ),
@@ -254,7 +283,7 @@ class _ScholarshipDetailScreenState extends State<ScholarshipDetailScreen> {
         Expanded(
           child: Text(
             text,
-            style: TextStyle(fontSize: 13),
+            style: TextStyle(fontSize: 13, color: colorScheme.onSurface),
           ),
         ),
       ],

@@ -1,9 +1,8 @@
-
-// file for register screen.dart
+// ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:scholarship_app/l10n/app_localizations.dart';
 import 'package:scholarship_app/routes/app_routes.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -13,7 +12,8 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends State<RegisterScreen>
+    with SingleTickerProviderStateMixin {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -24,9 +24,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _isLoading = false;
-  String _selectedCountryCode = '+1'; // Default to +1 (USA)
+  String _selectedCountryCode = '+1';
 
-  // List of countries with their dial codes
+  late AnimationController _animController;
+  late Animation<double> _fadeAnim;
+  late Animation<Offset> _slideAnim;
+
   final Map<String, String> _countryCodes = {
     '+1': '🇺🇸 +1',
     '+44': '🇬🇧 +44',
@@ -56,12 +59,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
     '+971': '🇦🇪 +971',
   };
 
-  // Validation errors
   String? _nameError;
   String? _emailError;
   String? _phoneError;
   String? _passwordError;
   String? _confirmPasswordError;
+
+  @override
+  void initState() {
+    super.initState();
+    _animController = AnimationController(
+      duration: const Duration(milliseconds: 900),
+      vsync: this,
+    );
+    _fadeAnim = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animController,
+        curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
+      ),
+    );
+    _slideAnim = Tween<Offset>(
+      begin: const Offset(0, 0.06),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _animController,
+        curve: const Interval(0.1, 0.8, curve: Curves.easeOutCubic),
+      ),
+    );
+    _animController.forward();
+  }
 
   @override
   void dispose() {
@@ -70,64 +97,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _phoneController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _animController.dispose();
     super.dispose();
   }
 
+  // ============ VALIDATION ============
+
   void _validateForm() {
+    final t = AppLocalizations.of(context);
     setState(() {
-      // Reset errors
       _nameError = null;
       _emailError = null;
       _phoneError = null;
       _passwordError = null;
       _confirmPasswordError = null;
 
-      // Validate Full Name
       if (_nameController.text.trim().isEmpty) {
-        _nameError = 'Please enter name.';
+        _nameError = t.translate('registerNameRequired');
       }
 
-      // Validate Email or Phone
       if (_useEmail) {
         if (_emailController.text.trim().isEmpty) {
-          _emailError = 'Please enter email address.';
+          _emailError = t.translate('registerEmailRequired');
         } else if (!_isValidEmail(_emailController.text.trim())) {
-          _emailError = 'Please enter a valid email address.';
+          _emailError = t.translate('registerEmailInvalid');
         }
       } else {
         if (_phoneController.text.trim().isEmpty) {
-          _phoneError = 'Please enter phone number.';
+          _phoneError = t.translate('registerPhoneRequired');
         } else if (!_isValidPhone(_phoneController.text.trim())) {
-          _phoneError = 'Please enter a valid phone number.';
+          _phoneError = t.translate('registerPhoneInvalid');
         }
       }
 
-      // Validate Password
       if (_passwordController.text.isEmpty) {
-        _passwordError =
-            'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.';
+        _passwordError = t.translate('registerPasswordInvalid');
       } else if (!_isValidPassword(_passwordController.text)) {
-        _passwordError =
-            'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.';
+        _passwordError = t.translate('registerPasswordInvalid');
       }
 
-      // Validate Confirm Password
       if (_confirmPasswordController.text.isEmpty) {
-        _confirmPasswordError = 'Please confirm password again.';
+        _confirmPasswordError = t.translate('registerConfirmPasswordRequired');
       } else if (_passwordController.text != _confirmPasswordController.text) {
-        _confirmPasswordError = 'Passwords do not match.';
+        _confirmPasswordError = t.translate('registerPasswordsMismatch');
       }
     });
   }
 
-  bool _isValidEmail(String email) {
-    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
-  }
+  bool _isValidEmail(String email) =>
+      RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
 
   bool _isValidPhone(String phone) {
-    final cleanedPhone = phone.replaceAll(RegExp(r'[\s\-\(\)]'), '');
-    // Check if phone number is valid length and doesn't start with 0
-    return RegExp(r'^[1-9][0-9]{7,14}$').hasMatch(cleanedPhone);
+    final cleaned = phone.replaceAll(RegExp(r'[\s\-\(\)]'), '');
+    return RegExp(r'^[1-9][0-9]{7,14}$').hasMatch(cleaned);
   }
 
   bool _isValidPassword(String password) {
@@ -140,26 +162,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> _handleRegister() async {
+    FocusScope.of(context).unfocus();
     _validateForm();
 
     if (_nameError == null &&
         (_useEmail ? _emailError == null : _phoneError == null) &&
         _passwordError == null &&
         _confirmPasswordError == null) {
-      setState(() {
-        _isLoading = true;
-      });
+      setState(() => _isLoading = true);
 
-      // Simulate API call
       await Future.delayed(const Duration(seconds: 2));
 
-      setState(() {
-        _isLoading = false;
-      });
+      setState(() => _isLoading = false);
 
-      // Navigate to verify email screen
       if (mounted) {
-        final emailOrPhone = _useEmail ? _emailController.text : '$_selectedCountryCode${_phoneController.text}';
+        final emailOrPhone = _useEmail
+            ? _emailController.text
+            : '$_selectedCountryCode${_phoneController.text}';
         Navigator.pushNamed(
           context,
           AppRoutes.verifyEmailScreen,
@@ -169,599 +188,563 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.chevron_left, 
-            color: Colors.black,
-            size: 30,
-          ),
-          onPressed: () {
-            Navigator.pushNamed(context, AppRoutes.loginScreen);
-          },
-        ),
-        title: Text(
-          'Register',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xff212121),
-          ),
+  // ============ INPUT DECORATION ============
+
+  InputDecoration _inputDecoration({
+    required String hint,
+    required IconData prefixIcon,
+    Widget? suffixIcon,
+    bool hasError = false,
+    required ColorScheme cs,
+  }) {
+    return InputDecoration(
+      hintText: hint,
+      hintStyle: TextStyle(
+        color: cs.onSurfaceVariant.withOpacity(0.5),
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
+      prefixIcon: Container(
+        margin: const EdgeInsets.only(left: 4),
+        child: Icon(prefixIcon, color: cs.onSurfaceVariant, size: 20),
+      ),
+      suffixIcon: suffixIcon,
+      filled: true,
+      fillColor: cs.surfaceContainerHighest.withOpacity(0.4),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide.none,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(
+          color: hasError ? cs.error : cs.outlineVariant.withOpacity(0.5),
+          width: hasError ? 1.5 : 1,
         ),
       ),
-      body: SafeArea(
-        child: Center(
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: cs.primary, width: 1.8),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: cs.error, width: 1.5),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: cs.error, width: 1.8),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    );
+  }
+
+  Widget _buildErrorText(String? error, ColorScheme cs) {
+    if (error == null) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: 6, left: 4),
+      child: Text(
+        error,
+        style: TextStyle(fontSize: 12, color: cs.error, height: 1.2),
+      ),
+    );
+  }
+
+  // ============ BUILD ============
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final t = AppLocalizations.of(context);
+
+    return Scaffold(
+      backgroundColor: cs.surface,
+      body: FadeTransition(
+        opacity: _fadeAnim,
+        child: SlideTransition(
+          position: _slideAnim,
           child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 24.0),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header Icon
-                Center(
-                  child: Image.asset(
-                    "assets/icons/app_logo.png",
-                    width: 140,
-                    height: 140,
+                // ── Gradient Header ─────────────────────────────────────
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top + 8,
+                    bottom: 32,
                   ),
-                ),
-                // Subtitle
-                Center(
-                  child: Text(
-                    'Please enter your detail to sign in',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xff757575),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xFF1565C0),
+                        Color(0xFF1976D2),
+                        Color(0xFF2196F3),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(32),
+                      bottomRight: Radius.circular(32),
                     ),
                   ),
-                ),
-                SizedBox(height: 20),
-                // Full Name Field
-                Text(
-                  'Full Name',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xff212121),
-                  ),
-                ),
-                SizedBox(height: 2),
-                SizedBox(
-                  height: 50,
-                  child: TextField(
-                    cursorHeight: 14,
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      hintText: 'Enter your full name',
-                      hintStyle: TextStyle(color: Color(0xffbdbdbd)),
-                      prefixIcon: Icon(
-                        Icons.person_outline,
-                        color: Color(0xffbdbdbd),
-                        size: 20,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: _nameError != null
-                              ? Colors.red
-                              : const Color(0xFFE5E7EB),
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: _nameError != null
-                              ? Colors.red
-                              : const Color(0xFFE5E7EB),
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                          color: Color(0xff2196f3),
-                          width: 2,
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
-                    onChanged: (_) {
-                      if (_nameError != null) {
-                        setState(() {
-                          _nameError = null;
-                        });
-                      }
-                    },
-                  ),
-                ),
-                if (_nameError != null) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    _nameError!,
-                    style: GoogleFonts.spaceGrotesk(
-                      fontSize: 12,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-                SizedBox(height: 16),
-                // Email or Phone Field
-                Text(
-                  _useEmail ? 'Email' : 'Phone Number',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff212121),
-                  ),
-                ),
-                SizedBox(height: 2),
-                if (_useEmail)
-                  SizedBox(
-                    height: 50,
-                    child: TextField(
-                      cursorHeight: 14,
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        hintText: 'Enter your email',
-                        hintStyle: TextStyle(color: Color(0xffbdbdbd)),
-                        prefixIcon: Icon(
-                          Icons.email_outlined,
-                          color: Color(0xffbdbdbd),
-                          size: 20,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: _emailError != null
-                                ? Colors.red
-                                : const Color(0xFFE5E7EB),
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: _emailError != null
-                                ? Colors.red
-                                : const Color(0xFFE5E7EB),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(
-                            color: Color(0xff2196f3),
-                            width: 2,
-                          ),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      onChanged: (_) {
-                        if (_emailError != null) {
-                          setState(() {
-                            _emailError = null;
-                          });
-                        }
-                      },
-                    ),
-                  )
-                else
-                  Row(
+                  child: Column(
                     children: [
-                      // Country Code Dropdown
-                      Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color(0xFFE5E7EB),
+                      // Back button row
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            color: Colors.white,
+                            size: 22,
                           ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: DropdownButton<String>(
-                          value: _selectedCountryCode,
-                          items: _countryCodes.entries
-                              .map((entry) => DropdownMenuItem(
-                                    value: entry.key,
-                                    child: Text(
-                                      entry.value,
-                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
-                                    ),
-                                  ))
-                              .toList(),
-                          onChanged: (String? newValue) {
-                            if (newValue != null) {
-                              setState(() {
-                                _selectedCountryCode = newValue;
-                                if (_phoneError != null) {
-                                  _phoneError = null;
-                                }
-                              });
-                            }
-                          },
-                          underline: SizedBox(),
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          isExpanded: false,
-                          icon: Icon(
-                            Icons.arrow_drop_down,
-                            color: Color(0xffbdbdbd),
-                            size: 20,
-                          ),
-                          style: TextStyle(
-                            color: Color(0xff212121),
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                          ),
+                          onPressed: () => Navigator.pop(context),
                         ),
                       ),
-                      SizedBox(width: 8),
-                      // Phone Number TextField
-                      Expanded(
-                        child: SizedBox(
-                          height: 50,
-                          child: TextField(
-                            cursorHeight: 14,
-                            controller: _phoneController,
-                            keyboardType: TextInputType.phone,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              _PhoneInputFormatter(),
-                            ],
-                            decoration: InputDecoration(
-                              hintText: 'Enter phone number',
-                              hintStyle: TextStyle(color: Color(0xffbdbdbd)),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                  color: _phoneError != null
-                                      ? Colors.red
-                                      : const Color(0xFFE5E7EB),
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                  color: _phoneError != null
-                                      ? Colors.red
-                                      : const Color(0xFFE5E7EB),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: const BorderSide(
-                                  color: Color(0xff2196f3),
-                                  width: 2,
-                                ),
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 12,
-                              ),
+                      Container(
+                        width: 76,
+                        height: 76,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF0D47A1).withOpacity(0.3),
+                              blurRadius: 20,
+                              offset: const Offset(0, 6),
                             ),
-                            onChanged: (_) {
-                              if (_phoneError != null) {
-                                setState(() {
-                                  _phoneError = null;
-                                });
-                              }
-                            },
-                          ),
+                          ],
                         ),
+                        padding: const EdgeInsets.all(12),
+                        child: Image.asset(
+                          "assets/icons/app_logo.png",
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        t.translate('registerTitle'),
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        t.translate('registerSubtitle'),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white.withOpacity(0.85),
+                          height: 1.4,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
-                SizedBox(height: 2),
-                // Toggle Link
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _useEmail = !_useEmail;
-                      if (_useEmail) {
-                        _phoneError = null;
-                      } else {
-                        _emailError = null;
-                      }
-                    });
-                  },
-                  child: Text(
-                    _useEmail
-                        ? 'Use phone number instead'
-                        : 'Use email address instead',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff2196f3),
-                    ),
-                  ),
                 ),
-                if ((_useEmail ? _emailError : _phoneError) != null) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    _useEmail ? _emailError! : _phoneError!,
-                    style: GoogleFonts.spaceGrotesk(
-                      fontSize: 12,
-                      color: Colors.red,
+
+                // ── Form Card ───────────────────────────────────────────
+                Transform.translate(
+                  offset: const Offset(0, -16),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
+                    decoration: BoxDecoration(
+                      color: cs.surface,
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: cs.shadow.withOpacity(0.08),
+                          blurRadius: 24,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-                SizedBox(height: 10),
-                // Password Field
-                Text(
-                  'Password',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xff212121),
-                  ),
-                ),
-                SizedBox(height: 2),
-                SizedBox(
-                  height: 50,
-                  child: TextField(
-                    cursorHeight: 14,
-                    controller: _passwordController,
-                    obscureText: _obscurePassword,
-                    decoration: InputDecoration(
-                      hintText: 'Enter your password',
-                      hintStyle: TextStyle(color: Color(0xffbdbdbd)),
-                      prefixIcon: const Icon(
-                        Icons.lock_outline,
-                        color: Color(0xffbdbdbd),
-                        size: 20,
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                          color: const Color(0xffbdbdbd),
-                          size: 20,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // ── Full Name ────────────────────────
+                        Text(
+                          t.translate('registerFullNameLabel'),
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: cs.onSurface,
+                          ),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
-                        },
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: _passwordError != null
-                              ? Colors.red
-                              : const Color(0xFFE5E7EB),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: _nameController,
+                          cursorHeight: 20,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: cs.onSurface,
+                          ),
+                          decoration: _inputDecoration(
+                            hint: t.translate('registerFullNameHint'),
+                            prefixIcon: Icons.person_outlined,
+                            hasError: _nameError != null,
+                            cs: cs,
+                          ),
+                          onChanged: (_) {
+                            if (_nameError != null) {
+                              setState(() => _nameError = null);
+                            }
+                          },
                         ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: _passwordError != null
-                              ? Colors.red
-                              : const Color(0xFFE5E7EB),
+                        _buildErrorText(_nameError, cs),
+
+                        const SizedBox(height: 18),
+
+                        // ── Email / Phone ────────────────────
+                        Row(
+                          children: [
+                            Text(
+                              _useEmail
+                                  ? t.translate('registerEmailLabel')
+                                  : t.translate('registerPhoneLabel'),
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: cs.onSurface,
+                              ),
+                            ),
+                            const Spacer(),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _useEmail = !_useEmail;
+                                  if (_useEmail) {
+                                    _phoneError = null;
+                                  } else {
+                                    _emailError = null;
+                                  }
+                                });
+                              },
+                              child: Text(
+                                _useEmail
+                                    ? t.translate('registerUsePhoneInstead')
+                                    : t.translate('registerUseEmailInstead'),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: cs.primary,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                          color: Color(0xff2196f3),
-                          width: 2,
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
-                    onChanged: (_) {
-                      if (_passwordError != null) {
-                        setState(() {
-                          _passwordError = null;
-                        });
-                      }
-                    },
-                  ),
-                ),
-                if (_passwordError != null) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    _passwordError!,
-                    style: GoogleFonts.spaceGrotesk(
-                      fontSize: 12,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-                SizedBox(height: 16),
-                // Confirm Password Field
-                Text(
-                  'Confirm Password',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff212121),
-                  ),
-                ),
-                SizedBox(height: 2),
-                SizedBox(
-                  height: 50,
-                  child: TextField(
-                    cursorHeight: 16,
-                    controller: _confirmPasswordController,
-                    obscureText: _obscureConfirmPassword,
-                    decoration: InputDecoration(
-                      hintText: 'Confirm your password',
-                      hintStyle: TextStyle(color: Color(0xffbdbdbd)),
-                      prefixIcon: const Icon(
-                        Icons.lock_outline,
-                        color: Color(0xffbdbdbd),
-                        size: 20,
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscureConfirmPassword
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                          color: Color(0xffbdbdbd),
-                          size: 20,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscureConfirmPassword = !_obscureConfirmPassword;
-                          });
-                        },
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: _confirmPasswordError != null
-                              ? Colors.red
-                              : const Color(0xFFE5E7EB),
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: _confirmPasswordError != null
-                              ? Colors.red
-                              : const Color(0xFFE5E7EB),
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                          color: Color(0xff2196f3),
-                          width: 2,
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
-                    onChanged: (_) {
-                      if (_confirmPasswordError != null) {
-                        setState(() {
-                          _confirmPasswordError = null;
-                        });
-                      }
-                    },
-                  ),
-                ),
-                if (_confirmPasswordError != null) ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    _confirmPasswordError!,
-                    style: GoogleFonts.spaceGrotesk(
-                      fontSize: 12,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-                SizedBox(height: 18),
-                // Register Button
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: _isLoading ? null : _handleRegister,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _isLoading
-                          ? const Color(0xFF9CA3AF)
-                          : const Color(0xff2196f3),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 0,
-                      disabledBackgroundColor: const Color(0xFF9CA3AF),
-                    ),
-                    child: _isLoading
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        const SizedBox(height: 8),
+                        if (_useEmail)
+                          TextField(
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            cursorHeight: 20,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: cs.onSurface,
+                            ),
+                            decoration: _inputDecoration(
+                              hint: t.translate('registerEmailHint'),
+                              prefixIcon: Icons.email_outlined,
+                              hasError: _emailError != null,
+                              cs: cs,
+                            ),
+                            onChanged: (_) {
+                              if (_emailError != null) {
+                                setState(() => _emailError = null);
+                              }
+                            },
+                          )
+                        else
+                          Row(
                             children: [
-                              const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.white,
+                              // Country code picker
+                              Container(
+                                height: 52,
+                                decoration: BoxDecoration(
+                                  color: cs.surfaceContainerHighest
+                                      .withOpacity(0.4),
+                                  border: Border.all(
+                                    color: cs.outlineVariant.withOpacity(0.5),
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                                child: DropdownButton<String>(
+                                  value: _selectedCountryCode,
+                                  items: _countryCodes.entries
+                                      .map((e) => DropdownMenuItem(
+                                            value: e.key,
+                                            child: Text(
+                                              e.value,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: cs.onSurface,
+                                              ),
+                                            ),
+                                          ))
+                                      .toList(),
+                                  onChanged: (v) {
+                                    if (v != null) {
+                                      setState(() {
+                                        _selectedCountryCode = v;
+                                        _phoneError = null;
+                                      });
+                                    }
+                                  },
+                                  underline: const SizedBox(),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  isExpanded: false,
+                                  icon: Icon(
+                                    Icons.arrow_drop_down,
+                                    color: cs.onSurfaceVariant,
+                                    size: 20,
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 12),
-                              Text(
-                                'Register',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xffffffff),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: TextField(
+                                  controller: _phoneController,
+                                  keyboardType: TextInputType.phone,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    _PhoneInputFormatter(),
+                                  ],
+                                  cursorHeight: 20,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: cs.onSurface,
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: t.translate('registerPhoneHint'),
+                                    hintStyle: TextStyle(
+                                      color:
+                                          cs.onSurfaceVariant.withOpacity(0.5),
+                                      fontSize: 14,
+                                    ),
+                                    filled: true,
+                                    fillColor: cs.surfaceContainerHighest
+                                        .withOpacity(0.4),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(14),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(14),
+                                      borderSide: BorderSide(
+                                        color: _phoneError != null
+                                            ? cs.error
+                                            : cs.outlineVariant
+                                                .withOpacity(0.5),
+                                        width: _phoneError != null ? 1.5 : 1,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(14),
+                                      borderSide: BorderSide(
+                                        color: cs.primary,
+                                        width: 1.8,
+                                      ),
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 16,
+                                    ),
+                                  ),
+                                  onChanged: (_) {
+                                    if (_phoneError != null) {
+                                      setState(() => _phoneError = null);
+                                    }
+                                  },
                                 ),
                               ),
                             ],
-                          )
-                        : Text(
-                            'Register',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xffffffff),
+                          ),
+                        _buildErrorText(
+                          _useEmail ? _emailError : _phoneError,
+                          cs,
+                        ),
+
+                        const SizedBox(height: 18),
+
+                        // ── Password ─────────────────────────
+                        Text(
+                          t.translate('registerPasswordLabel'),
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: cs.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: _passwordController,
+                          obscureText: _obscurePassword,
+                          cursorHeight: 20,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: cs.onSurface,
+                          ),
+                          decoration: _inputDecoration(
+                            hint: t.translate('registerPasswordHint'),
+                            prefixIcon: Icons.lock_outlined,
+                            hasError: _passwordError != null,
+                            cs: cs,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscurePassword
+                                    ? Icons.visibility_off_outlined
+                                    : Icons.visibility_outlined,
+                                color: cs.onSurfaceVariant,
+                                size: 20,
+                              ),
+                              onPressed: () => setState(
+                                  () => _obscurePassword = !_obscurePassword),
                             ),
                           ),
+                          onChanged: (_) {
+                            if (_passwordError != null) {
+                              setState(() => _passwordError = null);
+                            }
+                          },
+                        ),
+                        _buildErrorText(_passwordError, cs),
+
+                        const SizedBox(height: 18),
+
+                        // ── Confirm Password ─────────────────
+                        Text(
+                          t.translate('registerConfirmPasswordLabel'),
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: cs.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: _confirmPasswordController,
+                          obscureText: _obscureConfirmPassword,
+                          cursorHeight: 20,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: cs.onSurface,
+                          ),
+                          decoration: _inputDecoration(
+                            hint: t.translate('registerConfirmPasswordHint'),
+                            prefixIcon: Icons.lock_outlined,
+                            hasError: _confirmPasswordError != null,
+                            cs: cs,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureConfirmPassword
+                                    ? Icons.visibility_off_outlined
+                                    : Icons.visibility_outlined,
+                                color: cs.onSurfaceVariant,
+                                size: 20,
+                              ),
+                              onPressed: () => setState(() =>
+                                  _obscureConfirmPassword =
+                                      !_obscureConfirmPassword),
+                            ),
+                          ),
+                          onChanged: (_) {
+                            if (_confirmPasswordError != null) {
+                              setState(() => _confirmPasswordError = null);
+                            }
+                          },
+                        ),
+                        _buildErrorText(_confirmPasswordError, cs),
+
+                        const SizedBox(height: 24),
+
+                        // ── Register Button ──────────────────
+                        SizedBox(
+                          width: double.infinity,
+                          height: 52,
+                          child: ElevatedButton(
+                            onPressed: _isLoading ? null : _handleRegister,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: cs.primary,
+                              foregroundColor: cs.onPrimary,
+                              disabledBackgroundColor:
+                                  cs.primary.withOpacity(0.5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              elevation: 0,
+                            ),
+                            child: _isLoading
+                                ? const SizedBox(
+                                    height: 22,
+                                    width: 22,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.5,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
+                                    ),
+                                  )
+                                : Text(
+                                    t.translate('registerButton'),
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.3,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                SizedBox(height: 12),
-                // Already have account link
-                Center(
+
+                // ── Divider ─────────────────────────────────────────────
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Already have an account? ',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xffbdbdbd),
+                      Expanded(
+                        child: Divider(
+                          color: cs.outlineVariant.withOpacity(0.5),
+                          thickness: 1,
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.loginScreen);
-                        },
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
-                          'Log In',
+                          t.translate('loginOrContinueWith'),
                           style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff2196f3),
-                            decoration: TextDecoration.underline,
+                            fontSize: 13,
+                            color: cs.onSurfaceVariant,
+                            fontWeight: FontWeight.w500,
                           ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Divider(
+                          color: cs.outlineVariant.withOpacity(0.5),
+                          thickness: 1,
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 12),
-                // Social Login Icons
-                Center(
+
+                const SizedBox(height: 20),
+
+                // ── Social Icons ─────────────────────────────────────────
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 80),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Facebook Icon
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: const Color(0xFFE5E7EB),
-                            width: 1,
-                          ),
-                        ),
-                        child: Center(
+                      Expanded(
+                        child: _SocialCircle(
                           child: Image.asset(
                             "assets/icons/google_icon.png",
                             width: 22,
@@ -770,19 +753,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 16),
-                      // Google Icon
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: const Color(0xFFE5E7EB),
-                            width: 1,
-                          ),
-                        ),
-                        child: Center(
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: _SocialCircle(
                           child: Image.asset(
                             "assets/icons/facebook_icon.png",
                             width: 22,
@@ -794,7 +767,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 12),
+
+                const SizedBox(height: 24),
+
+                // ── Login Link ──────────────────────────────────────────
+                Center(
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Text(
+                        t.translate('registerAlreadyHaveAccount'),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: cs.onSurfaceVariant,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () =>
+                            Navigator.pushNamed(context, AppRoutes.loginScreen),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.only(left: 4),
+                          minimumSize: const Size(0, 0),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Text(
+                          t.translate('registerLoginLink'),
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: cs.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: MediaQuery.of(context).padding.bottom + 20),
               ],
             ),
           ),
@@ -804,7 +813,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 }
 
-/// Custom formatter to prevent phone numbers from starting with 0
+// ── Social Circle Widget ────────────────────────────────────────────────────
+
+class _SocialCircle extends StatelessWidget {
+  final Widget child;
+  const _SocialCircle({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Container(
+      height: 52,
+      decoration: BoxDecoration(
+        color: cs.surfaceContainerHighest.withOpacity(0.35),
+        border: Border.all(
+          color: cs.outlineVariant.withOpacity(0.5),
+          width: 1,
+        ),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Center(child: child),
+    );
+  }
+}
+
+// ── Phone Input Formatter ───────────────────────────────────────────────────
+
 class _PhoneInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
@@ -812,12 +846,9 @@ class _PhoneInputFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) {
     String newText = newValue.text;
-
-    // If the text starts with 0, remove it
     if (newText.isNotEmpty && newText.startsWith('0')) {
       newText = newText.substring(1);
     }
-
     return newValue.copyWith(
       text: newText,
       selection: TextSelection.fromPosition(
